@@ -439,9 +439,8 @@ msgstr ""
 msgid "Installing boot loader"
 msgstr ""
 
-#: pyanaconda/install.py:268 pyanaconda/packaging/livepayload.py:176
-#: pyanaconda/packaging/yumpayload.py:1371
-#: pyanaconda/packaging/dnfpayload.py:654
+#: pyanaconda/install.py:260 pyanaconda/packaging/livepayload.py:178
+#: pyanaconda/packaging/dnfpayload.py:622
 msgid "Performing post-installation setup tasks"
 msgstr ""
 
