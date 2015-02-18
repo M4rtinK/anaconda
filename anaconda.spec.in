@@ -22,16 +22,13 @@ Source0: %{name}-%{version}.tar.bz2
 %define gettextver 0.18.3
 %define intltoolver 0.31.2-3
 %define pykickstartver 1.99.66
-%define yumver 3.4.3-91
 %define dnfver 0.4.18
 %define partedver 1.8.1
 %define pypartedver 2.5-2
 %define nmver 0.9.9.0-10.git20130906
 %define dbusver 1.2.3
-%define yumutilsver 1.1.11-3
 %define mehver 0.23-1
 %define firewalldver 0.3.5-1
-%define pythonurlgrabberver 3.9.1-5
 %define utillinuxver 2.15.1
 %define dracutver 034-7
 %define isomd5sum 1.0.10
@@ -56,13 +53,12 @@ BuildRequires: intltool >= %{intltoolver}
 BuildRequires: libgnomekbd-devel
 BuildRequires: libxklavier-devel >= %{libxklavierver}
 BuildRequires: pango-devel
-BuildRequires: pykickstart >= %{pykickstartver}
+BuildRequires: python3-kickstart >= %{pykickstartver}
 %if ! 0%{?rhel}
-BuildRequires: python-bugzilla
+BuildRequires: python3-bugzilla
 %endif
-BuildRequires: python-devel
-BuildRequires: python-urlgrabber >= %{pythonurlgrabberver}
-BuildRequires: python-nose
+BuildRequires: python3-devel
+BuildRequires: python3-nose
 BuildRequires: systemd
 BuildRequires: rpm-devel >= %{rpmver}
 BuildRequires: libarchive-devel >= %{libarchivever}
@@ -87,24 +83,22 @@ Requires: dnf >= %{dnfver}
 Requires: python-blivet >= 1:1.0.1
 Requires: python-meh >= %{mehver}
 Requires: libreport-anaconda >= 2.0.21-1
-Requires: libselinux-python
-Requires: rpm-python >= %{rpmver}
+Requires: libselinux-python3
+Requires: rpm-python3 >= %{rpmver}
 Requires: parted >= %{partedver}
-Requires: pyparted >= %{pypartedver}
-Requires: yum >= %{yumver}
-Requires: python-urlgrabber >= %{pythonurlgrabberver}
-Requires: python-requests
-Requires: pykickstart >= %{pykickstartver}
+Requires: python3-pyparted >= %{pypartedver}
+Requires: python3-requests
+Requires: python3-kickstart >= %{pykickstartver}
 Requires: langtable-data >= %{langtablever}
-Requires: langtable-python >= %{langtablever}
-Requires: libuser-python
+Requires: langtable-python3 >= %{langtablever}
+Requires: libuser-python3
 Requires: authconfig
 Requires: firewalld >= %{firewalldver}
 Requires: util-linux >= %{utillinuxver}
-Requires: dbus-python
-Requires: python-pwquality
-Requires: python-IPy
-Requires: pytz
+Requires: python3-dbus
+Requires: python3-pwquality
+Requires: python-IPy-python3
+Requires: python3-pytz
 Requires: realmd
 Requires: teamd
 %ifarch %livearches
@@ -114,16 +108,15 @@ Requires: usermode
 Requires: openssh
 %endif
 Requires: isomd5sum >= %{isomd5sum}
-Requires: yum-utils >= %{yumutilsver}
 Requires: createrepo_c
 Requires: NetworkManager >= %{nmver}
 Requires: NetworkManager-glib >= %{nmver}
 Requires: NetworkManager-team
 Requires: dhclient
-Requires: libselinux-python
+Requires: libselinux-python3
 Requires: kbd
 Requires: chrony
-Requires: python-ntplib
+Requires: python3-ntplib
 Requires: rsync
 Requires: systemd
 %ifarch %{ix86} x86_64
@@ -136,11 +129,10 @@ Requires: hfsplus-tools
 %endif
 %endif
 
-Requires: python-coverage
-Requires: pygobject3-base
+Requires: python3-coverage
 
 # Used by rescue.py and the low RAM message in /sbin/anaconda
-Requires: newt-python
+Requires: newt-python3
 
 # required because of the rescue mode and VNC question
 Requires: anaconda-tui = %{version}-%{release}
@@ -159,7 +151,7 @@ system.
 Summary: Graphical user interface for the Anaconda installer
 Requires: anaconda-core = %{version}-%{release}
 Requires: anaconda-widgets = %{version}-%{release}
-Requires: python-meh-gui >= %{mehver}
+Requires: python3-meh-gui >= %{mehver}
 Requires: adwaita-icon-theme
 Requires: system-logos
 Requires: tigervnc-server-minimal
@@ -176,7 +168,7 @@ Requires: NetworkManager-wifi
 %endif
 Requires: anaconda-user-help >= %{helpver}
 Requires: yelp
-Requires: pygobject3
+Requires: python3-gobject
 
 # Needed to compile the gsettings files
 BuildRequires: gsettings-desktop-schemas
@@ -194,7 +186,7 @@ This package contains textual user interface for the Anaconda installer.
 %package widgets
 Summary: A set of custom GTK+ widgets for use with anaconda
 Group: System Environment/Libraries
-Requires: python
+Requires: python3
 
 %description widgets
 This package contains a set of custom GTK+ widgets used by the anaconda installer.
@@ -215,7 +207,7 @@ Summary: The anaconda dracut module
 Requires: dracut >= %{dracutver}
 Requires: dracut-network
 Requires: xz
-Requires: pykickstart
+Requires: python3-kickstart
 
 %description dracut
 The 'anaconda' dracut module handles installer-specific boot tasks and
