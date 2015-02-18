@@ -31,7 +31,7 @@ from pyanaconda.ui.tui.tuiobject import YesNoDialog, ErrorDialog
 import os
 import sys
 import site
-import Queue
+import queue
 import meh.ui.text
 import logging
 log = logging.getLogger("anaconda")
@@ -238,7 +238,7 @@ class TextUserInterface(ui.UserInterface):
             return msg_fn(*args)
         else:
             # create a queue for the result returned by the function
-            ret_queue = Queue.Queue()
+            ret_queue = queue.Queue()
 
             # request the function to be called in the main thread
             self._send_show_message(msg_fn, args, ret_queue)

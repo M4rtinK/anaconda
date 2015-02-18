@@ -22,7 +22,7 @@
 __all__ = ["App", "UIScreen", "Widget"]
 
 import sys
-import Queue
+import queue
 import getpass
 import threading
 import functools
@@ -90,7 +90,7 @@ class App(object):
         if queue:
             self.queue = queue
         else:
-            self.queue = Queue.Queue()
+            self.queue = queue.Queue()
 
         # event handlers
         # key: event id
