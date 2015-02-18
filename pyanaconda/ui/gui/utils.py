@@ -27,7 +27,7 @@ from pyanaconda.threads import threadMgr, AnacondaThread
 
 from pyanaconda.constants import NOTICEABLE_FREEZE
 from gi.repository import Gdk, Gtk, GLib
-import Queue
+import queue
 import time
 import threading
 
@@ -54,7 +54,7 @@ def gtk_action_wait(func):
        thread and returns the ret value after the decorated method finishes.
     """
 
-    queue = Queue.Queue()
+    queue = queue.Queue()
 
     def _idle_method(q_args):
         """This method contains the code for the main loop to execute.
@@ -186,7 +186,7 @@ def gtk_batch_map(action, items, args=(), pre_func=None, batch_size=1):
                     else:
                         # run action on the item
                         action(action_item, *args)
-                except Queue.Empty:
+                except queue.Empty:
                     # empty queue, reschedule to run later
                     return True
 
@@ -195,7 +195,7 @@ def gtk_batch_map(action, items, args=(), pre_func=None, batch_size=1):
         # out of time but something left, reschedule to run again later
         return True
 
-    item_queue = Queue.Queue()
+    item_queue = queue.Queue()
     done_event = threading.Event()
 
     # we don't want to log the whole list, type and address is enough

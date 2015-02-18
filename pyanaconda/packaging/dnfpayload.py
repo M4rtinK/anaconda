@@ -27,7 +27,7 @@ from pyanaconda.flags import flags
 from pyanaconda.i18n import _
 from pyanaconda.progress import progressQ
 
-import ConfigParser
+import configparser
 import collections
 import itertools
 import logging
@@ -727,7 +727,7 @@ class DNFPayload(packaging.PackagePayload):
             try:
                 self._base.conf.releasever = self._getReleaseVersion(url)
                 log.debug("releasever from %s is %s", url, self._base.conf.releasever)
-            except ConfigParser.MissingSectionHeaderError as e:
+            except configparser.MissingSectionHeaderError as e:
                 log.error("couldn't set releasever from base repo (%s): %s",
                           method.method, e)
 
