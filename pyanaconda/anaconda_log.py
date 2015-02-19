@@ -170,7 +170,7 @@ class AnacondaLog:
                         fmtStr=ENTRY_FORMAT,
                         autoLevel=False):
         try:
-            if isinstance(dest, types.StringTypes):
+            if isinstance(dest, str):
                 logfileHandler = logging.FileHandler(dest)
             else:
                 logfileHandler = logging.StreamHandler(dest)

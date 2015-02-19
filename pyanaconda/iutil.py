@@ -916,10 +916,10 @@ def strip_accents(s):
     and returns it with all the diacritics removed.
 
     :param s: arbitrary string
-    :type s: unicode
+    :type s: str
 
     :return: s with diacritics removed
-    :rtype: unicode
+    :rtype: str
 
     """
     return ''.join((c for c in unicodedata.normalize('NFD', s)
@@ -1049,14 +1049,14 @@ _ASCIIlower_table = string.maketrans(string.ascii_uppercase, string.ascii_lowerc
 
 def _toASCII(s):
     """Convert a unicode string to ASCII"""
-    if isinstance(s, types.UnicodeType):
+    if type(s) == str:
         # Decompose the string using the NFK decomposition, which in addition
         # to the canonical decomposition replaces characters based on
         # compatibility equivalence (e.g., ROMAN NUMERAL ONE has its own code
         # point but it's really just a capital I), so that we can keep as much
         # of the ASCII part of the string as possible.
         s = unicodedata.normalize('NKFD', s).encode('ascii', 'ignore')
-    elif not isinstance(s, types.StringType):
+    elif type(s) != bytes:
         s = ''
     return s
 
@@ -1083,9 +1083,9 @@ def upcase_first_letter(text):
     lowercases all the others. string.title() capitalizes all words in the
     string.
 
-    :type text: either a str or unicode object
+    :type text: str
     :return: the given text with the first letter upcased
-    :rtype: str or unicode (depends on the input)
+    :rtype: str
 
     """
 
