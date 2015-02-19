@@ -912,10 +912,10 @@ def strip_accents(s):
     and returns it with all the diacritics removed.
 
     :param s: arbitrary string
-    :type s: unicode
+    :type s: str
 
     :return: s with diacritics removed
-    :rtype: unicode
+    :rtype: str
 
     """
     return ''.join((c for c in unicodedata.normalize('NFD', s)
@@ -1079,9 +1079,9 @@ def upcase_first_letter(text):
     lowercases all the others. string.title() capitalizes all words in the
     string.
 
-    :type text: either a str or unicode object
+    :type text: str
     :return: the given text with the first letter upcased
-    :rtype: str or unicode (depends on the input)
+    :rtype: str
 
     """
 
