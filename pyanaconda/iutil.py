@@ -32,7 +32,7 @@ import string # pylint: disable=deprecated-module
 import tempfile
 import types
 import re
-from urllib import quote, unquote
+from urllib.parse import quote, unquote
 import gettext
 import signal
 
