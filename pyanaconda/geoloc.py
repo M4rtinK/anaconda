@@ -100,7 +100,7 @@ in a couple seconds
 
 """
 import requests
-import urllib
+import urllib.parse
 import dbus
 import threading
 import time
@@ -650,7 +650,7 @@ class GoogleWiFiLocationProvider(GeolocationBackend):
         :return: API compatible AP description
         :rtype: string
         """
-        quoted_ssid = urllib.quote_plus(access_point.ssid)
+        quoted_ssid = urllib.parse.quote_plus(access_point.ssid)
         return "&wifi=mac:%s|ssid:%s|ss:%d" % (access_point.bssid,
                                                quoted_ssid, access_point.rssi)
 
