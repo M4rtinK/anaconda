@@ -534,7 +534,7 @@ class BootLoader(object):
         return self._device_type_index(device, types) is not None
 
     def device_description(self, device):
-        device_types = self.device_descriptions.keys()
+        device_types = list(self.device_descriptions.keys())
         idx = self._device_type_index(device, device_types)
         if idx is None:
             raise ValueError("No description available for %s" % device.type)

@@ -542,5 +542,5 @@ class PartitionSchemeSpoke(NormalTUISpoke):
     def apply(self):
         """ Apply our selections. """
 
-        schemelist = self.partschemes.values()
+        schemelist = list(self.partschemes.values())
         self.data.autopart.type = schemelist[self._selection]
