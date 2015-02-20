@@ -1151,7 +1151,7 @@ class SourceSpoke(NormalSpoke, GUISpokeInputCheckHandler):
         """
 
         # Remove the repo checks
-        for check in self._repoNameChecks.values() + self._repoURLChecks.values() + self._repoProxyChecks.values():
+        for check in list(self._repoNameChecks.values()) + list(self._repoURLChecks.values()) + list(self._repoProxyChecks.values()):
             self.remove_check(check)
         self._repoNameChecks = {}
         self._repoURLChecks = {}
