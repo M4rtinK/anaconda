@@ -390,7 +390,7 @@ def execReadlines(command, argv, stdin=None, root='/', env_prune=None):
                 except OSError:
                     pass
 
-        def next(self):
+        def __next__(self):
             # Read the next line, blocking if a line is not yet available
             line = self._proc.stdout.readline()
             if line == '':
