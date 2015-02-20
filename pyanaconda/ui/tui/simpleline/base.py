@@ -157,7 +157,7 @@ class App(object):
             else:
                 # lock acquired, we can run raw_input
                 try:
-                    data = raw_input()
+                    data = input()
                 except EOFError:
                     data = ""
                 finally:
