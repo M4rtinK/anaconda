@@ -35,6 +35,7 @@ import re
 from urllib.parse import quote, unquote
 import gettext
 import signal
+import sys
 
 from gi.repository import GLib
 
@@ -1037,11 +1038,13 @@ def is_unsupported_hw():
 
 # Define translations between ASCII uppercase and lowercase for
 # locale-independent string conversions. The tables are 256-byte string used
-# with string.translate. If string.translate is used with a unicode string,
-# even if the string contains only 7-bit characters, string.translate will
+# with str.translate. If str.translate is used with a unicode string,
+# even if the string contains only 7-bit characters, str.translate will
 # raise a UnicodeDecodeError.
-_ASCIIupper_table = string.maketrans(string.ascii_lowercase, string.ascii_uppercase)
-_ASCIIlower_table = string.maketrans(string.ascii_uppercase, string.ascii_lowercase)
+# TODO: How doses this apply to Python 3 ?
+
+_ASCIIlower_table = str.maketrans(string.ascii_uppercase, string.ascii_lowercase)
+_ASCIIupper_table = str.maketrans(string.ascii_lowercase, string.ascii_uppercase)
 
 def _toASCII(s):
     """Convert a unicode string to ASCII"""
@@ -1051,7 +1054,7 @@ def _toASCII(s):
         # compatibility equivalence (e.g., ROMAN NUMERAL ONE has its own code
         # point but it's really just a capital I), so that we can keep as much
         # of the ASCII part of the string as possible.
-        s = unicodedata.normalize('NKFD', s).encode('ascii', 'ignore')
+        s = unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode("ascii")
     elif type(s) != bytes:
         s = ''
     return s
@@ -1062,7 +1065,13 @@ def upperASCII(s):
     The returned string will contain only ASCII characters. This function is
     locale-independent.
     """
-    return string.translate(_toASCII(s), _ASCIIupper_table)
+
+    # XXX: Python 3 has str.maketrans() and bytes.maketrans() so we should
+    # ideally use one or the other depending on the type of 's'. But it turns
+    # out we expect this function to always return string even if given bytes.
+    if isinstance(s, bytes):
+        s = s.decode(sys.getdefaultencoding())
+    return str.translate(_toASCII(s), _ASCIIupper_table)
 
 def lowerASCII(s):
     """Convert a string to lowercase using only ASCII character definitions.
@@ -1070,7 +1079,13 @@ def lowerASCII(s):
     The returned string will contain only ASCII characters. This function is
     locale-independent.
     """
-    return string.translate(_toASCII(s), _ASCIIlower_table)
+
+    # XXX: Python 3 has str.maketrans() and bytes.maketrans() so we should
+    # ideally use one or the other depending on the type of 's'. But it turns
+    # out we expect this function to always return string even if given bytes.
+    if isinstance(s, bytes):
+        s = s.decode(sys.getdefaultencoding())
+    return str.translate(_toASCII(s), _ASCIIlower_table)
 
 def upcase_first_letter(text):
     """
