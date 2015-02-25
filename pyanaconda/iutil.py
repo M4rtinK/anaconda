@@ -1085,6 +1085,7 @@ def lowerASCII(s):
     # out we expect this function to always return string even if given bytes.
     if isinstance(s, bytes):
         s = s.decode(sys.getdefaultencoding())
+
     return str.translate(_toASCII(s), _ASCIIlower_table)
 
 def upcase_first_letter(text):
