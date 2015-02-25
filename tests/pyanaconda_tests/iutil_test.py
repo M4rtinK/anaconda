@@ -359,7 +359,7 @@ while true ; do sleep 1 ; done
     def exec_readlines_auto_kill_test(self):
         """Test execReadlines with reading only part of the output"""
 
-        with tempfile.NamedTemporaryFile() as testscript:
+        with tempfile.NamedTemporaryFile(mode="w+t") as testscript:
             testscript.write("""#!/bin/sh
 # Output forever
 while true; do
