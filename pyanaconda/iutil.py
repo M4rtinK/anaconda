@@ -34,6 +34,7 @@ import re
 from urllib.parse import quote, unquote
 import gettext
 import signal
+import sys
 
 import requests
 from requests_file import FileAdapter
@@ -1061,8 +1062,8 @@ def ensure_str(str_or_bytes, keep_none=True):
 
 # Define translations between ASCII uppercase and lowercase for
 # locale-independent string conversions. The tables are 256-byte string used
-# with string.translate. If string.translate is used with a unicode string,
-# even if the string contains only 7-bit characters, string.translate will
+# with str.translate. If str.translate is used with a unicode string,
+# even if the string contains only 7-bit characters, str.translate will
 # raise a UnicodeDecodeError.
 _ASCIIlower_table = str.maketrans(string.ascii_uppercase, string.ascii_lowercase)
 _ASCIIupper_table = str.maketrans(string.ascii_lowercase, string.ascii_uppercase)
@@ -1075,7 +1076,7 @@ def _toASCII(s):
         # compatibility equivalence (e.g., ROMAN NUMERAL ONE has its own code
         # point but it's really just a capital I), so that we can keep as much
         # of the ASCII part of the string as possible.
-        s = unicodedata.normalize('NKFD', s).encode('ascii', 'ignore')
+        s = unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode("ascii")
     elif type(s) != bytes:
         s = ''
     return s
