@@ -167,7 +167,6 @@ class MakeBumpVer:
 
             bzclass = bugzilla.Bugzilla
             self.bz = bzclass(url=self.bzurl)
-            print
 
         if not self.bz.logged_in:
             rc = self.bz.login(self.username, self.password)
@@ -363,7 +362,7 @@ class MakeBumpVer:
                             bad = True
 
                         if self.skip_all:
-                            print "*** Bug %s Related commit %s is allowed\n" % (bug, commit)
+                            print("*** Bug %s Related commit %s is allowed\n") % (bug, commit)
                             continue
 
                         if valid and action == 'Resolves' and \
