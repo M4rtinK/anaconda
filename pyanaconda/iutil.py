@@ -1265,7 +1265,8 @@ def ipmi_report(event):
     # Event dir & type - always 0x6f for us
     # Event data 1 - the event code passed in
     # Event data 2 & 3 - always 0x0 for us
-    eintr_retry_call(os.write, fd, "0x4 0x1F 0x0 0x6f %#x 0x0 0x0\n" % event)
+    event_string = "0x4 0x1F 0x0 0x6f %#x 0x0 0x0\n" % event
+    eintr_retry_call(os.write, fd, event_string.encode("utf-8"))
     eintr_retry_call(os.close, fd)
 
     execWithCapture("ipmitool", ["sel", "add", path])
