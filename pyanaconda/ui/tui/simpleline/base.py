@@ -26,6 +26,7 @@ import queue
 import getpass
 import threading
 import functools
+import queue
 from pyanaconda.threads import threadMgr, AnacondaThread
 from pyanaconda.ui.communication import hubQ
 from pyanaconda import constants, iutil
@@ -34,8 +35,8 @@ from pyanaconda.i18n import _, N_, C_
 RAW_INPUT_LOCK = threading.Lock()
 
 
-def send_exception(queue, ex):
-    queue.put((hubQ.HUB_CODE_EXCEPTION, [ex]))
+def send_exception(queue_instance, ex):
+    queue_instance.put((hubQ.HUB_CODE_EXCEPTION, [ex]))
 
 
 class ExitMainLoop(Exception):
@@ -66,8 +67,8 @@ class App(object):
     STOP_MAINLOOP = False
     NOP = None
 
-    def __init__(self, title, yes_or_no_question = None, width = 80, queue = None,
-                 quit_message = None):
+    def __init__(self, title, yes_or_no_question=None, width=80, queue_instance=None,
+                 quit_message=None):
         """
         :param title: application title for whenever we need to display app name
         :type title: str
@@ -87,10 +88,10 @@ class App(object):
         self.quit_message = quit_message or N_(u"Do you really want to quit?")
 
         # async control queue
-        if queue:
-            self.queue = queue
+        if queue_instance:
+            self.queue_instance = queue_instance
         else:
-            self.queue = queue.Queue()
+            self.queue_instance = queue.Queue()
 
         # event handlers
         # key: event id
@@ -127,13 +128,13 @@ class App(object):
             self._handlers[event] = []
         self._handlers[event].append((callback, data))
 
-    def _thread_input(self, queue, prompt, hidden):
+    def _thread_input(self, queue_instance, prompt, hidden):
         """This method is responsible for interruptible user input. It is expected
         to be used in a thread started on demand by the App class and returns the
         input via the communication Queue.
 
-        :param queue: communication queue to be used
-        :type queue: Queue.Queue instance
+        :param queue_instance: communication queue_instance to be used
+        :type queue_instance: queue.Queue instance
 
         :param prompt: prompt to be displayed
         :type prompt: str
@@ -163,7 +164,7 @@ class App(object):
                 finally:
                     RAW_INPUT_LOCK.release()
 
-        queue.put((hubQ.HUB_CODE_INPUT, [data]))
+        queue_instance.put((hubQ.HUB_CODE_INPUT, [data]))
 
     def switch_screen(self, ui, args = None):
         """Schedules a screen to replace the current one.
@@ -288,7 +289,7 @@ class App(object):
             except ExitMainLoop:
                 raise
             except Exception:    # pylint: disable=broad-except
-                send_exception(self.queue, sys.exc_info())
+                send_exception(self.queue_instance, sys.exc_info())
                 return False
 
         else:
@@ -347,7 +348,7 @@ class App(object):
                 except ExitMainLoop:
                     raise
                 except Exception:    # pylint: disable=broad-except
-                    send_exception(self.queue, sys.exc_info())
+                    send_exception(self.queue_instance, sys.exc_info())
                     continue
 
                 # None means prompt handled the input by itself
@@ -384,7 +385,7 @@ class App(object):
 
     def process_events(self, return_at = None):
         """This method processes incoming async messages and returns
-           when a specific message is encountered or when the queue
+           when a specific message is encountered or when the queue_instance
            is empty.
 
            If return_at message was specified, the received
@@ -393,8 +394,8 @@ class App(object):
            If the message does not fit return_at, but handlers are
            defined then it processes all handlers for this message
         """
-        while return_at or not self.queue.empty():
-            event = self.queue.get()
+        while return_at or not self.queue_instance.empty():
+            event = self.queue_instance.get()
             if event[0] == return_at:
                 return event
             elif event[0] in self._handlers:
@@ -404,7 +405,7 @@ class App(object):
                     except ExitMainLoop:
                         raise
                     except Exception:    # pylint: disable=broad-except
-                        send_exception(self.queue, sys.exc_info())
+                        send_exception(self.queue_instance, sys.exc_info())
 
     def raw_input(self, prompt, hidden=False):
         """This method reads one input from user. Its basic form has only one
@@ -412,7 +413,7 @@ class App(object):
 
         input_thread = AnacondaThread(prefix=constants.THREAD_INPUT_BASENAME,
                                       target=self._thread_input,
-                                      args=(self.queue, prompt, hidden))
+                                      args=(self.queue_instance, prompt, hidden))
         input_thread.daemon = True
         threadMgr.add(input_thread)
         event = self.process_events(return_at=hubQ.HUB_CODE_INPUT)
@@ -442,7 +443,7 @@ class App(object):
             except ExitMainLoop:
                 raise
             except Exception:    # pylint: disable=broad-except
-                send_exception(self.queue, sys.exc_info())
+                send_exception(self.queue_instance, sys.exc_info())
                 return False
 
         # global refresh command
