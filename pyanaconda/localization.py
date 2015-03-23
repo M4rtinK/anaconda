@@ -397,7 +397,6 @@ def get_xlated_timezone(tz_spec_part):
     xlated = langtable.timezone_name(tz_spec_part, languageIdQuery=parts["language"],
                                      territoryIdQuery=parts.get("territory", ""),
                                      scriptIdQuery=parts.get("script", ""))
-
     return xlated
 
 def write_language_configuration(lang, root):
