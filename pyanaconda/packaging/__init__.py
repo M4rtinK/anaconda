@@ -35,6 +35,7 @@ from glob import glob
 from fnmatch import fnmatch
 import threading
 import re
+import functools
 
 if __name__ == "__main__":
     from pyanaconda import anaconda_log
@@ -715,7 +716,7 @@ class PackagePayload(Payload):
                 if fnmatch(f, "/boot/vmlinuz-*") or
                    fnmatch(f, "/boot/efi/EFI/%s/vmlinuz-*" % self.instclass.efi_dir)))
 
-        return sorted(files, cmp=versionCmp)
+        return sorted(files, key=functools.cmp_to_key(versionCmp))
 
     @property
     def rpmMacros(self):
