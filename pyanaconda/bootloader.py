@@ -28,6 +28,7 @@ import struct
 import blivet
 from parted import PARTITION_BIOS_GRUB
 from glob import glob
+from itertools import chain
 
 from pyanaconda import iutil
 from blivet.devicelibs import raid
@@ -844,6 +845,17 @@ class BootLoader(object):
                     setup_args = pyanaconda.network.dracutSetupArgs(dep)
                     self.boot_args.update(setup_args)
                     self.dracut_args.update(setup_args)
+
+        # passed-in objects
+        for cfg_obj in chain(args, kwargs.values()):
+            if hasattr(cfg_obj, "dracutSetupArgs"):
+                setup_args = cfg_obj.dracutSetupArgs()
+                self.boot_args.update(setup_args)
+                self.dracut_args.update(setup_args)
+            else:
+                setup_string = cfg_obj.dracutSetupString()
+                self.boot_args.add(setup_string)
+                self.dracut_args.add(setup_string)
 
         # This is needed for FCoE, bug #743784. The case:
         # We discover LUN on an iface which is part of multipath setup.
