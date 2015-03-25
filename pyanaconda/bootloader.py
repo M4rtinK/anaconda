@@ -28,6 +28,7 @@ import struct
 import blivet
 from parted import PARTITION_BIOS_GRUB
 from glob import glob
+from itertools import chain
 
 from pyanaconda import iutil
 from blivet.devicelibs import raid
@@ -854,7 +855,7 @@ class BootLoader(object):
                     self.dracut_args.update(setup_args)
 
         # passed-in objects
-        for cfg_obj in list(args) + kwargs.values():
+        for cfg_obj in chain(args, kwargs.values()):
             if hasattr(cfg_obj, "dracutSetupArgs"):
                 setup_args = cfg_obj.dracutSetupArgs()
                 self.boot_args.update(setup_args)
