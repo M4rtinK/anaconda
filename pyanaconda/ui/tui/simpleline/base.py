@@ -582,7 +582,7 @@ class UIScreen(object):
             if isinstance(w, Widget):
                 self._print_long_widget(w)
             elif type(w) == bytes:
-                print(w.decode("utf-8"))
+                print(w)
             else:
                 # not a widget or string, just print its string representation
                 print(str(w))
