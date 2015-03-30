@@ -43,7 +43,7 @@ class ParseKickstartTestCase(BaseTestCase):
         return list(iutil.execReadlines(self.command, ["--tmpdir", self.tmpdir, ks_file]))
 
     def cdrom_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""cdrom """)
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
@@ -51,7 +51,7 @@ class ParseKickstartTestCase(BaseTestCase):
         self.assertEqual(lines[0], "inst.repo=cdrom", lines)
 
     def harddrive_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""harddrive --partition=sda4 --dir=/path/to/tree""")
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
@@ -59,14 +59,14 @@ class ParseKickstartTestCase(BaseTestCase):
         self.assertEqual(lines[0], "inst.repo=hd:sda4:/path/to/tree", lines)
 
     def nfs_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""nfs --server=host.at.foo.com --dir=/path/to/tree --opts=nolock,timeo=50""")
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
 
         self.assertEqual(lines[0], "inst.repo=nfs:nolock,timeo=50:host.at.foo.com:/path/to/tree", lines)
 
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""nfs --server=host.at.foo.com --dir=/path/to/tree""")
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
@@ -74,7 +74,7 @@ class ParseKickstartTestCase(BaseTestCase):
         self.assertEqual(lines[0], "inst.repo=nfs:host.at.foo.com:/path/to/tree", lines)
 
     def url_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""url --url=https://host.at.foo.com/path/to/tree --noverifyssl --proxy=http://localhost:8123""")
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
@@ -86,7 +86,7 @@ class ParseKickstartTestCase(BaseTestCase):
         self.assertEqual(lines[2], "proxy=http://localhost:8123", lines)
 
     def updates_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""updates http://host.at.foo.com/path/to/updates.img""")
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
@@ -94,7 +94,7 @@ class ParseKickstartTestCase(BaseTestCase):
         self.assertEqual(lines[0], "live.updates=http://host.at.foo.com/path/to/updates.img", lines)
 
     def mediacheck_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""mediacheck""")
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
@@ -102,7 +102,7 @@ class ParseKickstartTestCase(BaseTestCase):
         self.assertEqual(lines[0], "rd.live.check", lines)
 
     def driverdisk_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""driverdisk sda5""")
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
@@ -110,7 +110,7 @@ class ParseKickstartTestCase(BaseTestCase):
         dd_args_ks = open(self.tmpdir+"/dd_args_ks").readlines()
         self.assertEqual(dd_args_ks[0], "sda5", dd_args_ks)
 
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""driverdisk --source=http://host.att.foo.com/path/to/dd""")
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
@@ -118,14 +118,14 @@ class ParseKickstartTestCase(BaseTestCase):
         self.assertEqual(lines[0], "inst.dd=http://host.att.foo.com/path/to/dd", lines)
 
     def network_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""network --device=link --bootproto=dhcp --activate""")
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
 
             self.assertEqual(lines[0], "ip=dhcp", lines)
 
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""network --device=AA:BB:CC:DD:EE:FF --bootproto=dhcp --activate""")
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
@@ -133,7 +133,7 @@ class ParseKickstartTestCase(BaseTestCase):
             self.assertEqual(lines[0], "ifname=ksdev0:aa:bb:cc:dd:ee:ff ip=ksdev0:dhcp: bootdev=ksdev0", lines)
 
     def network_static_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""network --device=link --bootproto=dhcp --activate
 network --device=lo --bootproto=static --ip=10.0.2.15 --netmask=255.255.255.0 --gateway=10.0.2.254 --nameserver=10.0.2.10
 """)
@@ -155,7 +155,7 @@ network --device=lo --bootproto=static --ip=10.0.2.15 --netmask=255.255.255.0 --
             self.assertTrue(ifcfg_lines[9].startswith("UUID="), ifcfg_lines)
 
     def network_team_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""network --device=link --bootproto=dhcp --activate
 network --device team0 --activate --bootproto static --ip=10.34.102.222 --netmask=255.255.255.0 --gateway=10.34.102.254 --nameserver=10.34.39.2 --teamslaves="p3p1'{\"prio\": -10, \"sticky\": true}'" --teamconfig="{\"runner\": {\"name\": \"activebackup\"}}"
 """)
@@ -174,7 +174,7 @@ network --device team0 --activate --bootproto static --ip=10.34.102.222 --netmas
             self.assertEqual(team_lines[6], "TEAM_PORT_CONFIG='{prio: -10, sticky: true}'\n", team_lines)
 
     def network_bond_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""network --device=link --bootproto=dhcp --activate
 network --device=eth0 --bootproto=dhcp --bondslaves=eth0,eth1
 """)
@@ -192,7 +192,7 @@ network --device=eth0 --bootproto=dhcp --bondslaves=eth0,eth1
             self.assertTrue(ifcfg_lines[6].startswith("UUID="), ifcfg_lines)
 
     def network_bridge_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""network --device=link --bootproto=dhcp --activate
 network --device br0 --activate --bootproto dhcp --bridgeslaves=eth0 --bridgeopts=stp=6.0,forward_delay=2
 """)
@@ -222,7 +222,7 @@ network --device br0 --activate --bootproto dhcp --bridgeslaves=eth0 --bridgeopt
             self.assertTrue(bridge_lines[6].startswith("UUID="), bridge_lines)
 
     def network_vlanid_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""network --device=link --bootproto=dhcp --activate
 network --device=lo --vlanid=171
 """)
@@ -244,21 +244,21 @@ network --device=lo --vlanid=171
             self.assertEqual(ifcfg_lines[10], "VLAN_ID=171\n", ifcfg_lines)
 
     def displaymode_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""cmdline""")
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
 
             self.assertEqual(lines[0], "inst.cmdline", lines)
 
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""graphical""")
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
 
             self.assertEqual(lines[0], "inst.graphical", lines)
 
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""text""")
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
@@ -266,7 +266,7 @@ network --device=lo --vlanid=171
             self.assertEqual(lines[0], "inst.text", lines)
 
     def bootloader_test(self):
-        with tempfile.NamedTemporaryFile() as ks_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as ks_file:
             ks_file.write("""bootloader --extlinux """)
             ks_file.flush()
             lines = self.execParseKickstart(ks_file.name)
