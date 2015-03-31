@@ -100,7 +100,7 @@ def _validateProxy(proxy_string, username_set, password_set):
     return InputCheck.CHECK_OK
 
 class ProxyDialog(GUIObject, GUIDialogInputCheckHandler):
-    builderObjects = ["proxyDialog"]
+    builderObjects = ["proxyDialog", "mainViewport"]
     mainWidgetName = "proxyDialog"
     uiFile = "spokes/source.glade"
 
