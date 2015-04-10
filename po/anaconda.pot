@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: anaconda 23.5\n"
+"Project-Id-Version: anaconda 23.100\n"
 "Report-Msgid-Bugs-To: anaconda-devel-list@redhat.com\n"
-"POT-Creation-Date: 2015-04-02 17:15-0700\n"
+"POT-Creation-Date: 2015-03-06 14:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -444,15 +444,15 @@ msgstr ""
 msgid "Performing post-installation setup tasks"
 msgstr ""
 
-#: pyanaconda/iutil.py:811
+#: pyanaconda/iutil.py:851
 msgid "No host url"
 msgstr ""
 
-#: pyanaconda/iutil.py:832
+#: pyanaconda/iutil.py:872
 msgid "malformed URL, cannot parse it."
 msgstr ""
 
-#: pyanaconda/iutil.py:848
+#: pyanaconda/iutil.py:888
 msgid "URL has no host component"
 msgstr ""
 
@@ -1276,7 +1276,7 @@ msgstr ""
 msgid "Checking image checksum"
 msgstr ""
 
-#: pyanaconda/packaging/yumpayload.py:1186
+#: pyanaconda/packaging/dnfpayload.py:146
 #, python-format
 msgid "CmdlineError: Missing package: %s"
 msgstr ""
@@ -1331,7 +1331,7 @@ msgstr ""
 msgid "Deployment complete: %s"
 msgstr ""
 
-#: pyanaconda/ui/helpers.py:94 pyanaconda/ui/tui/spokes/storage.py:398
+#: pyanaconda/ui/helpers.py:92 pyanaconda/ui/tui/spokes/storage.py:389
 msgid "Checking storage configuration..."
 msgstr ""
 
@@ -5665,7 +5665,7 @@ msgstr ""
 msgid "Install the live CD to your hard disk"
 msgstr ""
 
-#: /home/bcl/Red_Hat/projs/anaconda/data/liveinst/console.apps/liveinst:5
+#: /home/mkolman/devel/misc/anaconda_python3/data/liveinst/console.apps/liveinst:5
 msgid "Starting Install to Hard Drive"
 msgstr ""
 
