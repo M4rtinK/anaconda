@@ -133,7 +133,7 @@ Requires: hfsplus-tools
 Requires: python3-coverage
 
 # Used by rescue.py and the low RAM message in /sbin/anaconda
-Requires: newt-python
+Requires: newt-python3
 
 # required because of the rescue mode and VNC question
 Requires: anaconda-tui = %{version}-%{release}
