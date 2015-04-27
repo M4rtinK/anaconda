@@ -899,6 +899,17 @@ class BootLoader(object):
 
             self.boot_args.add(new_arg)
 
+        # passed-in objects
+        for cfg_obj in chain(args, kwargs.values()):
+            if hasattr(cfg_obj, "dracutSetupArgs"):
+                setup_args = cfg_obj.dracutSetupArgs()
+                self.boot_args.update(setup_args)
+                self.dracut_args.update(setup_args)
+            else:
+                setup_string = cfg_obj.dracutSetupString()
+                self.boot_args.add(setup_string)
+                self.dracut_args.add(setup_string)
+
     #
     # configuration
     #
