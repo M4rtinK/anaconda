@@ -179,7 +179,7 @@ def validatePassword(pw, user="root", settings=None, minlen=None):
             # be accepted.
             # PWQError values are built as a tuple of (int, str)
             # Convert the str message (encoded to the current locale) to a unicode
-            message = e.args[1].decode(locale.nl_langinfo(locale.CODESET))
+            message = e.args[1]
 
     return (valid, strength, message)
 
