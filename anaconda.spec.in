@@ -324,6 +324,14 @@ update-desktop-database &> /dev/null || :
 %{_prefix}/libexec/anaconda/dd_*
 
 %changelog
+* Thu Sep 01 2016 Martin Kolman <mkolman@redhat.com> - 26.2-1
+- Filter out all merge commits from the changelog (mkolman)
+- Make it possible to override Zanata branch name (mkolman)
+- Switch to argparse & autodetect name, version and bug email address (mkolman)
+- Static checker recommended improvements (mkolman)
+- Fix replacement of deprecated DNF method (jkonecny)
+- Replace deprecated method of DNF (jmracek)
+
 * Mon Aug 29 2016 Samantha N. Bueno <sbueno+anaconda@redhat.com> - 26.1-1
 - Fix a pylint no-member warning (mkolman)
 - Translate press-c-to-continue correctly in TUI (#1364539) (mkolman)
