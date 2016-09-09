@@ -136,7 +136,7 @@ FIRSTBOOT_ENVIRON = "firstboot"
 UNSUPPORTED_HW = 1 << 28
 
 # Password validation
-PASSWORD_MIN_LEN = 8
+PASSWORD_MIN_LEN = 6
 PASSWORD_EMPTY_ERROR = N_("The password is empty.")
 PASSWORD_CONFIRM_ERROR_GUI = N_("The passwords do not match.")
 PASSWORD_CONFIRM_ERROR_TUI = N_("The passwords you entered were different.  Please try again.")
@@ -147,7 +147,12 @@ PASSWORD_WEAK_CONFIRM_WITH_ERROR = N_("You have provided a weak password: %s. Pr
 PASSWORD_ASCII = N_("The password you have provided contains non-ASCII characters. You may not be able to switch between keyboard layouts to login. Press Done to continue.")
 PASSWORD_DONE_TWICE = N_("You will have to press Done twice to confirm it.")
 
-PASSWORD_STRENGTH_DESC = [N_("Empty"), N_("Weak"), N_("Fair"), N_("Good"), N_("Strong")]
+PASSWORD_STATUS_EMPTY = N_("Empty")
+PASSWORD_STATUS_TOO_SHORT = N_("Too short")
+PASSWORD_STATUS_WEAK = N_("Weak")
+PASSWORD_STATUS_FAIR = N_("Fair")
+PASSWORD_STATUS_GOOD = N_("Good")
+PASSWORD_STATUS_STRONG = N_("Strong")
 
 PASSWORD_HIDE = N_("Hide password.")
 PASSWORD_SHOW = N_("Show password.")

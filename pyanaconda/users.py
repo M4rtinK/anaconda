@@ -25,7 +25,8 @@ from contextlib import contextmanager
 from pyanaconda import iutil
 import pwquality
 from pyanaconda.iutil import strip_accents
-from pyanaconda.constants import PASSWORD_MIN_LEN
+from pyanaconda.constants import PASSWORD_MIN_LEN, PASSWORD_STATUS_EMPTY, PASSWORD_STATUS_TOO_SHORT
+from pyanaconda.constants import PASSWORD_STATUS_WEAK, PASSWORD_STATUS_FAIR, PASSWORD_STATUS_GOOD, PASSWORD_STATUS_STRONG
 from pyanaconda.errors import errorHandler, PasswordCryptError, ERROR_RAISE
 from pyanaconda.regexes import GROUPLIST_FANCY_PARSE, USERNAME_VALID, PORTABLE_FS_CHARS
 import crypt
@@ -64,7 +65,7 @@ def cryptPassword(password, algo=None):
 
     return cryptpw
 
-def validatePassword(pw, user="root", settings=None, minlen=None):
+def validatePassword(pw, user="root", settings=None, minlen=None, empty_ok=False):
     """Check the quality of a password.
 
        This function does three things: given a password and an optional
@@ -96,31 +97,55 @@ def validatePassword(pw, user="root", settings=None, minlen=None):
        :rtype: tuple
     """
 
-    valid = True
-    message = None
-    strength = 0
+    length_ok = False
+    error_message = None
+    pw_quality = 0
+
+    # if no passworld length is specified, then require use the Anaconda default minimal
+    # password length (6 characters at the moment)
+    if minlen is None:
+        minlen = PASSWORD_MIN_LEN
 
     if settings is None:
         # Generate a default PWQSettings once and save it as a member of this function
         if not hasattr(validatePassword, "pwqsettings"):
             validatePassword.pwqsettings = pwquality.PWQSettings()
             validatePassword.pwqsettings.read_config()
-            validatePassword.pwqsettings.minlen = PASSWORD_MIN_LEN
+            validatePassword.pwqsettings.minlen = minlen
         settings = validatePassword.pwqsettings
+    try:
+        pw_quality = settings.check(pw, None, user)
+    except pwquality.PWQError as e:
+        # Leave valid alone here: the password is weak but can still
+        # be accepted.
+        # PWQError values are built as a tuple of (int, str)
+        error_message = e.args[1]
 
-    if minlen is not None:
-        settings.minlen = minlen
+    if empty_ok:
+        # if we are OK with empty passwords, then empty passwords are also fine length wise
+        length_ok = len(pw) >= minlen or not pw
+    else:
+        length_ok = len(pw) >= minlen
 
-    if valid:
-        try:
-            strength = settings.check(pw, None, user)
-        except pwquality.PWQError as e:
-            # Leave valid alone here: the password is weak but can still
-            # be accepted.
-            # PWQError values are built as a tuple of (int, str)
-            message = e.args[1]
-
-    return (valid, strength, message)
+    if not pw:
+        pw_score = 0
+        status_text = _(PASSWORD_STATUS_EMPTY)
+    elif not length_ok:
+        pw_score = 0
+        status_text = _(PASSWORD_STATUS_TOO_SHORT)
+    elif error_message:
+        pw_score = 1
+        status_text = _(PASSWORD_STATUS_WEAK)
+    elif pw_quality < 30:
+        pw_score = 2
+        status_text = _(PASSWORD_STATUS_FAIR)
+    elif pw_quality < 70:
+        pw_score = 3
+        status_text = _(PASSWORD_STATUS_GOOD)
+    else:
+        pw_score = 4
+        status_text = _(PASSWORD_STATUS_STRONG)
+    return pw_score, status_text, pw_quality, error_message
 
 def check_username(name):
     if name in os.listdir("/") + ["root", "home", "daemon", "system"]:
