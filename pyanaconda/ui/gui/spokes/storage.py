@@ -685,7 +685,7 @@ class StorageSpoke(NormalSpoke, StorageChecker):
         overview.show_all()
 
     def _initialize(self):
-        hubQ.send_message(self.__class__.__name__, _(constants.PAYLOAD_STATUS_PROBING_STORAGE))
+        hubQ.send_message(self.__class__.__name__, _(constants.PayloadStatus.PROBING_STORAGE.value))
 
         threadMgr.wait(constants.THREAD_STORAGE)
         threadMgr.wait(constants.THREAD_CUSTOM_STORAGE_INIT)

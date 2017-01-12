@@ -179,7 +179,7 @@ def check_memory(anaconda, options, display_mode=None):
             print(_("Press ENTER to continue"))
             input()
 
-        iutil.ipmi_report(constants.IPMI_ABORTED)
+        iutil.ipmi_report(constants.IPMI.ABORTED.value)
         sys.exit(1)
 
     # override display mode if machine cannot nicely run X
@@ -195,7 +195,7 @@ def check_memory(anaconda, options, display_mode=None):
                 stdout_log.warning(reason % reason_args)
                 title = livecd_title
                 gtk_warning(title, reason % reason_args)
-                iutil.ipmi_report(constants.IPMI_ABORTED)
+                iutil.ipmi_report(constants.IPMI.ABORTED.value)
                 sys.exit(1)
             else:
                 reason += nolivecd_extra
@@ -263,7 +263,7 @@ def prompt_for_ssh():
 
     if not ip:
         stdout_log.error("No IP addresses found, cannot continue installation.")
-        iutil.ipmi_report(constants.IPMI_ABORTED)
+        iutil.ipmi_report(constants.IPMI.ABORTED.value)
         sys.exit(1)
 
     ipstr = ip
@@ -422,7 +422,7 @@ def parse_kickstart(options, addon_paths):
     if options.ksfile and not options.liveinst:
         if not os.path.exists(options.ksfile):
             stdout_log.error("Kickstart file %s is missing.", options.ksfile)
-            iutil.ipmi_report(constants.IPMI_ABORTED)
+            iutil.ipmi_report(constants.IPMI.ABORTED.value)
             sys.exit(1)
 
         flags.automatedInstall = True

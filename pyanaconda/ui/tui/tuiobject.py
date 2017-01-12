@@ -54,7 +54,7 @@ class ErrorDialog(tui.UIScreen):
 
         And causes the program to quit.
         """
-        iutil.ipmi_report(constants.IPMI_ABORTED)
+        iutil.ipmi_report(constants.IPMI.ABORTED.value)
         sys.exit(1)
 
 class PasswordDialog(tui.UIScreen):

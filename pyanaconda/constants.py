@@ -183,10 +183,11 @@ DEFAULT_AUTOPART_TYPE = AUTOPART_TYPE_LVM
 SIZE_UNITS_DEFAULT = "MiB"
 
 # Constants for reporting status to IPMI.  These are from the IPMI spec v2 rev1.1, page 512.
-IPMI_STARTED = 0x7          # installation started
-IPMI_FINISHED = 0x8         # installation finished successfully
-IPMI_ABORTED = 0x9          # installation finished unsuccessfully, due to some non-exn error
-IPMI_FAILED = 0xA           # installation hit an exception
+class IPMI(Enum):
+    STARTED = 0x7          # installation started
+    FINISHED = 0x8         # installation finished successfully
+    ABORTED = 0x9          # installation finished unsuccessfully, due to some non-exn error
+    FAILED = 0xA           # installation hit an exception
 
 
 # for how long (in seconds) we try to wait for enough entropy for LUKS
@@ -197,9 +198,10 @@ MAX_ENTROPY_WAIT = 10 * 60
 X_DISPLAY_NUMBER = 1
 
 # Payload status messages
-PAYLOAD_STATUS_PROBING_STORAGE = N_("Probing storage...")
-PAYLOAD_STATUS_PACKAGE_MD = N_("Downloading package metadata...")
-PAYLOAD_STATUS_GROUP_MD = N_("Downloading group metadata...")
+class PayloadStatus(Enum):
+    PROBING_STORAGE = N_("Probing storage...")
+    PACKAGE_MD = N_("Downloading package metadata...")
+    STATUS_GROUP_MD = N_("Downloading group metadata...")
 
 # Window title text
 WINDOW_TITLE_TEXT = N_("Anaconda Installer")

@@ -119,10 +119,10 @@ class SoftwareSelectionSpoke(NormalSpoke):
         # Reset the error state from previous payloads
         self._error = False
 
-        hubQ.send_message(self.__class__.__name__, _(constants.PAYLOAD_STATUS_PACKAGE_MD))
+        hubQ.send_message(self.__class__.__name__, _(constants.PayloadStatus.PACKAGE_MD.value))
 
     def _downloading_group_md(self):
-        hubQ.send_message(self.__class__.__name__, _(constants.PAYLOAD_STATUS_GROUP_MD))
+        hubQ.send_message(self.__class__.__name__, _(constants.PayloadStatus.GROUP_MD.value))
 
     @property
     def environment(self):

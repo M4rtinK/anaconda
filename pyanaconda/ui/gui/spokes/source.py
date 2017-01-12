@@ -689,17 +689,17 @@ class SourceSpoke(NormalSpoke, GUISpokeInputCheckHandler):
         time.sleep(1)
 
     def _probing_storage(self):
-        hubQ.send_message(self.__class__.__name__, _(constants.PAYLOAD_STATUS_PROBING_STORAGE))
+        hubQ.send_message(self.__class__.__name__, _(constants.PayloadStatus.PROBING_STORAGE.value))
 
     def _downloading_package_md(self):
         # Reset the error state from previous payloads
         self._error = False
         self._error_msg = ""
 
-        hubQ.send_message(self.__class__.__name__, _(constants.PAYLOAD_STATUS_PACKAGE_MD))
+        hubQ.send_message(self.__class__.__name__, _(constants.PayloadStatus.PACKAGE_MD.value))
 
     def _downloading_group_md(self):
-        hubQ.send_message(self.__class__.__name__, _(constants.PAYLOAD_STATUS_GROUP_MD))
+        hubQ.send_message(self.__class__.__name__, _(constants.PayloadStatus.GROUP_MD.value))
 
     def _payload_finished(self):
         hubQ.send_ready("SoftwareSelectionSpoke", False)

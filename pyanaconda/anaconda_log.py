@@ -24,6 +24,7 @@ import os
 import sys
 import warnings
 import wrapt
+from enum import Enum
 
 from pyanaconda.flags import flags
 
@@ -32,11 +33,13 @@ ENTRY_FORMAT = "%(asctime)s,%(msecs)03d %(levelname)s %(name)s: %(message)s"
 STDOUT_FORMAT = "%(asctime)s %(message)s"
 DATE_FORMAT = "%H:%M:%S"
 
-MAIN_LOG_FILE = "/tmp/anaconda.log"
-PROGRAM_LOG_FILE = "/tmp/program.log"
-STORAGE_LOG_FILE = "/tmp/storage.log"
-PACKAGING_LOG_FILE = "/tmp/packaging.log"
-SENSITIVE_INFO_LOG_FILE = "/tmp/sensitive-info.log"
+class LogFile(Enum):
+    MAIN = "/tmp/anaconda.log"
+    PROGRAM = "/tmp/program.log"
+    STORAGE = "/tmp/storage.log"
+    PACKAGING = "/tmp/packaging.log"
+    SENSITIVE_INFO = "/tmp/sensitive-info.log"
+
 ANACONDA_SYSLOG_FACILITY = SysLogHandler.LOG_LOCAL1
 
 from threading import Lock
@@ -147,14 +150,14 @@ class AnacondaLog:
         # handled by a FileHandler(/dev/null), which can deadlock.
         self.anaconda_logger = logging.getLogger("anaconda")
         self.anaconda_logger.propagate = False
-        self.addFileHandler(MAIN_LOG_FILE, self.anaconda_logger,
+        self.addFileHandler(LogFile.MAIN.value, self.anaconda_logger,
                             minLevel=logging.DEBUG)
         warnings.showwarning = self.showwarning
 
         # Create the storage logger.
         storage_logger = logging.getLogger("blivet")
         storage_logger.propagate = False
-        self.addFileHandler(STORAGE_LOG_FILE, storage_logger,
+        self.addFileHandler(LogFile.STORAGE.value, storage_logger,
                             minLevel=logging.DEBUG)
 
         # Set the common parameters for anaconda and storage loggers.
@@ -166,7 +169,7 @@ class AnacondaLog:
         program_logger = logging.getLogger("program")
         program_logger.propagate = False
         program_logger.setLevel(logging.DEBUG)
-        self.addFileHandler(PROGRAM_LOG_FILE, program_logger,
+        self.addFileHandler(LogFile.PROGRAM.value, program_logger,
                             minLevel=logging.DEBUG)
         self.forwardToSyslog(program_logger)
 
@@ -174,7 +177,7 @@ class AnacondaLog:
         packaging_logger = logging.getLogger("packaging")
         packaging_logger.setLevel(logging.DEBUG)
         packaging_logger.propagate = False
-        self.addFileHandler(PACKAGING_LOG_FILE, packaging_logger,
+        self.addFileHandler(LogFile.PACKAGING.value, packaging_logger,
                             minLevel=logging.INFO,
                             autoLevel=True)
         self.forwardToSyslog(packaging_logger)
@@ -182,7 +185,7 @@ class AnacondaLog:
         # Create the dnf logger and link it to packaging
         dnf_logger = logging.getLogger("dnf")
         dnf_logger.setLevel(logging.DEBUG)
-        self.addFileHandler(PACKAGING_LOG_FILE, dnf_logger,
+        self.addFileHandler(LogFile.PACKAGING.value, dnf_logger,
                             minLevel=logging.NOTSET)
         self.forwardToSyslog(dnf_logger)
 
@@ -192,7 +195,7 @@ class AnacondaLog:
         # should not be persistently stored by default
         sensitive_logger = logging.getLogger("sensitive-info")
         sensitive_logger.propagate = False
-        self.addFileHandler(SENSITIVE_INFO_LOG_FILE, sensitive_logger,
+        self.addFileHandler(LogFile.SENSITIVE_INFO.value, sensitive_logger,
                             minLevel=logging.DEBUG)
 
         # Create a second logger for just the stuff we want to dup on

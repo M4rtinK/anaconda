@@ -475,7 +475,7 @@ class App(object):
                 if d.answer:
                     raise ExitAllMainLoops()
 
-            iutil.ipmi_report(constants.IPMI_ABORTED)
+            iutil.ipmi_report(constants.IPMI.ABORTED.value)
             return True
 
         return False

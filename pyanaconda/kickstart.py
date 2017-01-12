@@ -43,7 +43,7 @@ import os
 import os.path
 import tempfile
 from pyanaconda.flags import flags, can_touch_runtime_system
-from pyanaconda.constants import ADDON_PATHS, IPMI_ABORTED, TEXT_ONLY_TARGET, GRAPHICAL_TARGET
+from pyanaconda.constants import ADDON_PATHS, IPMI, TEXT_ONLY_TARGET, GRAPHICAL_TARGET
 import shlex
 import requests
 import sys
@@ -138,7 +138,7 @@ class AnacondaKSScript(KSScript):
                     err = "".join(fp.readlines())
 
                 errorHandler.cb(ScriptError(self.lineno, err))
-                iutil.ipmi_report(IPMI_ABORTED)
+                iutil.ipmi_report(IPMI.ABORTED.value)
                 sys.exit(0)
 
 class AnacondaInternalScript(AnacondaKSScript):
@@ -1929,7 +1929,7 @@ class Upgrade(commands.upgrade.F20_Upgrade):
     def parse(self, *args):
         log.error("The upgrade kickstart command is no longer supported. Upgrade functionality is provided through fedup.")
         sys.stderr.write(_("The upgrade kickstart command is no longer supported. Upgrade functionality is provided through fedup."))
-        iutil.ipmi_report(IPMI_ABORTED)
+        iutil.ipmi_report(IPMI.ABORTED.value)
         sys.exit(1)
 
 ###
@@ -2141,7 +2141,7 @@ def preScriptPass(f):
         # We do not have an interface here yet, so we cannot use our error
         # handling callback.
         print(e)
-        iutil.ipmi_report(IPMI_ABORTED)
+        iutil.ipmi_report(IPMI.ABORTED.value)
         sys.exit(1)
 
     # run %pre scripts
@@ -2208,7 +2208,7 @@ def parseKickstart(f, strict_mode=False):
         print(_("\nAn error occurred during reading the kickstart file:"
                 "\n%s\n\nThe installer will now terminate.") % str(e).strip())
 
-        iutil.ipmi_report(IPMI_ABORTED)
+        iutil.ipmi_report(IPMI.ABORTED.value)
         time.sleep(10)
         sys.exit(1)
 

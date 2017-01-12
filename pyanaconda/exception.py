@@ -32,7 +32,7 @@ import traceback
 import blivet.errors
 from pyanaconda.errors import NonInteractiveError
 from pyanaconda.ui.communication import hubQ
-from pyanaconda.constants import THREAD_EXCEPTION_HANDLING_TEST, IPMI_FAILED
+from pyanaconda.constants import THREAD_EXCEPTION_HANDLING_TEST, IPMI
 from pyanaconda.threads import threadMgr
 from pyanaconda.i18n import _
 from pyanaconda import flags
@@ -216,7 +216,7 @@ class AnacondaExceptionHandler(ExceptionHandler):
         except:
             pass
 
-        iutil.ipmi_report(IPMI_FAILED)
+        iutil.ipmi_report(IPMI.FAILED.value)
 
     def runDebug(self, exc_info):
         if flags.can_touch_runtime_system("switch console") \

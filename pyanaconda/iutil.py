@@ -48,7 +48,7 @@ gi.require_version("GLib", "2.0")
 from gi.repository import GLib
 
 from pyanaconda.flags import flags
-from pyanaconda.constants import DRACUT_SHUTDOWN_EJECT, TRANSLATIONS_UPDATE_DIR, UNSUPPORTED_HW, IPMI_ABORTED
+from pyanaconda.constants import DRACUT_SHUTDOWN_EJECT, TRANSLATIONS_UPDATE_DIR, UNSUPPORTED_HW, IPMI
 from pyanaconda.constants import SCREENSHOTS_DIRECTORY, SCREENSHOTS_TARGET_DIRECTORY
 from pyanaconda.regexes import URL_PARSE
 from pyanaconda.errors import RemovedModuleError
@@ -1319,7 +1319,7 @@ def ipmi_report(event):
     os.remove(path)
 
 def ipmi_abort(scripts=None):
-    ipmi_report(IPMI_ABORTED)
+    ipmi_report(IPMI.ABORTED.value)
     runOnErrorScripts(scripts)
 
 def runOnErrorScripts(scripts):

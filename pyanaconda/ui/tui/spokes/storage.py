@@ -37,7 +37,7 @@ from pyanaconda.flags import flags
 from pyanaconda.kickstart import doKickstartStorage, resetCustomStorageData
 from pyanaconda.threads import threadMgr, AnacondaThread
 from pyanaconda.constants import THREAD_STORAGE, THREAD_STORAGE_WATCHER, DEFAULT_AUTOPART_TYPE
-from pyanaconda.constants import PAYLOAD_STATUS_PROBING_STORAGE
+from pyanaconda.constants import PayloadStatus
 from pyanaconda.constants_text import INPUT_PROCESSED
 from pyanaconda.i18n import _, P_, N_, C_
 from pyanaconda.bootloader import BootLoaderError
@@ -194,7 +194,7 @@ class StorageSpoke(NormalTUISpoke):
 
         # Join the initialization thread to block on it
         # This print is foul.  Need a better message display
-        print(_(PAYLOAD_STATUS_PROBING_STORAGE))
+        print(_(PayloadStatus.PROBING_STORAGE.value))
         threadMgr.wait(THREAD_STORAGE_WATCHER)
 
         # synchronize our local data store with the global ksdata

@@ -335,16 +335,16 @@ if __name__ == "__main__":
 
     from pyanaconda import isys
 
-    iutil.ipmi_report(constants.IPMI_STARTED)
+    iutil.ipmi_report(constants.IPMI.STARTED.value)
 
     if (opts.images or opts.dirinstall) and opts.liveinst:
         stdout_log.error("--liveinst cannot be used with --images or --dirinstall")
-        iutil.ipmi_report(constants.IPMI_ABORTED)
+        iutil.ipmi_report(constants.IPMI.ABORTED.value)
         sys.exit(1)
 
     if opts.images and opts.dirinstall:
         stdout_log.error("--images and --dirinstall cannot be used at the same time")
-        iutil.ipmi_report(constants.IPMI_ABORTED)
+        iutil.ipmi_report(constants.IPMI.ABORTED.value)
         sys.exit(1)
     elif opts.dirinstall:
         root_path = opts.dirinstall
@@ -409,7 +409,7 @@ if __name__ == "__main__":
         else:
             print("%s already exists, exiting" % pidfile.filename)
 
-        iutil.ipmi_report(constants.IPMI_FAILED)
+        iutil.ipmi_report(constants.IPMI.FAILED.value)
         sys.exit(1)
 
     # add our own additional signal handlers
@@ -461,7 +461,7 @@ if __name__ == "__main__":
     # once it gets going.
     if can_touch_runtime_system("early exception handler"):
         def _earlyExceptionHandler(ty, value, traceback):
-            iutil.ipmi_report(constants.IPMI_FAILED)
+            iutil.ipmi_report(constants.IPMI.FAILED.value)
             iutil.vtActivate(1)
             return sys.__excepthook__(ty, value, traceback)
 
