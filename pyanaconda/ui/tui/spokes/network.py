@@ -201,12 +201,12 @@ class NetworkSpoke(FirstbootSpokeMixIn, EditTUISpoke):
                 except nm.SettingsNotFoundError:
                     pass
                 else:
-                    log.debug("network: dumping ifcfg file for in-memory connection %s", devname)
+                    log.debug("dumping ifcfg file for in-memory connection %s", devname)
                     nm.nm_update_settings_of_device(devname, [['connection', 'id', devname, None]])
                     ndata = network.ksdata_from_ifcfg(devname)
 
             if not ndata:
-                log.debug("network: can't find any connection for %s", devname)
+                log.debug("can't find any connection for %s", devname)
                 self.errors.append(_("Configuration of device not found"))
                 return INPUT_PROCESSED
 
@@ -248,7 +248,7 @@ class NetworkSpoke(FirstbootSpokeMixIn, EditTUISpoke):
     def apply(self):
         """Apply all of our settings."""
         self._update_network_data()
-        log.debug("network: apply ksdata %s", self.data.network)
+        log.debug("apply ksdata %s", self.data.network)
 
         if self._apply:
             self._apply = False
