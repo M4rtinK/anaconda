@@ -22,7 +22,7 @@ from threading import RLock
 from pyanaconda.isignal import Signal
 from pyanaconda.iutil import synchronized
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.lifecycle")
 
 _controllers = {}
 _controller_categories_map = {}

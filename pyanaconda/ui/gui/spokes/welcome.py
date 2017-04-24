@@ -40,7 +40,7 @@ from pyanaconda.iutil import is_unsupported_hw, ipmi_abort
 from pyanaconda.constants import DEFAULT_LANG, WINDOW_TITLE_TEXT
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.spoke.welcome")
 
 __all__ = ["WelcomeLanguageSpoke"]
 

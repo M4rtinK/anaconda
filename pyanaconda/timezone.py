@@ -34,7 +34,7 @@ from pyanaconda.threads import threadMgr
 from blivet import arch
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.timezone")
 
 # The following zones are not in pytz.common_timezones and
 # Etc category in pytz.all_timezones includes some more,

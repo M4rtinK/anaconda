@@ -27,7 +27,7 @@ import sys
 import time
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.tui.hub.summary")
 
 class SummaryHub(TUIHub):
     """

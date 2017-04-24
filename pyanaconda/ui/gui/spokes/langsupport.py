@@ -34,7 +34,7 @@ from pyanaconda import localization
 import re
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.spoke.language_support")
 
 __all__ = ["LangsupportSpoke"]
 

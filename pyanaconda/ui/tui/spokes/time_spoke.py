@@ -18,7 +18,7 @@
 #
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.tui.spoke.time")
 from pyanaconda.ui.categories.localization import LocalizationCategory
 from pyanaconda.ui.tui.spokes import NormalTUISpoke, EditTUIDialog
 from pyanaconda.ui.tui.simpleline import TextWidget, ColumnWidget, Prompt

@@ -32,7 +32,7 @@ import site
 import queue
 import meh.ui.text
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.tui")
 
 def exception_msg_handler(event, data):
     """

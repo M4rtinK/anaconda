@@ -23,7 +23,7 @@ from pyanaconda import iutil
 from pyanaconda.i18n import _, N_
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.space")
 
 class FileSystemSpaceChecker(object):
     """This object provides for a way to verify that enough space is available

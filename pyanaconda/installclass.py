@@ -31,7 +31,7 @@ from blivet.platform import platform
 from blivet.size import Size
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.installclass")
 
 from pyanaconda.kickstart import getAvailableDiskSpace
 

@@ -34,7 +34,7 @@ from pyanaconda.i18n import _
 import re
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.users")
 
 def getPassAlgo(authconfigStr):
     """ Reads the auth string and returns a string indicating our desired

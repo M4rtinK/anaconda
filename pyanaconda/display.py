@@ -27,7 +27,7 @@ import pkgutil
 from pyanaconda.i18n import _
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.display")
 stdout_log = logging.getLogger("anaconda.stdout")
 
 from pyanaconda import constants

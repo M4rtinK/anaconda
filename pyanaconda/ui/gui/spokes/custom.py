@@ -100,7 +100,7 @@ from functools import wraps
 from itertools import chain
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.spoke.custom_storage_config")
 
 __all__ = ["CustomPartitioningSpoke"]
 

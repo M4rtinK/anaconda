@@ -30,7 +30,7 @@ gi.require_version("BlockDev", "2.0")
 from gi.repository import BlockDev as blockdev
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.dasdfmt")
 
 __all__ = ["DasdFormatDialog"]
 

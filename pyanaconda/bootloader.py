@@ -42,7 +42,7 @@ from blivet.size import Size
 from pyanaconda.i18n import _, N_
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.bootloader")
 
 class serial_opts(object):
     def __init__(self):

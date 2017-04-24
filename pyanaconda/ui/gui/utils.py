@@ -37,7 +37,7 @@ import threading
 import functools
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.utils")
 
 # any better idea how to create a unique, distinguishable object that cannot be
 # confused with anything else?

@@ -21,7 +21,7 @@ import time
 import threading
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.spoke.installation_source")
 
 import os, signal, re
 from collections import namedtuple

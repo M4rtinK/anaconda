@@ -36,7 +36,7 @@ from pyanaconda.kickstart import runPostScripts, runPreInstallScripts
 from pyanaconda.kexec import setup_kexec
 from pyanaconda.install_tasks import Task, TaskQueue
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.installation")
 
 
 class WriteResolvConfTask(Task):

@@ -34,7 +34,7 @@ from pyanaconda.flags import flags as flags_instance
 from pyanaconda.constants import DisplayModes
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.argument_parsing")
 
 # Help text formatting constants
 

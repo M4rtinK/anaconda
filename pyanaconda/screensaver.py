@@ -25,7 +25,7 @@ gi.require_version("GLib", "2.0")
 from gi.repository import GLib
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.screensaver")
 
 SCREENSAVER_SERVICE = "org.freedesktop.ScreenSaver"
 SCREENSAVER_PATH = "/org/freedesktop/ScreenSaver"

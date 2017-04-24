@@ -27,7 +27,7 @@ import blivet.arch
 from blivet.errors import FSError
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.image")
 
 _arch = blivet.arch.get_arch()
 

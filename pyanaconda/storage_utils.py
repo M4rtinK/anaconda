@@ -46,7 +46,7 @@ from pykickstart.constants import AUTOPART_TYPE_PLAIN, AUTOPART_TYPE_BTRFS
 from pykickstart.constants import AUTOPART_TYPE_LVM, AUTOPART_TYPE_LVM_THINP
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.storage")
 
 # TODO: all those constants and mappings should go to blivet
 DEVICE_TEXT_LVM = N_("LVM")

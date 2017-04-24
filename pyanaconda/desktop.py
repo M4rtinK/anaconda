@@ -22,7 +22,7 @@ from pyanaconda.constants import TEXT_ONLY_TARGET, GRAPHICAL_TARGET
 from pyanaconda import iutil
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.desktop")
 
 class Desktop(object):
     def __init__(self):

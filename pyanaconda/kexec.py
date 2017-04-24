@@ -25,7 +25,7 @@ from pyanaconda.iutil import getSysroot, execReadlines, execWithRedirect
 from pyanaconda.simpleconfig import unquote
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.kexec")
 
 class GrubbyInfoError(Exception):
     pass

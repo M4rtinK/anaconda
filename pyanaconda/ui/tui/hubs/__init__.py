@@ -26,7 +26,7 @@ from pyanaconda.ui import common
 from pyanaconda.i18n import _, N_
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.tui.hub")
 
 class TUIHub(TUIObject, common.Hub):
     """Base Hub class implementing the pyanaconda.ui.common.Hub interface.

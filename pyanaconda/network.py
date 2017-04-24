@@ -46,7 +46,7 @@ from pyanaconda.i18n import _
 from pyanaconda.regexes import HOSTNAME_PATTERN_WITHOUT_ANCHORS, IBFT_CONFIGURED_DEVICE_NAME
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.network")
 
 sysconfigDir = "/etc/sysconfig"
 netscriptsDir = "%s/network-scripts" % (sysconfigDir)

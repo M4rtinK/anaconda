@@ -80,7 +80,7 @@ from pykickstart.sections import NullSection, PackageSection, PostScriptSection,
 from pykickstart.version import returnClassForVersion
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.kickstart")
 stderrLog = logging.getLogger("anaconda.stderr")
 storage_log = logging.getLogger("blivet")
 stdoutLog = logging.getLogger("anaconda.stdout")

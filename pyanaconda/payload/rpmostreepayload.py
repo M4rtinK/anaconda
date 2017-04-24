@@ -38,7 +38,7 @@ from blivet.size import Size
 from blivet.util import umount
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.payload.rpmostree")
 
 from pyanaconda.payload import ArchivePayload, PayloadInstallError
 import pyanaconda.errors as errors

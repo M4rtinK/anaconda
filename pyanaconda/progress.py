@@ -19,7 +19,7 @@
 from pyanaconda.i18n import _
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.progress")
 
 from contextlib import contextmanager
 

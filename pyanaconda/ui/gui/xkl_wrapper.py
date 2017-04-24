@@ -44,7 +44,7 @@ from pyanaconda.keyboard import join_layout_variant, parse_layout_variant, Keybo
 from pyanaconda.ui.gui.utils import gtk_action_wait
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.xkl_wrapper")
 
 Xkb_ = lambda x: gettext.translation("xkeyboard-config", fallback=True).gettext(x)
 iso_ = lambda x: gettext.translation("iso_639", fallback=True).gettext(x)

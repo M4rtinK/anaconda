@@ -26,7 +26,7 @@
 """
 import functools
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.payload.tar")
 
 try:
     import tarfile

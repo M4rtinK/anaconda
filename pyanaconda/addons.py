@@ -27,7 +27,7 @@ from pykickstart.sections import Section
 from pyanaconda.progress import progress_message
 from pyanaconda.i18n import N_
 
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.addons")
 
 PLACEHOLDER_NAME = "ADDON_placeholder"
 

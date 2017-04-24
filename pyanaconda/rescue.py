@@ -39,7 +39,7 @@ import shutil
 import time
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.rescue")
 
 __all__ = ["RescueMode", "RootSpoke", "RescueMountSpoke"]
 

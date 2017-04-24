@@ -31,7 +31,7 @@ from pyanaconda import iutil
 from pyanaconda import addons
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.anaconda")
 stdoutLog = logging.getLogger("anaconda.stdout")
 
 class Anaconda(object):

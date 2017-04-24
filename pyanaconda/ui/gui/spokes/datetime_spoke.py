@@ -18,7 +18,7 @@
 #
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.spoke.date_time")
 
 import gi
 gi.require_version("GLib", "2.0")

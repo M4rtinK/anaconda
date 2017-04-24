@@ -65,7 +65,7 @@ import logging
 import copy
 
 class StorageCheckHandler(object, metaclass=ABCMeta):
-    log = logging.getLogger("anaconda")
+    log = logging.getLogger("anaconda.ui.helpers")
     errors = []
     warnings = []
 

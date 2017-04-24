@@ -20,7 +20,7 @@
 from pyanaconda.i18n import _
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.startup")
 stdout_log = logging.getLogger("anaconda.stdout")
 
 import sys

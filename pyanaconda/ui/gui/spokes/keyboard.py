@@ -41,7 +41,7 @@ from pyanaconda.iutil import have_word_match
 import locale as locale_mod
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.spoke.keyboard")
 
 __all__ = ["KeyboardSpoke"]
 

@@ -36,7 +36,7 @@ from pyanaconda.ui.gui.utils import blockedHandler, gtk_action_wait, escape_mark
 from pyanaconda.ui.categories.software import SoftwareCategory
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.spoke.software")
 
 import sys, copy
 

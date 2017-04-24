@@ -22,7 +22,7 @@ from pyanaconda.isignal import Signal
 from pyanaconda.iutil import synchronized
 import time
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.tasks")
 
 class BaseTask(object):
     """A base class for Task and TaskQueue.

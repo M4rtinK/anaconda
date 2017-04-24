@@ -48,7 +48,7 @@ from pykickstart.errors import KickstartParseError
 from collections import OrderedDict
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.tui.spoke.storage")
 
 __all__ = ["StorageSpoke", "AutoPartSpoke"]
 

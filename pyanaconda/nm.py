@@ -27,7 +27,7 @@ from gi.repository import NM
 import struct
 import socket
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.network_manager")
 
 from pyanaconda.constants import DEFAULT_DBUS_TIMEOUT
 from pyanaconda.flags import flags, can_touch_runtime_system

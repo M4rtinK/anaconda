@@ -56,7 +56,7 @@ from pyanaconda.errors import RemovedModuleError
 from pyanaconda.i18n import _
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.iutil")
 program_log = logging.getLogger("program")
 
 from pyanaconda.anaconda_log import program_log_lock

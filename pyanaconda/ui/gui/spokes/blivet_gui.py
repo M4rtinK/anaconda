@@ -37,7 +37,7 @@ from blivetgui import osinstall
 from blivetgui.config import config
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.spoke.blivet_gui")
 
 # export only the spoke, no helper functions, classes or constants
 __all__ = ["BlivetGuiSpoke"]

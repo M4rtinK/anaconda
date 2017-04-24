@@ -54,7 +54,7 @@ from dbus.mainloop.glib import DBusGMainLoop
 DBusGMainLoop(set_as_default=True)
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.spoke.network")
 
 NM._80211ApFlags = getattr(NM, "80211ApFlags")
 NM._80211ApSecurityFlags = getattr(NM, "80211ApSecurityFlags")

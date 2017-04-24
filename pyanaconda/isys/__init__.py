@@ -31,7 +31,7 @@ import datetime
 import pytz
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.isys")
 
 if blivet.arch.get_arch() in ["ppc64", "ppc64le"]:
     MIN_RAM = 768

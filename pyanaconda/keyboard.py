@@ -40,7 +40,7 @@ gi.require_version("GLib", "2.0")
 from gi.repository import GLib
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.keyboard")
 
 LOCALED_SERVICE = "org.freedesktop.locale1"
 LOCALED_OBJECT_PATH = "/org/freedesktop/locale1"

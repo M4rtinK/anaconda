@@ -24,7 +24,7 @@ from pyanaconda.constants import SELINUX_DEFAULT, CMDLINE_APPEND, ANACONDA_ENVIR
 from collections import OrderedDict
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.flags")
 
 # A lot of effort, but it only allows a limited set of flags to be referenced
 class Flags(object):

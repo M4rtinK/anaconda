@@ -46,7 +46,7 @@ from pyanaconda import ihelp
 import os.path
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui")
 
 __all__ = ["GraphicalUserInterface", "QuitDialog"]
 

@@ -22,7 +22,7 @@
 from pyanaconda.i18n import C_, N_
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.tui.simpleline.prompt")
 
 
 class Prompt(object):

@@ -83,7 +83,7 @@ import sys
 from enum import Enum
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.spoke.storage")
 
 __all__ = ["StorageSpoke"]
 

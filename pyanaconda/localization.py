@@ -31,7 +31,7 @@ from pyanaconda import constants
 from pyanaconda.iutil import upcase_first_letter, setenv, execWithRedirect
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.localization")
 
 LOCALE_CONF_FILE_PATH = "/etc/locale.conf"
 

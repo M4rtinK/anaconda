@@ -33,7 +33,7 @@ from pyanaconda.constants_text import INPUT_PROCESSED
 from pyanaconda.constants import ANACONDA_ENVIRON
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.tui.spoke.network")
 
 import re
 

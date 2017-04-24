@@ -29,7 +29,7 @@ from pyanaconda.ui.tui.simpleline import App
 from pyanaconda.ui.tui.spokes.askvnc import VNCPassSpoke
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.vnc")
 stdoutLog = logging.getLogger("anaconda.stdout")
 
 XVNC_BINARY_NAME = "Xvnc"

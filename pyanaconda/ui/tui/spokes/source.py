@@ -43,7 +43,7 @@ import os
 import fnmatch
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.tui.spoke.installation_source")
 
 
 __all__ = ["SourceSpoke"]

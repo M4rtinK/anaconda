@@ -34,7 +34,7 @@ from gi.repository.AnacondaWidgets import MountpointSelector
 from gi.repository import Gtk
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.storage_accordion")
 
 __all__ = ["DATA_DEVICE", "SYSTEM_DEVICE",
            "new_selector_from_device", "update_selector_from_device",

@@ -21,7 +21,7 @@
 # functionality. See also pyanaconda.ui.helpers.
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.gui.helpers")
 
 from abc import ABCMeta, abstractproperty, abstractmethod
 

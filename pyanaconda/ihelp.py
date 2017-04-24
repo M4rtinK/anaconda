@@ -26,7 +26,7 @@ from pyanaconda.constants import DEFAULT_LANG
 from pyanaconda.iutil import startProgram
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.help")
 
 yelp_process = None
 

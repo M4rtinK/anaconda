@@ -34,7 +34,7 @@ CONFIG_DISABLE_POSTINST_TOOLS_KEY = "post_install_tools_disabled"
 CONFIG_OPTION_PREFIX = "changed_"
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.screen_access")
 
 from configparser import ConfigParser
 from threading import RLock

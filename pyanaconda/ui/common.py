@@ -28,7 +28,7 @@ from pyanaconda import lifecycle
 from pykickstart.constants import FIRSTBOOT_RECONFIG, DISPLAY_MODE_TEXT
 
 import logging
-log = logging.getLogger("anaconda")
+log = logging.getLogger("anaconda.ui.common")
 
 class UIObject(object):
     """This is the base class from which all other UI classes are derived.  It
