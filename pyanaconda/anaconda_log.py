@@ -35,6 +35,7 @@ DATE_FORMAT = "%H:%M:%S"
 # the Anaconda log uses structured logging
 ANACONDA_ENTRY_FORMAT = "%(asctime)s,%(msecs)03d %(levelname)s %(log_prefix)s: %(message)s"
 ANACONDA_SYSLOG_FORMAT = "anaconda: %(log_prefix)s: %(message)s"
+BLIVET_ENTRY_FORMAT = "%(asctime)s,%(msecs)03d %(levelname)s %(log_prefix)s: %(message)s"
 
 MAIN_LOG_FILE = "/tmp/anaconda.log"
 PROGRAM_LOG_FILE = "/tmp/program.log"
@@ -156,6 +157,25 @@ class AnacondaPrefixFilter(logging.Filter):
                 record.log_prefix = record.name[9:]
         return True
 
+class BlivetPrefixFilter(logging.Filter):
+    """Add a log_prefix field, which is based on the name property,
+    but without the "blivet." prefix.
+
+    Also if name is equal to "blivet", generally meaning some sort of
+    general (or miss-directed) log message, set the log_prefix to "misc".
+    """
+
+    def filter(self, record):
+        record.log_prefix = ""
+        if record.name:
+            # messages going to the generic "blivet" logger get the log prefix "misc"
+            if record.name == "blivet":
+                record.log_prefix = "misc"
+            elif record.name.startswith("blivet."):
+                # drop "blivet." from the log prefix
+                record.log_prefix = record.name[7:]
+        return True
+
 class AnacondaLog:
     SYSLOG_CFGFILE = "/etc/rsyslog.conf"
     VIRTIO_PORT = "/dev/virtio-ports/org.fedoraproject.anaconda.log.0"
@@ -183,7 +203,9 @@ class AnacondaLog:
         storage_logger = logging.getLogger("blivet")
         storage_logger.propagate = False
         self.addFileHandler(STORAGE_LOG_FILE, storage_logger,
-                            minLevel=logging.DEBUG)
+                            minLevel=logging.DEBUG,
+                            fmtStr=BLIVET_ENTRY_FORMAT,
+                            log_filter=BlivetPrefixFilter())
 
         # Set the common parameters for anaconda and storage loggers.
         for logr in [self.anaconda_logger, storage_logger]:
