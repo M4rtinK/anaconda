@@ -23,6 +23,10 @@ import sys
 import queue
 import getpass
 import threading
+
+import logging
+log = logging.getLogger("initial-setup")
+
 from pyanaconda.threads import threadMgr, AnacondaThread
 from pyanaconda.ui.communication import hubQ
 from pyanaconda import constants, iutil
@@ -161,7 +165,12 @@ class App(object):
             else:
                 # lock acquired, we can run raw_input
                 try:
-                    data = input()
+                    log.debug("WAITING FOR INPUT: %s", prompt)
+                    #data = input()
+                    log.debug("STDIN")
+                    log.debug(sys.stdin)
+                    sys.stdin.readline()
+                    log.debug("GOT INPUT FOR: %s", prompt)
                 except EOFError:
                     data = ""
                 finally:
