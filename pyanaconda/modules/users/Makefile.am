@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pkgpyexecdir = $(pyexecdir)/py$(PACKAGE_NAME)
-userdir = $(pkgpyexecdir)/modules/user
+userdir = $(pkgpyexecdir)/modules/users
 user_PYTHON = $(srcdir)/*.py
 
 MAINTAINERCLEANFILES = Makefile.in

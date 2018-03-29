@@ -23,7 +23,7 @@ from pyanaconda.ui.tui.spokes import NormalTUISpoke
 from pyanaconda.ui.common import FirstbootSpokeMixIn
 from pyanaconda.flags import flags
 from pyanaconda.core.i18n import N_, _
-from pyanaconda.modules.common.constants.services import USER
+from pyanaconda.modules.common.constants.services import USERS
 
 from simpleline.render.widgets import TextWidget
 
@@ -45,7 +45,7 @@ class PasswordSpoke(FirstbootSpokeMixIn, NormalTUISpoke):
         self._policy = self.data.anaconda.pwpolicy.get_policy("root", fallback_to_default=True)
         self._password = None
 
-        self._user_module = USER.get_observer()
+        self._user_module = USERS.get_observer()
         self._user_module.connect()
 
         self.initialize_done()

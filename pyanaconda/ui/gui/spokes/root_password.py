@@ -22,7 +22,7 @@ from pyanaconda.core.i18n import _, CN_
 from pyanaconda.users import cryptPassword
 from pyanaconda import input_checking
 from pyanaconda.core import constants
-from pyanaconda.modules.common.constants.services import USER
+from pyanaconda.modules.common.constants.services import USERS
 
 from pyanaconda.ui.gui.spokes import NormalSpoke
 from pyanaconda.ui.categories.user_settings import UserSettingsCategory
@@ -58,7 +58,7 @@ class PasswordSpoke(FirstbootSpokeMixIn, NormalSpoke, GUISpokeInputCheckHandler)
         NormalSpoke.__init__(self, *args)
         GUISpokeInputCheckHandler.__init__(self)
 
-        self._user_module = USER.get_observer()
+        self._user_module = USERS.get_observer()
         self._user_module.connect()
 
     def initialize(self):
