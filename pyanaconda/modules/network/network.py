@@ -24,6 +24,7 @@ from pyanaconda.modules.common.base import KickstartModule
 from pyanaconda.modules.common.constants.services import NETWORK, HOSTNAME
 from pyanaconda.modules.network.network_interface import NetworkInterface
 from pyanaconda.modules.network.kickstart import NetworkKickstartSpecification
+from pyanaconda.modules.network.firewall import FirewallModule
 
 from pyanaconda.anaconda_loggers import get_module_logger
 log = get_module_logger(__name__)
@@ -34,6 +35,9 @@ class NetworkModule(KickstartModule):
 
     def __init__(self):
         super().__init__()
+
+        self._firewall_module = FirewallModule()
+
         self.hostname_changed = Signal()
         self._hostname = "localhost.localdomain"
 
@@ -45,6 +49,8 @@ class NetworkModule(KickstartModule):
 
     def publish(self):
         """Publish the module."""
+        self._firewall_module.publish()
+
         DBus.publish_object(NETWORK.object_path, NetworkInterface(self))
         DBus.register_service(NETWORK.service_name)
 

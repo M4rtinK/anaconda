@@ -21,8 +21,11 @@ import unittest
 from mock import Mock
 
 from pyanaconda.modules.common.constants.services import NETWORK
+from pyanaconda.modules.common.constants.objects import FIREWALL
 from pyanaconda.modules.network.network import NetworkModule
 from pyanaconda.modules.network.network_interface import NetworkInterface
+from pyanaconda.modules.network.firewall.firewall import FirewallModule
+from pyanaconda.modules.network.firewall.firewall_interface import FirewallInterface
 from tests.pyanaconda_tests import check_kickstart_interface
 
 
@@ -41,7 +44,7 @@ class NetworkInterfaceTestCase(unittest.TestCase):
 
     def kickstart_properties_test(self):
         """Test kickstart properties."""
-        self.assertEqual(self.network_interface.KickstartCommands, ["network"])
+        self.assertEqual(self.network_interface.KickstartCommands, ["network", "firewall"])
         self.assertEqual(self.network_interface.KickstartSections, [])
         self.assertEqual(self.network_interface.KickstartAddons, [])
         self.callback.assert_not_called()
@@ -80,7 +83,7 @@ class NetworkInterfaceTestCase(unittest.TestCase):
     def network_kickstart_test(self):
         """Test the network command.
 
-        Only hostname is implemented in the module for now.
+        Only hostname is implemented directly in the module for now.
         """
         ks_in = """
         network --device ens7 --bootproto static --ip 192.168.124.200 --netmask 255.255.255.0 --gateway 192.168.124.255 --nameserver 10.34.39.2 --activate --onboot=no --hostname=dot.dot
@@ -90,3 +93,54 @@ class NetworkInterfaceTestCase(unittest.TestCase):
         network  --hostname=dot.dot
         """
         self._test_kickstart(ks_in, ks_out)
+
+
+class FirewallInterfaceTestCase(unittest.TestCase):
+    """Test DBus interface of the disk initialization module."""
+
+    def setUp(self):
+        """Set up the module."""
+        self.firewall_module = FirewallModule()
+        self.firewall_interface = FirewallInterface(self.firewall_module)
+
+        # Connect to the properties changed signal.
+        self.callback = Mock()
+        self.firewall_interface.PropertiesChanged.connect(self.callback)
+
+    def default_property_values_test(self):
+        """Test the default firewall module values are as expected."""
+        self.assertFalse(self.firewall_interface.FirewallKickstarted)
+        self.assertFalse(self.firewall_interface.UseSystemDefaults)
+        self.assertTrue(self.firewall_interface.FirewallEnabled)
+        self.assertListEqual(self.firewall_interface.EnabledPorts, [])
+        self.assertListEqual(self.firewall_interface.Trusts, [])
+        self.assertListEqual(self.firewall_interface.EnabledServices, [])
+        self.assertListEqual(self.firewall_interface.DisabledServices, [])
+
+    def set_use_system_defaults_test(self):
+        """Test if the use-system-firewall-defaults option can be set."""
+        self.assertFalse(self.firewall_interface.UseSystemDefaults)
+        self.firewall_interface.SetUseSystemDefaults(True)
+        self.assertTrue(self.firewall_interface.UseSystemDefaults)
+        self.callback.assert_called_once_with(FIREWALL.interface_name, {'UseSystemDefaults': True}, [])
+
+    def disable_firewall_test(self):
+        """Test if firewall can be disabled."""
+        self.assertTrue(self.firewall_interface.FirewallEnabled)
+        self.firewall_interface.SetFirewallEnabled(False)
+        self.assertFalse(self.firewall_interface.FirewallEnabled)
+        self.callback.assert_called_once_with(FIREWALL.interface_name, {'FirewallEnabled': False}, [])
+
+    def toggle_firewall_test(self):
+        """Test if firewall can be toggled."""
+        self.assertTrue(self.firewall_interface.FirewallEnabled)
+        self.firewall_interface.SetFirewallEnabled(False)
+        self.assertFalse(self.firewall_interface.FirewallEnabled)
+        self.callback.assert_called_with(FIREWALL.interface_name, {'FirewallEnabled': False}, [])
+        self.firewall_interface.SetFirewallEnabled(True)
+        self.assertTrue(self.firewall_interface.FirewallEnabled)
+        self.callback.assert_called_with(FIREWALL.interface_name, {'FirewallEnabled': True}, [])
+
+
+
+
