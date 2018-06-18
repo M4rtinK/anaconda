@@ -53,7 +53,7 @@ from pyanaconda.flags import flags, can_touch_runtime_system
 from pyanaconda.core.i18n import _
 from pyanaconda.modules.common.errors.kickstart import SplitKickstartError
 from pyanaconda.modules.common.constants.services import BOSS, TIMEZONE, LOCALIZATION, SECURITY, \
-    USERS, SERVICES, STORAGE, NETWORK
+    USERS, SERVICES, STORAGE, SUBSCRIPTION, NETWORK
 from pyanaconda.modules.common.constants.objects import DISK_INITIALIZATION, BOOTLOADER, FIREWALL, \
     AUTO_PARTITIONING, MANUAL_PARTITIONING
 from pyanaconda.modules.common.task import sync_run_task
@@ -961,6 +961,17 @@ class Lang(RemovedCommand):
         localization_proxy = LOCALIZATION.get_proxy()
         task_path = localization_proxy.InstallLanguageWithTask(util.getSysroot())
         task_proxy = LOCALIZATION.get_proxy(task_path)
+        sync_run_task(task_proxy)
+
+class Syspurpose(RemovedCommand):
+    def __str__(self):
+        subscription_proxy = SUBSCRIPTION.get_proxy()
+        return subscription_proxy.GenerateKickstart()
+
+    def execute(self, *args, **kwargs):
+        subscription_proxy = SUBSCRIPTION.get_proxy()
+        task_path = subscription_proxy.SetSystemPurposeWithTask(util.getSysroot())
+        task_proxy = SUBSCRIPTION.get_proxy(task_path)
         sync_run_task(task_proxy)
 
 # no overrides needed here
@@ -2020,6 +2031,21 @@ class RootPw(RemovedCommand):
                               None,
                               util.getSysroot())
 
+class SystemPurpose(RemovedCommand):
+
+    def __init__(self, *args):
+        super().__init__(*args)
+
+    def __str__(self):
+        subscription_proxy = SUBSCRIPTION.get_proxy()
+        return Subscription_proxy.GenerateKickstart()
+
+    def execute(self, *args):
+        # get the DBus proxy
+        subscription_proxy = SUBSCRIPTION.get_proxy()
+        # write the system purpose config
+        log.warning("not writing system purpose config - tooling not implemented yet")
+
 class SELinux(RemovedCommand):
 
     SELINUX_STATES = {
@@ -2552,9 +2578,11 @@ commandMap = {
     "realm": Realm,
     "reqpart": ReqPart,
     "rootpw": RootPw,
+    "syspurpose" : SystemPurpose,
     "selinux": SELinux,
     "services": Services,
     "sshkey": SshKey,
+    "syspurpose": Syspurpose,
     "skipx": UselessCommand,
     "snapshot": Snapshot,
     "timezone": Timezone,
