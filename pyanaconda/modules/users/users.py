@@ -21,9 +21,11 @@ from pyanaconda.dbus import DBus
 from pyanaconda.core.signal import Signal
 from pyanaconda.core.kickstart.commands import User
 from pyanaconda.core.kickstart.commands import UserData as UserKickstartData
+from pyanaconda.core.kickstart.commands import GroupData as GroupKickstartData
 from pyanaconda.modules.common.base import KickstartModule
 from pyanaconda.modules.common.constants.services import USERS
 from pyanaconda.modules.common.structures.user import UserData
+from pyanaconda.modules.common.structures.group import GroupData
 from pyanaconda.modules.users.user import UserModule, UserInterface
 from pyanaconda.modules.users.kickstart import UsersKickstartSpecification
 from pyanaconda.modules.users.users_interface import UsersInterface
@@ -109,6 +111,9 @@ class UsersModule(KickstartModule):
         self.users_changed = Signal()
         self._users = []
 
+        self.groups_changed = Signal()
+        self._groups = []
+
     def publish(self):
         """Publish the module."""
         DBus.publish_object(USERS.object_path, UsersInterface(self))
@@ -133,6 +138,17 @@ class UsersModule(KickstartModule):
             user_data_list.append(user_data)
         self.set_users(user_data_list)
 
+        group_data_list = []
+        for group_ksdata in data.group.groupList:
+            group_data = self.create_group_data()
+            group_data.name = ksdata.name
+            if group_ksdata.gid == None:
+                group_data.gid = -1
+            else:
+                group_data.gid = ksdata.gid
+            group_data_list.append(group_data)
+        self.set_groups(group_data_list)
+
     # pylint: disable=arguments-differ
     def generate_kickstart(self):
         """Return the kickstart string."""
@@ -145,6 +161,15 @@ class UsersModule(KickstartModule):
 
         for user_data in self.users:
             data.user.userList.append(user_data_to_ksdata(user_data))
+
+        for group_data in self.groups:
+            group_ksdata = GroupKickstartData()
+            group_ksdata.name = group_data.name
+            if group_data.gid == -1:
+                group_data.gid = None
+            else:
+                group_ksdata.gid = group_data.gid
+            data.group.groupList.append(group_ksdata)
 
         return str(data)
 
@@ -162,6 +187,21 @@ class UsersModule(KickstartModule):
     def create_user_data(self):
         """Create an empty UserData instance."""
         return UserData()
+
+    @property
+    def groups(self):
+        """List of DBUS structures, one per group."""
+        return self._groups
+
+    def set_groups(self, groups):
+        """Set the list of DBUS structures, one per group."""
+        self._groups = groups
+        self.groups_changed.emit()
+        log.debug("A new group list has been set: %s", self._groups)
+
+    def create_group_data(self):
+        """Create an empty GroupData instance."""
+        return GroupData()
 
     @property
     def rootpw_seen(self):
