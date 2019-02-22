@@ -108,7 +108,7 @@ class UsersModule(KickstartModule):
         self._root_password_is_crypted = False
 
         self.root_account_locked_changed = Signal()
-        self._root_account_locked = False
+        self._root_account_locked = True
 
         self.users_changed = Signal()
         self._users = []
