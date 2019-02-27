@@ -21,6 +21,8 @@ from pyanaconda.flags import flags
 from pyanaconda.core.i18n import N_, _
 from pyanaconda.core.regexes import GECOS_VALID
 from pyanaconda.modules.common.constants.services import USERS
+from pyanaconda.modules.common.structures.user import UserData
+from pyanaconda.dbus.structure import apply_structure, get_structure
 
 from pyanaconda.ui.categories.user_settings import UserSettingsCategory
 from pyanaconda.ui.common import FirstbootSpokeMixIn
@@ -53,10 +55,30 @@ class UserSpoke(FirstbootSpokeMixIn, NormalTUISpoke):
 
         # the user spoke should run always in the anaconda and in firstboot only
         # when doing reconfig or if no user has been created in the installation
-        if environment == FIRSTBOOT_ENVIRON and data and not data.user.userList:
+        user_list = self._get_user_list()
+        if environment == FIRSTBOOT_ENVIRON and data and not user_list:
             return True
 
         return False
+
+    def _get_user_list(self):
+            return [apply_structure(user_struct, UserData) for user_struct in self._users_module.proxy.Users]
+
+    def _set_user_list(self, user_data_list):
+        """Properly set the user list in the Users DBUS module.
+
+        Internally we are working with a list of UserData instances, while the SetUsers DBUS API
+        requires a list of DBUS structures.
+
+        Doing the conversion each time we need to set a new user list would be troublesome so
+        this method takes a list of UserData instances, converts them to list of DBUS structs
+        and then forwards the list to the Users module.
+
+        :param user_data_list: list of user data objects
+        :type user_data_list: list of UserData instances
+        """
+        self._users_module.proxy.SetUsers([get_structure(user_data) for user_data in user_data_list])
+
 
     def __init__(self, data, storage, payload):
         FirstbootSpokeMixIn.__init__(self)
@@ -64,17 +86,32 @@ class UserSpoke(FirstbootSpokeMixIn, NormalTUISpoke):
 
         self.initialize_start()
 
+        # connect to the Users DBUS module
+        self._users_module = USERS.get_observer()
+        self._users_module.connect()
+
         self.title = N_("User creation")
         self._container = None
 
-        if self.data.user.userList:
-            self._user_data = self.data.user.userList[0]
-            self._create_user = True
-        else:
-            self._user_data = self.data.UserData()
-            self._create_user = False
+        # was user creation requested by the Users DBUS module
+        # - at the moment this basically means user creation was
+        #   requested via kickstart
+        self._user_requested = False
 
-        self._use_password = self._user_data.isCrypted or self._user_data.password
+        # should a user be created ?
+        self._create_user = False
+
+        user_list = self._get_user_list()
+        if user_list:
+            # User creation was requested by the DBUS module and we have all the information needed
+            # to create a user, even without further user interaction.
+            self._user_data = user_list[0]
+            self._create_user = True
+            self._user_requested = True
+        else:
+            self._user_data = UserData()
+
+        self._use_password = self._user_data.is_crypted or self._user_data.password
         self._groups = ""
         self._is_admin = False
         self._policy = self.data.anaconda.pwpolicy.get_policy("user", fallback_to_default=True)
@@ -171,8 +208,9 @@ class UserSpoke(FirstbootSpokeMixIn, NormalTUISpoke):
     @property
     def completed(self):
         """ Verify a user is created; verify pw is set if option checked. """
-        if len(self.data.user.userList) > 0:
-            if self._use_password and not bool(self._user_data.password or self._user_data.isCrypted):
+        user_list = self._get_user_list()
+        if len(user_list) > 0:
+            if self._use_password and not bool(self._user_data.password or self._user_data.is_crypted):
                 return False
             else:
                 return True
@@ -182,7 +220,7 @@ class UserSpoke(FirstbootSpokeMixIn, NormalTUISpoke):
     @property
     def showable(self):
         return not (self.completed and flags.automatedInstall
-                    and self.data.user.seen and not self._policy.changesok)
+                    and self._user_requested and not self._policy.changesok)
 
     @property
     def mandatory(self):
@@ -193,14 +231,15 @@ class UserSpoke(FirstbootSpokeMixIn, NormalTUISpoke):
 
     @property
     def status(self):
-        if len(self.data.user.userList) == 0:
+        user_list = self._get_user_list()
+        if len(user_list) == 0:
             return _("No user will be created")
-        elif self._use_password and not bool(self._user_data.password or self._user_data.isCrypted):
+        elif self._use_password and not bool(self._user_data.password or self._user_data.is_crypted):
             return _("You must set a password")
-        elif "wheel" in self.data.user.userList[0].groups:
-            return _("Administrator %s will be created") % self.data.user.userList[0].name
+        elif "wheel" in user_list[0].groups:
+            return _("Administrator %s will be created") % user_list[0].name
         else:
-            return _("User %s will be created") % self.data.user.userList[0].name
+            return _("User %s will be created") % user_list[0].name
 
     def input(self, args, key):
         if self._container.process_user_input(key):
@@ -228,17 +267,22 @@ class UserSpoke(FirstbootSpokeMixIn, NormalTUISpoke):
             self._user_data.groups.remove("wheel")
 
         # Add or remove the user from userlist as needed
-        if self._create_user and (self._user_data not in self.data.user.userList and self._user_data.name):
-            self.data.user.userList.append(self._user_data)
-        elif (not self._create_user) and (self._user_data in self.data.user.userList):
-            self.data.user.userList.remove(self._user_data)
+        user_list = self._get_user_list()
+        if self._create_user and (self._user_data not in user_list and self._user_data.name):
+            new_user_list = user_list
+            new_user_list.append(self._user_data)
+            self._set_user_list(new_user_list)
+        elif (not self._create_user) and (self._user_data in user_list):
+            new_user_list = user_list
+            new_user_list.remove(self._user_data)
+            self._set_user_list(new_user_list)
 
         # encrypt and store password only if user entered anything; this should
         # preserve passwords set via kickstart
         if self._use_password and self._user_data.password and len(self._user_data.password) > 0:
             self._user_data.password = self._user_data.password
-            self._user_data.isCrypted = True
+            self._user_data.is_crypted = True
         # clear pw when user unselects to use pw
         else:
             self._user_data.password = ""
-            self._user_data.isCrypted = False
+            self._user_data.is_crypted = False

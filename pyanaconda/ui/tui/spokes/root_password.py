@@ -25,6 +25,8 @@ from pyanaconda.flags import flags
 from pyanaconda.core.i18n import N_, _
 from pyanaconda.core.constants import SETUP_ON_BOOT_RECONFIG
 from pyanaconda.modules.common.constants.services import USERS, SERVICES
+from pyanaconda.modules.common.structures.user import UserData
+from pyanaconda.dbus.structure import apply_structure
 
 from simpleline.render.widgets import TextWidget
 
@@ -46,6 +48,7 @@ class PasswordSpoke(FirstbootSpokeMixIn, NormalTUISpoke):
         self._policy = self.data.anaconda.pwpolicy.get_policy("root", fallback_to_default=True)
         self._password = None
 
+        # connect to the Users DBUS module
         self._users_module = USERS.get_observer()
         self._users_module.connect()
 
@@ -64,8 +67,9 @@ class PasswordSpoke(FirstbootSpokeMixIn, NormalTUISpoke):
 
     @property
     def mandatory(self):
-        return not any(user for user in self.data.user.userList
-                       if "wheel" in user.groups)
+        user_list = [apply_structure(user_struct, UserData) for user_struct in self._users_module.proxy.Users]
+        # root password spoke is mandatory if there are no users with admin right (members of the wheel group)
+        return not any(user for user in user_list if "wheel" in user.groups)
 
     @property
     def status(self):
