@@ -500,14 +500,6 @@ class Firstboot(RemovedCommand):
         log.debug("The %s service will be enabled.", unit_name)
         util.enable_service(unit_name)
 
-class Group(COMMANDS.Group):
-    def execute(self, storage, ksdata):
-        for grp in self.groupList:
-            try:
-                users.create_group(group_name=grp.name, gid=grp.gid, root=utils.getSysroot())
-            except ValueError as e:
-                group_log.warning(str(e))
-
 class Iscsi(COMMANDS.Iscsi):
     def parse(self, args):
         tg = super().parse(args)
@@ -702,26 +694,6 @@ class RootPw(RemovedCommand):
         users_proxy = USERS.get_proxy()
         return users_proxy.GenerateTemporaryKickstart()
 
-    def execute(self, storage, ksdata):
-
-        users_proxy = USERS.get_proxy()
-
-        if flags.automatedInstall and not users_proxy.IsRootPasswordSet and not users_proxy.IsRootpwKickstarted:
-            # Lock the root password if during an installation with kickstart
-            # the root password is empty & not specififed as empty in the kickstart
-            # (seen == False) via the rootpw command.
-            # Note that kickstart is actually the only way to specify an empty
-            # root password - we don't allow that via the UI.
-            users_proxy.SetRootAccountLocked(True)
-        elif not flags.automatedInstall and not users_proxy.IsRootPasswordSet:
-            # Also lock the root password if it was not set during interactive installation.
-            users_proxy.SetRootAccountLocked(True)
-
-        users.set_root_password(users_proxy.RootPassword,
-                              users_proxy.IsRootPasswordCrypted,
-                              users_proxy.IsRootAccountLocked,
-                              util.getSysroot())
-
 class SELinux(RemovedCommand):
 
     SELINUX_STATES = {
@@ -770,11 +742,6 @@ class Services(RemovedCommand):
         for svc in services_proxy.EnabledServices:
             log.debug("Enabling the service %s.", svc)
             util.enable_service(svc)
-
-class SshKey(COMMANDS.SshKey):
-    def execute(self, storage, ksdata):
-        for usr in self.sshUserList:
-            users.set_user_ssh_key(usr.username, usr.key)
 
 class Timezone(RemovedCommand):
 
@@ -855,29 +822,6 @@ class Timezone(RemovedCommand):
                                                out_file_path=chronyd_conf_path)
                 except ntp.NTPconfigError as ntperr:
                     timezone_log.warning("Failed to save NTP configuration without chrony package: %s", ntperr)
-
-class User(COMMANDS.User):
-    def execute(self, storage, ksdata):
-
-        for usr in self.userList:
-            kwargs = usr.__dict__
-            kwargs.update({"root": })
-
-            # If the user password came from a kickstart and it is blank we
-            # need to make sure the account is locked, not created with an
-            # empty password.
-            user_password = usr.password
-            if user_password is None:
-                user_password = ""
-            if self.seen and user_password == "":
-                password = None
-            else:
-                password = user_password
-            try:
-                users.create_user(username=usr.name, password=password, is_crypted=usr.isCrypted, lock=usr.lock,
-                                  homedir=usr.homedir, shell=usr.shell, gecos=usr.gecos, root=util.getSysroot())
-            except ValueError as e:
-                user_log.warning(str(e))
 
 class VolGroup(COMMANDS.VolGroup):
     pass
@@ -1013,7 +957,6 @@ commandMap = {
     "fcoe": UselessCommand,
     "firewall": Firewall,
     "firstboot": Firstboot,
-    "group": Group,
     "ignoredisk": UselessCommand,
     "iscsi": Iscsi,
     "iscsiname": IscsiName,
@@ -1032,11 +975,9 @@ commandMap = {
     "rootpw": RootPw,
     "selinux": SELinux,
     "services": Services,
-    "sshkey": SshKey,
     "skipx": UselessCommand,
     "snapshot": Snapshot,
     "timezone": Timezone,
-    "user": User,
     "volgroup": VolGroup,
     "xconfig": XConfig,
     "zerombr": UselessCommand,
