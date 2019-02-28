@@ -25,6 +25,8 @@ from pyanaconda.core.users import crypt_password, guess_username, check_groupnam
 from pyanaconda import input_checking
 from pyanaconda.core import constants
 from pyanaconda.modules.common.constants.services import USERS
+from pyanaconda.modules.common.structures.user import UserData
+from pyanaconda.dbus.structure import apply_structure, get_structure
 
 from pyanaconda.ui.gui.spokes import NormalSpoke
 from pyanaconda.ui.gui import GUIObject
@@ -67,13 +69,14 @@ class AdvancedUserDialog(GUIObject, GUIDialogInputCheckHandler):
 
         return InputCheck.CHECK_OK
 
-    def __init__(self, user, data):
-        GUIObject.__init__(self, data)
+    def __init__(self, user_spoke):
+        GUIObject.__init__(self, user_spoke.data)
 
         saveButton = self.builder.get_object("save_button")
         GUIDialogInputCheckHandler.__init__(self, saveButton)
 
-        self._user = user
+        self._user_spoke = user_spoke
+        self._user = self._user_spoke.user
 
         # Track whether the user has requested a home directory other
         # than the default. This way, if the home directory is left as
@@ -102,6 +105,9 @@ class AdvancedUserDialog(GUIObject, GUIDialogInputCheckHandler):
         hubQ.send_ready(self.__class__.__name__, False)
 
     def refresh(self):
+        # start be reloading the user data from the user spoke
+        self._user = self._user_spoke.user
+
         if self._user.homedir:
             homedir = self._user.homedir
         elif self._user.name:
@@ -119,7 +125,7 @@ class AdvancedUserDialog(GUIObject, GUIDialogInputCheckHandler):
         self._tGroups.set_text(", ".join(self._user.groups))
 
     def apply(self):
-        # Copy data from the UI back to the kickstart object
+        # Copy data from the UI back to the user data object
         homedir = self._tHome.get_text()
 
         # If the user cleared the home directory, revert back to the
@@ -232,7 +238,7 @@ class UserSpoke(FirstbootSpokeMixIn, NormalSpoke, GUISpokeInputCheckHandler):
             # cannot decide, stay in the game and let another call with data
             # available (will come) decide
             return True
-        elif environment == constants.FIRSTBOOT_ENVIRON and data and len(data.user.userList) == 0:
+        elif environment == constants.FIRSTBOOT_ENVIRON and data and len(self._get_user_list()) == 0:
             return True
         else:
             return False
@@ -243,17 +249,44 @@ class UserSpoke(FirstbootSpokeMixIn, NormalSpoke, GUISpokeInputCheckHandler):
 
         self._users_module = USERS.get_observer()
         self._users_module.connect()
+        self._user = UserData()
+
+    def _get_user_list(self):
+            return [apply_structure(user_struct, UserData) for user_struct in self._users_module.proxy.Users]
+
+    def _set_user_list(self, user_data_list):
+        """Properly set the user list in the Users DBUS module.
+
+        Internally we are working with a list of UserData instances, while the SetUsers DBUS API
+        requires a list of DBUS structures.
+
+        Doing the conversion each time we need to set a new user list would be troublesome so
+        this method takes a list of UserData instances, converts them to list of DBUS structs
+        and then forwards the list to the Users module.
+
+        :param user_data_list: list of user data objects
+        :type user_data_list: list of UserData instances
+        """
+        self._users_module.proxy.SetUsers([get_structure(user_data) for user_data in user_data_list])
+
+    @property
+    def user(self):
+        return self._user
 
     def initialize(self):
         NormalSpoke.initialize(self)
         self.initialize_start()
 
-        # Create a new UserData object to store this spoke's state
-        # as well as the state of the advanced user dialog.
-        if self.data.user.userList:
-            self._user = copy.copy(self.data.user.userList[0])
-        else:
-            self._user = self.data.UserData()
+        # We consider user creation requested if there was at least one user
+        # in the DBUS module user list at startup.
+        # We also remember how the user was called so that we can clear it
+        # in a reasonably safe way & if it was cleared.
+        user_list = self._get_user_list()
+        self._user_requested = False
+        self._requested_user_cleared = False
+        if len(user_list) > 0:
+            self._user_requested = True
+            self._requested_user_name = user_list[0].name
 
         # gather references to relevant GUI objects
 
@@ -332,9 +365,6 @@ class UserSpoke(FirstbootSpokeMixIn, NormalSpoke, GUISpokeInputCheckHandler):
         self.password_bar.add_offset_value("medium", 3)
         self.password_bar.add_offset_value("high", 4)
 
-        # indicate when the password was set by kickstart
-        self.password_kickstarted = self.data.user.seen
-
         # Modify the GUI based on the kickstart and policy information
         # This needs to happen after the input checks have been created, since
         # the Gtk signal handlers use the input check variables.
@@ -351,7 +381,7 @@ class UserSpoke(FirstbootSpokeMixIn, NormalSpoke, GUISpokeInputCheckHandler):
             # User isn't allowed to change whether password is required or not
             self.password_required_checkbox.set_sensitive(False)
 
-        self._advanced_user_dialog = AdvancedUserDialog(self._user, self.data)
+        self._advanced_user_dialog = AdvancedUserDialog(self)
         self._advanced_user_dialog.initialize()
 
         # set the visibility of the password entries
@@ -398,6 +428,21 @@ class UserSpoke(FirstbootSpokeMixIn, NormalSpoke, GUISpokeInputCheckHandler):
         self.password_required_checkbox.set_active(value)
 
     def refresh(self):
+        # user data could have changed in the USers DBUS module
+        # since the last visit, so reload it from DBUS
+        user_list = self._get_user_list()
+        if user_list:
+            user = user_list[0]
+            if self._requested_user_cleared:
+                self._user = user
+            else:
+                # use list is not empty, but the first ("our") user
+                # is not enabled, so we ignore it
+                self._user = UserData()
+        else:
+            # user list is currently empty, clear any previous local data
+            self._user = UserData()
+
         self.username = self._user.name
         self.fullname = self._user.gecos
         self._admin_checkbox.set_active("wheel" in self._user.groups)
@@ -407,12 +452,13 @@ class UserSpoke(FirstbootSpokeMixIn, NormalSpoke, GUISpokeInputCheckHandler):
 
     @property
     def status(self):
-        if len(self.data.user.userList) == 0:
+        user_list = self._get_user_list()
+        if len(user_list) == 0:
             return _("No user will be created")
-        elif "wheel" in self.data.user.userList[0].groups:
-            return _("Administrator %s will be created") % self.data.user.userList[0].name
+        elif "wheel" in user_list[0].groups:
+            return _("Administrator %s will be created") % user_list[0].name
         else:
-            return _("User %s will be created") % self.data.user.userList[0].name
+            return _("User %s will be created") % user_list[0].name
 
     @property
     def mandatory(self):
@@ -428,40 +474,59 @@ class UserSpoke(FirstbootSpokeMixIn, NormalSpoke, GUISpokeInputCheckHandler):
             if self.password:
                 self.password_kickstarted = False
                 self._user.password = crypt_password(self.password)
-                self._user.isCrypted = True
+                self._user.is_crypted = True
                 self.remove_placeholder_texts()
 
         # reset the password when the user unselects it
         else:
             self.remove_placeholder_texts()
             self._user.password = ""
-            self._user.isCrypted = False
+            self._user.is_crypted = False
             self.password_kickstarted = False
 
         self._user.name = self.username
         self._user.gecos = self.fullname
 
-        # Copy the spoke data back to kickstart
-        # If the user name is not set, no user will be created.
+        user_list = self._get_user_list()
+        new_user_list = user_list
         if self._user.name:
-            ksuser = copy.copy(self._user)
-            if not self.data.user.userList:
-                self.data.user.userList.append(ksuser)
+            if user_list:
+                # if there is a user list, we need to handle a few things:
+                # - if user was taken from the list and not cleared, replace it
+                # - if user was taken from list and cleared, prepend the new user
+                if self._requested_user_cleared:
+                    # prepend and clear the flag
+                    new_user_list = [self._user].extend(user_list)
+                    self._requested_user_cleared = False
+                else:
+                    # replace first user
+                    user_list[0] = self._user
+                    new_user_list = user_list
             else:
-                self.data.user.userList[0] = ksuser
-        elif self.data.user.userList:
-            self.data.user.userList.pop(0)
+                # user list is empty, just put a single element list with our user there
+                new_user_list = [self._user]
+        # This condition is needed so that during installation
+        # it is possible to clear users requested by kickstart.
+        elif user_list and not self._user.name:
+            if not self._requested_user_cleared:
+                self._requested_user_cleared = True
+                user_list.pop(0)
+                new_user_list = user_list
+
+        # finally set the user list
+        self._set_user_list(new_user_list)
 
     @property
     def sensitive(self):
         # Spoke cannot be entered if a user was set in the kickstart and the user
         # policy doesn't allow changes.
         return not (self.completed and flags.automatedInstall
-                    and self.data.user.seen and not self.checker.policy.changesok)
+                    and self._user_requested and not self.checker.policy.changesok)
 
     @property
     def completed(self):
-        return len(self.data.user.userList) > 0
+        user_list = self._get_user_list()
+        return len(user_list) > 0
 
     def password_required_toggled(self, togglebutton=None, data=None):
         """Called by Gtk callback when the "Use password" check

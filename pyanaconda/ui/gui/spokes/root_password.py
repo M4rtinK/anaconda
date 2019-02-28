@@ -23,6 +23,8 @@ from pyanaconda.core.users import crypt_password
 from pyanaconda import input_checking
 from pyanaconda.core import constants
 from pyanaconda.modules.common.constants.services import USERS, SERVICES
+from pyanaconda.modules.common.structures.user import UserData
+from pyanaconda.dbus.structure import apply_structure
 
 from pyanaconda.ui.gui.spokes import NormalSpoke
 from pyanaconda.ui.categories.user_settings import UserSettingsCategory
@@ -63,6 +65,9 @@ class PasswordSpoke(FirstbootSpokeMixIn, NormalSpoke, GUISpokeInputCheckHandler)
 
         self._services_module = SERVICES.get_observer()
         self._services_module.connect()
+
+        self._refresh_running = False
+        self._manually_locked = False
 
     def initialize(self):
         NormalSpoke.initialize(self)
@@ -120,6 +125,10 @@ class PasswordSpoke(FirstbootSpokeMixIn, NormalSpoke, GUISpokeInputCheckHandler)
         self.checker.add_check(self._validity_check)
         self.checker.add_check(self._ascii_check)
 
+        # the password entries should be sensitive on first entry to the spoke
+        self.password_entry.set_sensitive(True)
+        self.password_confirmation_entry.set_sensitive(True)
+
         # set placeholders if the password has been kickstarted as we likely don't know
         # nothing about it and can't really show it in the UI in any meaningful way
         password_set_message = _("The password was set by kickstart.")
@@ -139,16 +148,21 @@ class PasswordSpoke(FirstbootSpokeMixIn, NormalSpoke, GUISpokeInputCheckHandler)
         self.initialize_done()
 
     def refresh(self):
-        # focus on the password field if password was not kickstarted
-        if not self.password_kickstarted or not self._lock.get_active():
-            self.password_entry.grab_focus()
-
+        # report refresh is running
+        self._refresh_running = True
+        # set the state of the lock checkbox based on DBUS data
+        # - set_active() apparently also triggers on_clicked() so
+        #   we use the _refresh_running atribute to differentiate
+        #   it from "real" clicks
         self._lock.set_active(self._users_module.proxy.IsRootAccountLocked)
-        self.on_lock_clicked(self._lock)
-
         if not self._lock.get_active():
             # rerun checks so that we have a correct status message, if any
             self.checker.run_checks()
+        # focus on the password field if it is sensitive
+        if self.password_entry.get_sensitive():
+            self.password_entry.grab_focus()
+        # report refresh finished running
+        self._refresh_running = False
 
     @property
     def status(self):
@@ -169,7 +183,8 @@ class PasswordSpoke(FirstbootSpokeMixIn, NormalSpoke, GUISpokeInputCheckHandler)
 
     @property
     def mandatory(self):
-        return not any(user for user in self.data.user.userList if "wheel" in user.groups)
+        user_list = [apply_structure(user_struct, UserData) for user_struct in self._users_module.proxy.Users]
+        return not any(user for user in user_list if "wheel" in user.groups)
 
     def apply(self):
         pw = self.password
@@ -289,10 +304,14 @@ class PasswordSpoke(FirstbootSpokeMixIn, NormalSpoke, GUISpokeInputCheckHandler)
     def on_password_changed(self, editable, data=None):
         """Tell checker that the content of the password field changed."""
         self.checker.password.content = self.password
+        # unlock the password if user starts typing
+        self._lock.set_active(False)
 
     def on_password_confirmation_changed(self, editable, data=None):
         """Tell checker that the content of the password confirmation field changed."""
         self.checker.password_confirmation.content = self.password_confirmation
+        # unlock the password if user starts typing
+        self._lock.set_active(False)
 
     def on_password_icon_clicked(self, entry, icon_pos, event):
         """Called by Gtk callback when the icon of a password entry is clicked."""
@@ -306,7 +325,15 @@ class PasswordSpoke(FirstbootSpokeMixIn, NormalSpoke, GUISpokeInputCheckHandler)
             log.info("Return to hub prevented by password checking rules.")
 
     def on_lock_clicked(self, lock):
+        if self._refresh_running:
+            # this is not a "real" click, just refresh() setting the lock check
+            # box state based on data from the DBUS module
+            if not self._manually_locked:
+                # if the checkbox has not yet been manipulated by the user
+                # we can ignore this run and not adjust the fields
+                return True
         self.password_entry.set_sensitive(not lock.get_active())
         self.password_confirmation_entry.set_sensitive(not lock.get_active())
         if not lock.get_active():
             self.password_entry.grab_focus()
+            self._manually_locked = True
