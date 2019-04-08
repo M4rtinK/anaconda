@@ -110,6 +110,7 @@ authselect_log = log.getChild("kickstart.authselect")
 bootloader_log = log.getChild("kickstart.bootloader")
 user_log = log.getChild("kickstart.user")
 group_log = log.getChild("kickstart.group")
+rhsm_log = log.getChild("kickstart.rhsm")
 clearpart_log = log.getChild("kickstart.clearpart")
 autopart_log = log.getChild("kickstart.autopart")
 logvol_log = log.getChild("kickstart.logvol")
@@ -2186,6 +2187,33 @@ class User(COMMANDS.User):
             except ValueError as e:
                 user_log.warning(str(e))
 
+class RHSM(RemovedCommand):
+
+    def __str__(self):
+        subscription_proxy = SUBSCRIPTION.get_proxy()
+        return subscription_proxy.GenerateKickstart()
+
+    def __parse(self, ksdata):
+        rhsm_log.debug("RHSM kickstart PARSE")
+        subscription_proxy = SUBSCRIPTION.get_proxy()
+
+        # first start the RHSM service
+        rhsm_log.debug("RHSM kickstart SETUP - RHSM startup task")
+        task_path = subscription_proxy.StartRHSMWithTask()
+        task_proxy = SUBSCRIPTION.get_proxy(task_path)
+        sync_run_task(task_proxy)
+
+        # next try to register if we have enough data available from kickstart
+        if subscription_proxy.Username and subscription_proxy.IsPasswordSet:
+            rhsm_log.debug("RHSM kickstart SETUP - RHSM registration task")
+            task_path = subscription_proxy.StartRHSMWithTask()
+            task_proxy = SUBSCRIPTION.get_proxy(task_path)
+            sync_run_task(task_proxy)
+
+    def execute(self, storage, ksdata, instClass, users):
+        rhsm_log.debug("RHSM kickstart execute")
+
+
 class VolGroup(COMMANDS.VolGroup):
     def execute(self, storage, ksdata, instClass):
         for v in self.vgList:
@@ -2562,6 +2590,7 @@ commandMap = {
     "part": Partition,
     "partition": Partition,
     "raid": Raid,
+    "rhsm" : RHSM,
     "realm": Realm,
     "reqpart": ReqPart,
     "rootpw": RootPw,

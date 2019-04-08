@@ -23,21 +23,35 @@ from pyanaconda.dbus.typing import *  # pylint: disable=wildcard-import
 from pyanaconda.modules.common.base import KickstartModuleInterface
 from pyanaconda.dbus.interface import dbus_interface
 
+from pyanaconda.anaconda_loggers import get_module_logger
+log = get_module_logger(__name__)
 
 @dbus_interface(SUBSCRIPTION.interface_name)
 class SubscriptionInterface(KickstartModuleInterface):
     """DBus interface for Subscription module."""
 
     def connect_signals(self):
+        log.debug("SI CONNECT SIGNALS")
         super().connect_signals()
+        log.debug("SI CONNECT SIGNALS SUPER DONE")
         self.watch_property("Role", self.implementation.role_changed)
         self.watch_property("SLA", self.implementation.sla_changed)
         self.watch_property("Usage", self.implementation.usage_changed)
         self.watch_property("Addons", self.implementation.addons_changed)
+        #self.watch_property("IsRegistered", self.implementation.registered_changed)
+        #self.watch_property("IsSubscriptionAttached", self.implementation.subscription_attached_changed)
+        #self.watch_property("Organization", self.implementation.organization_changed)
+        #self.watch_property("IsActivationKeySet", self.implementation.activation_key_changed)
+        #self.watch_property("AccountUsername", self.implementation.red_hat_account_username_changed)
+        #self.watch_property("IsAccountPasswordSet", self.implementation.red_hat_account_password_changed)
+        #self.watch_property("SubscriptionUrl", self.implementation.subscription_url_changed)
 
         # the SystemPurposeWillBeSet property depends on the value of
         # all other system purpose properties
         self.watch_property("IsSystemPurposeSet", self.implementation.is_system_purpose_set_changed)
+        log.debug("SI CONNECT SIGNALS ALL DONE")
+
+    # system purpose
 
     @property
     def ValidRoles(self) -> List[Str]:
@@ -139,3 +153,116 @@ class SubscriptionInterface(KickstartModuleInterface):
         :return: a DBus path of an installation task
         """
         return self.implementation.set_system_purpose_with_task(sysroot)
+
+    # subscription
+
+    @property
+    def IsRegistered(self) -> Bool:
+        """Report if the system has been registered."""
+        return self.implementation.registered
+
+    @property
+    def IsSubscriptionAttached(self) -> Bool:
+        """Report if subscription has been attached."""
+        return self.implementation.subscription_attached
+
+    @property
+    def Organization(self) -> Str:
+        """Organization name for subscription purposes."""
+        return self.implementation.organization
+
+    @emits_properties_changed
+    def SetOrganization(self, organization: Str):
+        """Set organization name.
+
+        :param str organization: organization name
+        """
+        self.implementation.organization = organization
+
+    @property
+    def IsActivationKeySet(self) -> Bool:
+        """Report if activation key has been set."""
+        return bool(self.implementation.activation_key)
+
+    @emits_properties_changed
+    def SetActivationKey(self, activation_key: Str):
+        """Set activation key for subscription purposes.
+
+        :param str activation_key: an activation key
+        """
+        self.implementation.activation_key = activation_key
+
+    @property
+    def AccountUsername(self) -> Str:
+        """Red Hat account name for subscription purposes."""
+        return self.implementation.red_hat_account_username
+
+    @emits_properties_changed
+    def SetAccountUsername(self, account_username: Str):
+        """Set Red Hat account name.
+
+        :param str account_name: Red Hat account name
+        """
+        self.implementation.red_hat_account_username = account_username
+
+    @property
+    def IsAccountPasswordSet(self) -> Bool:
+        """Report if Red Hat account password has been set."""
+        return bool(self.implementation.red_hat_account_password)
+
+    @emits_properties_changed
+    def SetAccountPassword(self, password: Str):
+        """Set Red Hat account password.
+
+        :param str password: a Red Hat account password
+        """
+        self.implementation.red_hat_account_password = password
+
+    @property
+    def SubscriptionUrl(self) -> Str:
+        """Red Hat subscription service URL."""
+        return self.implementation.subscription_url
+
+    @emits_properties_changed
+    def SetSubscriptionUrl(self, url: Str):
+        """Set Red Hat subscription service URL.
+
+        :param str url: Red Hat subscription service URL
+        """
+        self.implementation.subscription_url = url
+
+    def StartRHSMWithTask(self) -> ObjPath:
+        """Start RHSM with an installation task.
+
+        FIXME: This is just a temporary method.
+
+        :return: a DBus path of an installation task
+        """
+        return self.implementation.start_rhsm_with_task()
+
+    def RegisterWithTask(self) -> ObjPath:
+        """Register with an installation task.
+
+        FIXME: This is just a temporary method.
+
+        :return: a DBus path of an installation task
+        """
+        return self.implementation.register_with_task()
+
+    def AttachWithTask(self) -> ObjPath:
+        """Attach subscription with an installation task.
+
+        FIXME: This is just a temporary method.
+
+        :return: a DBus path of an installation task
+        """
+        return self.implementation.attach_subscription_with_task()
+
+    def TransferTokensWithTask(self, sysroot: Str) -> ObjPath:
+        """Transfer subscription tokens with an installation task.
+
+        FIXME: This is just a temporary method.
+
+        :return: a DBus path of an installation task
+        """
+        return self.implementation.transfer_tokens_with_task(sysroot)

@@ -17,14 +17,12 @@
 # License and may only be used or replicated with the express permission of
 # Red Hat, Inc.
 #
-from pyanaconda.core.kickstart.version import VERSION
-from pyanaconda.core.kickstart.commands import Syspurpose
-from pyanaconda.core.kickstart import KickstartSpecification
-
+from pyanaconda.core.kickstart import VERSION, KickstartSpecification, commands as COMMANDS
 
 class SubscriptionKickstartSpecification(KickstartSpecification):
 
     version = VERSION
     commands = {
-        "syspurpose": Syspurpose,
+        "syspurpose": COMMANDS.Syspurpose,
+        "rhsm": COMMANDS.RHSM
     }

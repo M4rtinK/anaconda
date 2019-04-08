@@ -95,6 +95,9 @@ class Connection(ABC):
         :param object_path: a DBus path of an object
         :param obj: an instance of @dbus_interface or @dbus_class
         """
+        log.debug("PUBLISH OBJECT")
+        log.debug(object_path)
+        log.debug(obj)
         log.debug("Publishing an object at %s.", object_path)
         reg = self.connection.register_object(object_path, obj, None)
         self._object_registrations.append(reg)
