@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Installation_Guide.ent">
+<!ENTITY PRODUCT "Fedora">
+<!ENTITY NEXTVER "21">
+<!ENTITY PRODVER "20">
+<!ENTITY PREVVER "19">
+<!ENTITY BOOKID "install-guide">
+<!ENTITY YEAR "2014">
+<!ENTITY HOLDER "Red Hat, Inc. and others">
+<!ENTITY BZURL "https://bugzilla.redhat.com/enter_bug.cgi?product=&PRODUCT;&amp;component=&BOOKID;">
+<!ENTITY IGURL '<ulink url="http://docs.fedoraproject.org/" />'>
+]>
+<section id="sect-installation-gui-keyboard-layout">
+	<title>Keyboard Layout</title>
+	<para>
+		The <guilabel>Keyboard Layout</guilabel> screen allows you to set up one or more keyboard layouts for your system and a way to switch between them. One keyboard layout is configured automatically based on your selection in <ulink url="WelcomeSpoke.xml">Welcome Screen and Language Selection</ulink>, but you can change this layout and add additional ones before you begin the installation.
+	</para>
+	<para>
+		Keyboard layouts are a separate setting from system languages, and these two settings can be mixed as you see fit.
+	</para>
+	<note>
+		<para>
+			All settings configured in this screen will be available on the installed system, and they will also become immediately available inside the installer. You can use the keyboard icon in the top right corner of any screen, or the keyboard switch you configured in this screen, to cycle between your configured layouts.
+		</para>
+	</note>
+	<para>
+		</para>
+	<para>
+		The right half of the screen contains a window listing all currently configured layouts. The order in which the layouts are displayed is important - the same order will be used when switching between layouts, and the first listed layout will be the default on your system. 
+	</para>
+	<para>
+		The text field on the right side of the screen can be used to test the currently selected layout.
+	</para>
+	<para>
+		You can click a layout in the list to highlight it. At the bottom of the list, there is a set of buttons:
+	</para>
+	<itemizedlist>
+		<listitem>
+			<para>
+				The <guilabel>+</guilabel> button adds a new layout. When you press this button, a new window opens with a list of all available layouts, grouped by language. You can find a layout by browsing the list, or you can use the search bar at the bottom of this window. When you find the layout you want to add, highlight it and press <guilabel>Add</guilabel>.
+			</para>
+		</listitem>
+		<listitem>
+			<para>
+				The <guilabel>-</guilabel> button removes the currently highlighted layout.
+			</para>
+		</listitem>
+		<listitem>
+			<para>
+				The up and down buttons can be used to move the highlighted layout up or down in the list.
+			</para>
+		</listitem>
+		<listitem>
+			<para>
+				The keyboard button opens a new window which offers a visual representation of the highlighted layout.
+			</para>
+		</listitem>
+	</itemizedlist>
+	<important>
+		<para>
+			If you use a layout that cannot accept Latin characters, such as <guilabel>Russian</guilabel>, you are advised to also add the <guilabel>English (United States)</guilabel> layout and configure a keyboard combination to switch between the two layouts. If you only select a layout without Latin characters, you may be unable to enter a valid <systemitem class="username">root</systemitem> password and user credentials later in the installation process. This may prevent you from completing the installation. 
+		</para>
+	</important>
+	<para>
+		You can also optionally configure a keyboard switch which can be used to cycle between available layouts. To do so, click the <guilabel>Options</guilabel> button on the right side of the screen. The <guilabel>Layout Switching Options</guilabel> dialog will open, allowing you to configure one or more keys or key combinations for switching. Select one or more key combinations using the check boxes next to them, and click <guilabel>OK</guilabel> to confirm your selection.
+	</para>
+	<para>
+		After you finish configuring keyboard layouts and switches, click <guilabel>Done</guilabel> in the top left corner to return to <ulink url="SummaryHub.xml">Installation Summary</ulink>.
+	</para>
+</section>

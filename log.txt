@@ -1,0 +1,5 @@
+WARNING!
+error!
+anaconda 21.37-1
+anaconda argparse: terminal size detection failed, using default width
+[Errno 25] Inappropriate ioctl for device

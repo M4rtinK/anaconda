@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Installation_Guide.ent">
+<!ENTITY PRODUCT "Fedora">
+<!ENTITY NEXTVER "21">
+<!ENTITY PRODVER "20">
+<!ENTITY PREVVER "19">
+<!ENTITY BOOKID "install-guide">
+<!ENTITY YEAR "2014">
+<!ENTITY HOLDER "Red Hat, Inc. and others">
+<!ENTITY BZURL "https://bugzilla.redhat.com/enter_bug.cgi?product=&PRODUCT;&amp;component=&BOOKID;">
+<!ENTITY IGURL '<ulink url="http://docs.fedoraproject.org/" />'>
+]>
+<section id="sect-installation-gui-software-selection">
+	<title>Software Selection</title>
+	<para>
+		The <guilabel>Software Selection</guilabel> screen allows you to choose a <firstterm>Base Environment</firstterm> and <firstterm>Add-ons</firstterm>. These options control which software packages will be installed on your system during the installation process.
+	</para>
+	<para>
+		This screen is only available if <ulink url="SourceSpoke.xml">Installation Source</ulink> is properly configured and only after the installer has downloaded package metadata from the source.
+	</para>
+	<note>
+		<para>
+			It is not possible to select specific packages during a manual installation. You can only select pre-defined environments and add-ons. If you need to control exactly which packages are installed, you must use a Kickstart file and define the packages in the <command>%packages</command> section. See the full <citetitle>Fedora Installation Guide</citetitle>, available at <ulink url="http://docs.fedoraproject.org/"/> for information about Kickstart installations.
+		</para>
+	</note>
+	<para>
+		The availability of environments and add-ons depends on your installation source. By default, the selection depends on the installation media you used to start the installation; Fedora Server installation image will have different environments and add-ons available for selection than, for example, the Fedora Cloud image. You can change this by configuring a different installation source containing different environments.
+	</para>
+	<para>
+		</para>
+	<para>
+		To configure your software selection, first choose an environment on the left side of the screen. Only one environment can be chosen, even if more are available. Then, on the right side of the screen, select one or more add-ons which you want to install by marking the check boxes next to each add-on.
+	</para>
+	<para>
+		The list of add-ons is divided into two parts by a horizontal line. Add-ons above this line are defined as part of your chosen environment; if you select a different environment, the add-ons available here will change. The add-ons displayed below the separator are not specific to your chosen environment. 
+	</para>
+	<para>
+		Environments and add-ons are defined using a <filename>comps.xml</filename> file in your installation source (for example, in the <filename class="directory">repodata/</filename> directory on the full Fedora Server installation DVD). Review this file to see exactly which packages will be installed as part of a certain environment or add-on. For more information about the <filename>comps.xml</filename> file, see the full <citetitle>Fedora Installation Guide</citetitle>, available at <ulink url="http://docs.fedoraproject.org/"/>.
+	</para>
+	<para>
+		After you finish configuring your software selection, click <guilabel>Done</guilabel> in the top left corner to return to <ulink url="SummaryHub.xml">Installation Summary</ulink>. 
+	</para>
+</section>

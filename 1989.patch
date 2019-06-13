@@ -1,0 +1,151 @@
+From f582bf8b8dafeb35cb7beddf738659bc884e8ae9 Mon Sep 17 00:00:00 2001
+From: Vendula Poncova <vponcova@redhat.com>
+Date: Fri, 31 May 2019 15:37:20 +0200
+Subject: [PATCH] Read files in /etc/anaconda/conf.d on demand
+
+The Anaconda configuration shouldn't read configuration files in
+/etc/anaconda/conf.d by default, so the initial setup can choose a
+different location for its configuration files. Otherwise, anaconda
+might use configuration files for the initial setup by mistake.
+
+Related: rhbz#1713506
+---
+ anaconda.py                                   |  3 +-
+ pyanaconda/core/configuration/anaconda.py     | 39 +++++++++++-----
+ .../pyanaconda_tests/configuration_test.py    | 45 +++++++++++++++++++
+ 3 files changed, 75 insertions(+), 12 deletions(-)
+
+diff --git a/anaconda.py b/anaconda.py
+index a9e98b06e3..6fa855de7b 100755
+--- a/anaconda.py
++++ b/anaconda.py
+@@ -288,8 +288,9 @@ def setup_environment():
+     anaconda_logging.init(write_to_journal=conf.target.is_hardware)
+     anaconda_logging.logger.setupVirtio(opts.virtiolog)
+ 
+-    # Load the product configuration after a logging is set up.
++    # Load the remaining configuration after a logging is set up.
+     conf.set_from_product(opts.product_name, opts.variant_name)
++    conf.set_from_files()
+     conf.set_from_opts(opts)
+ 
+     log = anaconda_loggers.get_main_logger()
+diff --git a/pyanaconda/core/configuration/anaconda.py b/pyanaconda/core/configuration/anaconda.py
+index bea0cffc40..c32362a454 100644
+--- a/pyanaconda/core/configuration/anaconda.py
++++ b/pyanaconda/core/configuration/anaconda.py
+@@ -137,23 +137,17 @@ def set_from_defaults(self):
+         """"Set the configuration from the default configuration files.
+ 
+         Read the current configuration from the temporary config file.
+-        Or load the configuration from these files:
++        Or load the default configuration file from:
+ 
+             /etc/anaconda/anaconda.conf
+-            /etc/anaconda/conf.d/*.conf
+ 
+         """
+-        config_path = os.environ.get("ANACONDA_CONFIG_TMP", ANACONDA_CONFIG_TMP)
++        path = os.environ.get("ANACONDA_CONFIG_TMP", ANACONDA_CONFIG_TMP)
+ 
+-        if config_path and os.path.exists(config_path):
+-            self.read(config_path)
+-        else:
+-            config_path = os.path.join(ANACONDA_CONFIG_DIR, "anaconda.conf")
+-            self.read(config_path)
+-
+-            config_dir = os.path.join(ANACONDA_CONFIG_DIR, "conf.d")
+-            self.read_from_directory(config_dir)
++        if not path or not os.path.exists(path):
++            path = os.path.join(ANACONDA_CONFIG_DIR, "anaconda.conf")
+ 
++        self.read(path)
+         self.validate()
+ 
+     def set_from_product(self, requested_product="", requested_variant=""):
+@@ -213,6 +207,29 @@ def set_from_product(self, requested_product="", requested_variant=""):
+ 
+         self.validate()
+ 
++    def set_from_files(self, paths=None):
++        """Set the configuration from the given files and directories.
++
++        By default, read configuration files from:
++
++            /etc/anaconda/conf.d/
++
++        :param paths: a list of paths to files and directories
++        """
++        if not paths:
++            paths = [os.path.join(ANACONDA_CONFIG_DIR, "conf.d")]
++
++        for path in paths:
++            if not path or not os.path.exists(path):
++                continue
++
++            if os.path.isdir(path):
++                self.read_from_directory(path)
++            else:
++                self.read(path)
++
++        self.validate()
++
+     def set_from_opts(self, opts):
+         """Set the configuration from the Anaconda cmdline options.
+ 
+diff --git a/tests/nosetests/pyanaconda_tests/configuration_test.py b/tests/nosetests/pyanaconda_tests/configuration_test.py
+index c9cfa0eaec..8723fa8cac 100644
+--- a/tests/nosetests/pyanaconda_tests/configuration_test.py
++++ b/tests/nosetests/pyanaconda_tests/configuration_test.py
+@@ -248,6 +248,51 @@ def default_write_test(self):
+             f.flush()
+             self.assertTrue(f.read(), "The file shouldn't be empty.")
+ 
++    def set_from_files_test(self):
++        conf = AnacondaConfiguration.from_defaults()
++        paths = []
++
++        with tempfile.TemporaryDirectory() as d:
++            # Add nonexistent file.
++            nonexistent = os.path.join(d, "nonexistent")
++            paths.append(nonexistent)
++
++            # Add empty directory.
++            empty_dir = os.path.join(d, "empty")
++            os.mkdir(empty_dir)
++            paths.append(empty_dir)
++
++            # Add existing file.
++            existing = os.path.join(d, "a.conf")
++            paths.append(existing)
++
++            with open(existing, mode="w") as f:
++                f.write("")
++
++            # Add non-empty directory.
++            conf_dir = os.path.join(d, "conf.d")
++            os.mkdir(conf_dir)
++            paths.append(conf_dir)
++
++            for name in ["b.conf", "c.conf", "d"]:
++                with open(os.path.join(conf_dir, name), mode="w") as f:
++                    f.write("")
++
++            # Check the paths.
++            self.assertEqual(
++                [os.path.relpath(path, d) for path in paths],
++                ["nonexistent", "empty", "a.conf", "conf.d"]
++            )
++
++            conf._sources = []
++            conf.set_from_files(paths)
++
++            # Check the loaded files.
++            self.assertEqual(
++                [os.path.relpath(path, d) for path in conf.get_sources()],
++                ["a.conf", "conf.d/b.conf", "conf.d/c.conf"]
++            )
++
+     def kickstart_modules_test(self):
+         conf = AnacondaConfiguration.from_defaults()
+ 

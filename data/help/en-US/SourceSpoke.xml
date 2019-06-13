@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Installation_Guide.ent">
+<!ENTITY PRODUCT "Fedora">
+<!ENTITY NEXTVER "21">
+<!ENTITY PRODVER "20">
+<!ENTITY PREVVER "19">
+<!ENTITY BOOKID "install-guide">
+<!ENTITY YEAR "2014">
+<!ENTITY HOLDER "Red Hat, Inc. and others">
+<!ENTITY BZURL "https://bugzilla.redhat.com/enter_bug.cgi?product=&PRODUCT;&amp;component=&BOOKID;">
+<!ENTITY IGURL '<ulink url="http://docs.fedoraproject.org/" />'>
+]>
+<section id="sect-installation-gui-installation-source">
+	<title>Installation Source</title>
+	<para>
+		The <guilabel>Installation Source</guilabel> screen allows you to specify a location (local or on the network) from which packages will be downloaded and installed on your system. This screen will be configured automatically in most cases, but you can change your settings or add additional sources.
+	</para>
+	<note>
+		<para>
+			Some preparation may be necessary to create an installation source. See the full <citetitle>Fedora Installation Guide</citetitle>, available at <ulink url="http://docs.fedoraproject.org/"/> for instructions.
+		</para>
+	</note>
+	<para>
+		</para>
+	<para>
+		The following options are available. Note that not all of them may be displayed.
+	</para>
+	<variablelist>
+		<varlistentry>
+			<term>Auto-detected installation media</term>
+			<listitem>
+				<para>
+					This is the option selected by default if you started the installer from media containing an installation source, such as a live DVD. No additional configuration is necessary. You can click the <guilabel>Verify</guilabel> button check the media integrity.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>ISO file</term>
+			<listitem>
+				<para>
+					This option will appear if the installation program detected a partitioned hard drive with mountable file systems during boot. Select this option, click the <guibutton>Choose an ISO</guibutton> button, and browse to the installation ISO file's location on your system. You can click the <guilabel>Verify</guilabel> button to check the file's integrity.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>On the network</term>
+			<listitem>
+				<para>
+					Use this option to download packages to be installed from a network location instead of local media. This is the default selection on network installation media.
+				</para>
+				<para>
+					In most cases, the <guilabel>Closest mirror</guilabel> option available from the protocol selection drop-down menu is preferable. If this option is selected, packages for your system will be downloaded from the most suitable location (mirror).
+				</para>
+				<para>
+					To manually configure a network-based installation source, use the drop-down menu to specify the protocol to be used when downloading packages. This setting depends on the server you want to use. Then, type the server address (without the protocol) into the address field. If you choose NFS, a second input field will appear where you can specify custom <guilabel>NFS mount options</guilabel>.
+				</para>
+				<important>
+					<para>
+						When selecting an NFS installation source, you must specify the address with a colon (<literal>:</literal>) character separating the host name from the path. For example:
+					</para>
+					<screen>
+<literal><replaceable>server.example.com</replaceable>:<replaceable>/path/to/directory</replaceable></literal>
+					</screen>
+				</important>
+				<para>
+					To configure a proxy for an HTTP or HTTPS source, click the <guibutton>Proxy setup</guibutton> button. Check <guilabel>Enable HTTP proxy</guilabel> and type the URL into the <guilabel>Proxy URL</guilabel> box. If the proxy server requires authentication, check <guilabel>Use Authentication</guilabel> and enter your user name and password. Click <guibutton>OK</guibutton> to finish the configuration.
+				</para>
+				<para>
+					If your HTTP or HTTPS URL refers to a repository mirror list, mark the check box under the address field.
+				</para>
+			</listitem>
+		</varlistentry>
+	</variablelist>
+	<para>
+		You can also specify additional repositories in the <guilabel>Additional repositories</guilabel> section to gain access to more installation environments and software add-ons. All environments and add-ons will be available for selection in <ulink url="SoftwareSpoke.xml">Software Selection</ulink> once you finish configuring the sources.
+	</para>
+	<para>
+		To add a repository, click the <guibutton>+</guibutton> button. To delete a repository, select one in the list and click the <guibutton>-</guibutton> button. Click the arrow icon to revert to the previous list of repositories, i.e. to replace current entries with those that were present at the time you entered the <guilabel>Installation Source</guilabel> screen. To activate or deactivate a repository, click the check box in the <guilabel>Enabled</guilabel> column at each entry in the list.
+	</para>
+	<para>
+		You can name your additional repository and configure it the same way as the primary repository on the network using the input fields on the right side of the section.
+	</para>
+	<para>
+		Once you have selected your installation source, click <guilabel>Done</guilabel> in the top left corner to return to <ulink url="SummaryHub.xml">Installation Summary</ulink>.
+	</para>
+</section>

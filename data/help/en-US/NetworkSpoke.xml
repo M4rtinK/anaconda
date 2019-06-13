@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Installation_Guide.ent">
+<!ENTITY PRODUCT "Fedora">
+<!ENTITY NEXTVER "21">
+<!ENTITY PRODVER "20">
+<!ENTITY PREVVER "19">
+<!ENTITY BOOKID "install-guide">
+<!ENTITY YEAR "2014">
+<!ENTITY HOLDER "Red Hat, Inc. and others">
+<!ENTITY BZURL "https://bugzilla.redhat.com/enter_bug.cgi?product=&PRODUCT;&amp;component=&BOOKID;">
+<!ENTITY IGURL '<ulink url="http://docs.fedoraproject.org/" />'>
+]>
+<section id="sect-installation-gui-network-configuration">
+	<title>Network &amp; Hostname</title>
+	<para>
+		The <guilabel>Network &amp; Hostname</guilabel> screen is used to configure network interfaces. Options selected here will be available both during the installation (if needed for tasks such as downloading packages from a remote location) and on the installed system.
+	</para>
+	<note>
+		<para>
+			Network configuration is an expansive topic and many of the options available during the installation are beyond the scope of this document. For detailed information about networking, including both theoretical topics and specific instructions and examples, see the <citetitle>Fedora Networking Guide</citetitle>, available at <ulink url="http://docs.fedoraproject.org/">Fedora Documentation</ulink>.
+		</para>
+	</note>
+	<para>
+		</para>
+	<para>
+		Locally accessible interfaces are automatically detected by the installation program and cannot be manually added or deleted. All detected interfaces are listed on the left side of the screen. Click an interface in the list to display its current configuration (such as IP and DNS address); the details are displayed on the right side of the screen.
+	</para>
+	<para>
+		Below the list of interfaces are two buttons. Use the <guilabel>+</guilabel> button to add a virtual network interface (Team, Bond or VLAN), as described in <ulink url="NetworkSpoke.xml">Adding a Virtual Network Interface</ulink>. To remove a previously created virtual interface, select it in the list and click the <guilabel>-</guilabel> button.
+	</para>
+	<para>
+		To change settings such as IP addresses, DNS servers, or routing configuration for an existing interface (both virtual and physical), select the interface in the left pane and click <guilabel>Configure</guilabel> in the bottom right corner of the screen. Available settings are described in <ulink url="NetworkSpoke.xml">Editing Network Interface Configuration</ulink>.
+	</para>
+	<para>
+		Use the <guilabel>ON</guilabel>/<guilabel>OFF</guilabel> switch in the top right corner to enable or disable the currently selected interface. 
+	</para>
+	<para>
+		Below the list of connections, enter a host name for this computer in the <guilabel>Hostname</guilabel> input field. The host name can be either a <firstterm>fully-qualified domain name</firstterm> (FQDN) in the format <replaceable>hostname</replaceable>.<replaceable>domainname</replaceable>, or a short host name with no domain name. Many networks have a <firstterm>Dynamic Host Configuration Protocol</firstterm> (<systemitem class="protocol">DHCP</systemitem>) service that automatically supplies connected systems with a domain name. To allow the <systemitem class="protocol">DHCP</systemitem> service to assign the domain name to this machine, only specify the short host name.
+	</para>
+	
+	<section id="sect-installation-gui-network-configuration-virtual-interface">
+		<title>Adding a Virtual Network Interface</title>
+		<para>
+			To add a virtual network interface, click the <guilabel>+</guilabel> button at the bottom of the interface list. A new window will open, prompting you to select one of the three available types of virtual interfaces:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<guilabel>Bond</guilabel> - NIC (<firstterm>Network Interface Controller</firstterm>) Bonding, a method to bind multiple physical network interfaces together into a single bonded channel. 
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guilabel>Team</guilabel> - NIC Teaming, a new implementation to aggregate links, designed to provide a small kernel driver to implement the fast handling of packet flows, and various applications to do everything else in user space. 
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<guilabel>Vlan</guilabel> (<firstterm>Virtual LAN</firstterm>) - A method to create multiple distinct broadcast domains which are mutually isolated. 
+				</para>
+			</listitem>
+		</itemizedlist>
+		<para>
+			Select the interface type you want to add, and click <guilabel>Add</guilabel>. Another dialog window will open, allowing you to edit any available settings for your chosen interface type. For information about available settings, see the respective sections of the <citetitle>Fedora Networking Guide</citetitle>, available at <ulink url="http://docs.fedoraproject.org/">Fedora Documentation</ulink>.
+		</para>
+		<note>
+			<para>
+				To access the settings dialog again after you closed it, select the same interface in the list of configured interfaces and click <guilabel>Configure</guilabel> in the bottom right corner of the screen. To remove a virtual interface, select it in the list and click the <guilabel>-</guilabel> button below.
+			</para>
+		</note>
+	</section>
+	
+	<section id="sect-installation-gui-network-configuration-advanced">
+		<title>Editing Network Interface Configuration</title>
+		<para>
+			text
+		</para>
+	</section>
+	
+</section>

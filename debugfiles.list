@@ -1,0 +1,18 @@
+%dir /usr/lib/debug
+%dir /usr/lib/debug/usr
+%dir /usr/lib/debug/usr/lib64
+%dir /usr/lib/debug/usr/lib64/python3.7
+%dir /usr/lib/debug/usr/lib64/python3.7/site-packages
+%dir /usr/lib/debug/usr/lib64/python3.7/site-packages/pyanaconda
+%dir /usr/lib/debug/usr/lib64/glade
+%dir /usr/lib/debug/usr/lib64/glade/modules
+%dir /usr/lib/debug/usr/libexec
+%dir /usr/lib/debug/usr/libexec/anaconda
+%dir /usr/lib/debug/.dwz
+/usr/lib/debug/usr/lib64/python3.7/site-packages/pyanaconda/_isys.so-1001.1000-1.fc29.x86_64.debug
+/usr/lib/debug/usr/lib64/glade/modules/libAnacondaWidgets.so-1001.1000-1.fc29.x86_64.debug
+/usr/lib/debug/usr/lib64/libAnacondaWidgets.so.4.0.0-1001.1000-1.fc29.x86_64.debug
+/usr/lib/debug/usr/libexec/anaconda/dd_list-1001.1000-1.fc29.x86_64.debug
+/usr/lib/debug/usr/libexec/anaconda/auditd-1001.1000-1.fc29.x86_64.debug
+/usr/lib/debug/usr/libexec/anaconda/dd_extract-1001.1000-1.fc29.x86_64.debug
+/usr/lib/debug/.dwz/anaconda-1001.1000-1.fc29.x86_64

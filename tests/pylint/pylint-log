@@ -1,0 +1,1568 @@
+************* Module ./../../updates/run/install/updates/blivet/devicelibs/mdraid.py
+W0401: 26,0: : Wildcard import errors
+E0602: 57,14: Container.get_size: Undefined variable 'MDRaidError'
+E0602: 59,14: Container.get_raw_array_size: Undefined variable 'MDRaidError'
+E0602: 72,11: getRaidLevel: Undefined variable 'RaidError'
+E0602: 73,14: getRaidLevel: Undefined variable 'MDRaidError'
+W1201:104,4: get_raid_superblock_size: Specify string format arguments as logging function parameters
+E0602:110,14: mdadm: Undefined variable 'MDRaidError'
+E0602:126,11: mdcreate: Undefined variable 'MDRaidError'
+E0602:127,14: mdcreate: Undefined variable 'MDRaidError'
+E0602:134,11: mddestroy: Undefined variable 'MDRaidError'
+E0602:135,14: mddestroy: Undefined variable 'MDRaidError'
+E0602:143,11: mdadd: Undefined variable 'MDRaidError'
+E0602:144,14: mdadd: Undefined variable 'MDRaidError'
+W0102:146,0: mdactivate: Dangerous default value [] as argument
+E0602:157,14: mdactivate: Undefined variable 'MDRaidError'
+E0602:166,11: mdactivate: Undefined variable 'MDRaidError'
+E0602:167,14: mdactivate: Undefined variable 'MDRaidError'
+E0602:174,11: mddeactivate: Undefined variable 'MDRaidError'
+E0602:175,14: mddeactivate: Undefined variable 'MDRaidError'
+E0602:211,14: md_node_from_name: Undefined variable 'MDRaidError'
+W1201:223,12: name_from_md_node: Specify string format arguments as logging function parameters
+E0602:229,14: name_from_md_node: Undefined variable 'MDRaidError'
+W1201:231,4: name_from_md_node: Specify string format arguments as logging function parameters
+************* Module ./../../updates/run/install/updates/pykickstart/commands/langsupport.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/blivet/devicelibs/btrfs.py
+W0401: 27,0: : Wildcard import errors
+E0602: 45,14: btrfs: Undefined variable 'BTRFSError'
+E0602: 75,14: create_volume: Undefined variable 'BTRFSError'
+E0602:129,14: get_default_subvolume: Undefined variable 'BTRFSError'
+************* Module ./../../pyanaconda/ui/gui/spokes/lib/dasdfmt.py
+F0401: 31,0: : Unable to import 'blivet.devicelibs.dasd'
+E0611: 31,0: : No name 'dasd' in module 'blivet.devicelibs'
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/f8.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/commands/network.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.constants
+W0401: 22,0: : Wildcard import pykickstart.errors
+W0401: 23,0: : Wildcard import pykickstart.options
+W0612:313,15: FC3_Network.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/raid.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/f14.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/commands/reboot.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.constants
+W0401: 22,0: : Wildcard import pykickstart.errors
+W0401: 23,0: : Wildcard import pykickstart.options
+W0612: 77,15: FC6_Reboot.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/blivet/formats/fslabeling.py
+W0403: 24,0: : Relative import 'fslabel', should be 'blivet.formats.fslabel'
+************* Module ./../../updates/run/install/updates/blivet/devicetree.py
+W0311:273,0: : Bad indentation. Found 23 spaces, expected 24
+W1401:550,0: : Anomalous backslash in string: '\d'. String constant might be missing an r prefix.
+W0403: 31,0: : Relative import 'errors', should be 'blivet.errors'
+W0401: 31,0: : Wildcard import errors
+W0403: 32,0: : Relative import 'devices', should be 'blivet.devices'
+W0401: 32,0: : Wildcard import devices
+W0403: 33,0: : Relative import 'deviceaction', should be 'blivet.deviceaction'
+W0401: 33,0: : Wildcard import deviceaction
+W0401: 34,0: : Wildcard import pykickstart.constants
+W0403: 35,0: : Relative import 'formats', should be 'blivet.formats'
+W0403: 36,0: : Relative import 'formats.fs', should be 'blivet.formats.fs'
+W0403: 37,0: : Relative import 'devicelibs.mdraid', should be 'blivet.devicelibs.mdraid'
+W0403: 38,0: : Relative import 'devicelibs.dm', should be 'blivet.devicelibs.dm'
+W0403: 39,0: : Relative import 'devicelibs.lvm', should be 'blivet.devicelibs.lvm'
+W0403: 40,0: : Relative import 'devicelibs.mpath', should be 'blivet.devicelibs.mpath'
+W0403: 41,0: : Relative import 'devicelibs.loop', should be 'blivet.devicelibs.loop'
+W0403: 42,0: : Relative import 'devicelibs.edd', should be 'blivet.devicelibs.edd'
+W0403: 43,0: : Relative import 'udev', should be 'blivet.udev'
+W0401: 43,0: : Wildcard import udev
+W0403: 44,0: : Relative import 'util', should be 'blivet.util'
+W0403: 45,0: : Relative import 'platform', should be 'blivet.platform'
+W0403: 46,0: : Relative import 'tsort', should be 'blivet.tsort'
+W0403: 47,0: : Relative import 'flags', should be 'blivet.flags'
+W0403: 48,0: : Relative import 'storage_log', should be 'blivet.storage_log'
+W0403: 51,0: : Relative import 'i18n', should be 'blivet.i18n'
+W0403: 52,0: : Relative import 'size', should be 'blivet.size'
+W1201:168,16: DeviceTree.pruneActions: Specify string format arguments as logging function parameters
+W1201:173,20: DeviceTree.pruneActions: Specify string format arguments as logging function parameters
+W1201:247,12: DeviceTree.processActions: Specify string format arguments as logging function parameters
+W1201:255,12: DeviceTree.processActions: Specify string format arguments as logging function parameters
+W1201:262,12: DeviceTree.processActions: Specify string format arguments as logging function parameters
+W1201:323,8: DeviceTree._addDevice: Specify string format arguments as logging function parameters
+W1201:345,12: DeviceTree._removeDevice: Specify string format arguments as logging function parameters
+W1201:377,8: DeviceTree._removeDevice: Specify string format arguments as logging function parameters
+W1201:422,8: DeviceTree.registerAction: Specify string format arguments as logging function parameters
+W0622:448,50: DeviceTree.findActions: Redefining built-in 'object'
+W0622:448,39: DeviceTree.findActions: Redefining built-in 'type'
+W1201:582,16: DeviceTree.isIgnored: Specify string format arguments as logging function parameters
+W1201:622,12: DeviceTree.addUdevLVDevice: Specify string format arguments as logging function parameters
+W1201:637,12: DeviceTree.addUdevLVDevice: Specify string format arguments as logging function parameters
+W0612:616,8: DeviceTree.addUdevLVDevice: Unused variable 'uuid'
+W0622:675,12: DeviceTree.addUdevDMDevice: Redefining built-in 'dir'
+W1201:665,16: DeviceTree.addUdevDMDevice: Specify string format arguments as logging function parameters
+W1201:694,28: DeviceTree.addUdevDMDevice: Specify string format arguments as logging function parameters
+W1201:731,16: DeviceTree.addUdevDMDevice: Specify string format arguments as logging function parameters
+W0612:645,8: DeviceTree.addUdevDMDevice: Unused variable 'uuid'
+W0622:747,8: DeviceTree.addUdevMultiPathDevice: Redefining built-in 'dir'
+W1201:766,24: DeviceTree.addUdevMultiPathDevice: Specify string format arguments as logging function parameters
+W1201:775,16: DeviceTree.addUdevMultiPathDevice: Specify string format arguments as logging function parameters
+W0612:738,8: DeviceTree.addUdevMultiPathDevice: Unused variable 'uuid'
+W0622:792,8: DeviceTree.addUdevMDDevice: Redefining built-in 'dir'
+W1201:812,24: DeviceTree.addUdevMDDevice: Specify string format arguments as logging function parameters
+W1201:831,12: DeviceTree.addUdevMDDevice: Specify string format arguments as logging function parameters
+W1201:835,16: DeviceTree.addUdevMDDevice: Specify string format arguments as logging function parameters
+W0612:787,8: DeviceTree.addUdevMDDevice: Unused variable 'uuid'
+W1201:870,16: DeviceTree.addUdevPartitionDevice: Specify string format arguments as logging function parameters
+W1201:891,12: DeviceTree.addUdevPartitionDevice: Specify string format arguments as logging function parameters
+W1201:905,12: DeviceTree.addUdevPartitionDevice: Specify string format arguments as logging function parameters
+W0612:876,8: DeviceTree.addUdevPartitionDevice: Unused variable 'is_sun_magic'
+W0612:842,8: DeviceTree.addUdevPartitionDevice: Unused variable 'uuid'
+W1201:940,16: DeviceTree.addUdevDiskDevice: Specify string format arguments as logging function parameters
+W1201:953,12: DeviceTree.addUdevDiskDevice: Specify string format arguments as logging function parameters
+W1201:965,20: DeviceTree.addUdevDiskDevice: Specify string format arguments as logging function parameters
+W1201:972,20: DeviceTree.addUdevDiskDevice: Specify string format arguments as logging function parameters
+W1201:991,12: DeviceTree.addUdevDiskDevice: Specify string format arguments as logging function parameters
+W1201:998,12: DeviceTree.addUdevDiskDevice: Specify string format arguments as logging function parameters
+W1201:1001,12: DeviceTree.addUdevDiskDevice: Specify string format arguments as logging function parameters
+W0612:914,8: DeviceTree.addUdevDiskDevice: Unused variable 'uuid'
+W1201:1071,16: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W1201:1079,12: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W1201:1085,8: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W1201:1099,16: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W1201:1112,12: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W1201:1116,12: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W1201:1119,12: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W1201:1122,12: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W1201:1125,12: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W1201:1133,12: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W1201:1136,12: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W1201:1145,12: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W1201:1148,12: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W1201:1179,8: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W1201:1181,12: DeviceTree.addUdevDevice: Specify string format arguments as logging function parameters
+W0622:1209,16: DeviceTree.handleUdevDiskLabelFormat: Redefining built-in 'format'
+W1201:1191,12: DeviceTree.handleUdevDiskLabelFormat: Specify string format arguments as logging function parameters
+W1201:1196,12: DeviceTree.handleUdevDiskLabelFormat: Specify string format arguments as logging function parameters
+W0703:1201,15: DeviceTree.handleUdevDiskLabelFormat: Catching too general exception Exception
+W1201:1202,12: DeviceTree.handleUdevDiskLabelFormat: Specify string format arguments as logging function parameters
+W1201:1203,12: DeviceTree.handleUdevDiskLabelFormat: Specify string format arguments as logging function parameters
+W1201:1214,16: DeviceTree.handleUdevDiskLabelFormat: Specify string format arguments as logging function parameters
+W0107:1216,16: DeviceTree.handleUdevDiskLabelFormat: Unnecessary pass statement
+W1201:1229,12: DeviceTree.handleUdevDiskLabelFormat: Specify string format arguments as logging function parameters
+W1201:1239,12: DeviceTree.handleUdevLUKSFormat: Specify string format arguments as logging function parameters
+W1201:1250,16: DeviceTree.handleUdevLUKSFormat: Specify string format arguments as logging function parameters
+W1201:1278,16: DeviceTree.handleUdevLUKSFormat: Specify string format arguments as logging function parameters
+W1201:1285,12: DeviceTree.handleUdevLUKSFormat: Specify string format arguments as logging function parameters
+W1201:1299,12: DeviceTree.handleVgLvs: Specify string format arguments as logging function parameters
+W1201:1303,12: DeviceTree.handleVgLvs: Specify string format arguments as logging function parameters
+W1201:1332,16: DeviceTree.handleVgLvs.addLV: Specify string format arguments as logging function parameters
+W1201:1336,16: DeviceTree.handleVgLvs.addLV: Specify string format arguments as logging function parameters
+W1201:1339,20: DeviceTree.handleVgLvs.addLV: Specify string format arguments as logging function parameters
+W1201:1347,24: DeviceTree.handleVgLvs.addLV: Specify string format arguments as logging function parameters
+W1201:1357,28: DeviceTree.handleVgLvs.addLV: Specify string format arguments as logging function parameters
+W1201:1361,16: DeviceTree.handleVgLvs.addLV: Specify string format arguments as logging function parameters
+E0602:1362,40: DeviceTree.handleVgLvs.addLV: Undefined variable 'index'
+W1201:1428,24: DeviceTree.handleVgLvs.addLV: Specify string format arguments as logging function parameters
+W1201:1456,12: DeviceTree.handleVgLvs: Specify string format arguments as logging function parameters
+W0612:1438,8: DeviceTree.handleVgLvs: Unused variable 'lv_real_names'
+W1201:1472,12: DeviceTree.handleUdevLVMPVFormat: Specify string format arguments as logging function parameters
+W1201:1487,16: DeviceTree.handleUdevLVMPVFormat: Specify string format arguments as logging function parameters
+W1201:1514,12: DeviceTree.handleUdevLVMPVFormat: Specify string format arguments as logging function parameters
+W1201:1551,16: DeviceTree.handleUdevMDMemberFormat: Specify string format arguments as logging function parameters
+W1201:1600,28: DeviceTree.handleUdevMDMemberFormat: Specify string format arguments as logging function parameters
+W1201:1603,12: DeviceTree.handleUdevMDMemberFormat: Specify string format arguments as logging function parameters
+W1201:1613,16: DeviceTree.handleUdevMDMemberFormat: Specify string format arguments as logging function parameters
+W0612:1538,8: DeviceTree.handleUdevMDMemberFormat: Unused variable 'sysfs_path'
+W1201:1640,12: DeviceTree.handleUdevDMRaidMemberFormat: Specify string format arguments as logging function parameters
+W0612:1623,8: DeviceTree.handleUdevDMRaidMemberFormat: Unused variable 'sysfs_path'
+W1201:1689,12: DeviceTree.handleBTRFSFormat: Specify string format arguments as logging function parameters
+W1201:1693,12: DeviceTree.handleBTRFSFormat: Specify string format arguments as logging function parameters
+W1201:1715,20: DeviceTree.handleBTRFSFormat: Specify string format arguments as logging function parameters
+W0612:1679,8: DeviceTree.handleBTRFSFormat: Unused variable 'sysfs_path'
+W0612:1678,8: DeviceTree.handleBTRFSFormat: Unused variable 'name'
+W0622:1754,8: DeviceTree.handleUdevDeviceFormat: Redefining built-in 'format'
+W1201:1758,12: DeviceTree.handleUdevDeviceFormat: Specify string format arguments as logging function parameters
+W1201:1780,16: DeviceTree.handleUdevDeviceFormat: Specify string format arguments as logging function parameters
+W1201:1789,16: DeviceTree.handleUdevDeviceFormat: Specify string format arguments as logging function parameters
+W1201:1793,16: DeviceTree.handleUdevDeviceFormat: Specify string format arguments as logging function parameters
+W1201:1797,16: DeviceTree.handleUdevDeviceFormat: Specify string format arguments as logging function parameters
+W1201:1823,12: DeviceTree.handleUdevDeviceFormat: Specify string format arguments as logging function parameters
+W1201:1826,12: DeviceTree.handleUdevDeviceFormat: Specify string format arguments as logging function parameters
+W0612:1754,8: DeviceTree.handleUdevDeviceFormat: Unused variable 'format'
+W0612:1732,8: DeviceTree.handleUdevDeviceFormat: Unused variable 'sysfs_path'
+W0612:1788,31: DeviceTree.handleUdevDeviceFormat: Unused variable 'e'
+W1201:1846,8: DeviceTree.updateDeviceFormat: Specify string format arguments as logging function parameters
+W1201:1850,12: DeviceTree.updateDeviceFormat: Specify string format arguments as logging function parameters
+W1201:1858,16: DeviceTree.updateDeviceFormat: Specify string format arguments as logging function parameters
+W1201:1911,8: DeviceTree.hide: Specify string format arguments as logging function parameters
+W1201:1948,16: DeviceTree.unhide: Specify string format arguments as logging function parameters
+W1201:1963,12: DeviceTree.setupDiskImages: Specify string format arguments as logging function parameters
+W1201:1967,16: DeviceTree.setupDiskImages: Specify string format arguments as logging function parameters
+W1201:1978,16: DeviceTree.setupDiskImages: Specify string format arguments as logging function parameters
+W1201:1985,16: DeviceTree.setupDiskImages: Specify string format arguments as logging function parameters
+W1201:1987,16: DeviceTree.setupDiskImages: Specify string format arguments as logging function parameters
+W1201:2015,20: DeviceTree.backupConfigs: Specify string format arguments as logging function parameters
+W1201:2023,20: DeviceTree.backupConfigs: Specify string format arguments as logging function parameters
+W1201:2026,16: DeviceTree.backupConfigs: Specify string format arguments as logging function parameters
+W1201:2031,20: DeviceTree.backupConfigs: Specify string format arguments as logging function parameters
+W1201:2034,16: DeviceTree.backupConfigs: Specify string format arguments as logging function parameters
+W1201:2061,8: DeviceTree._populate: Specify string format arguments as logging function parameters
+W1201:2079,12: DeviceTree._populate: Specify string format arguments as logging function parameters
+W1201:2091,12: DeviceTree._populate: Specify string format arguments as logging function parameters
+W1201:2114,12: DeviceTree._populate: Specify string format arguments as logging function parameters
+W1201:2155,16: DeviceTree.teardownAll: Specify string format arguments as logging function parameters
+W0712:2162,12: DeviceTree.setupAll: Implicit unpacking of exceptions is not supported in Python 3
+W1201:2163,16: DeviceTree.setupAll: Specify string format arguments as logging function parameters
+W0612:2162,40: DeviceTree.setupAll: Unused variable 'name'
+W1201:2246,16: DeviceTree.getDevicesBySerial: Specify string format arguments as logging function parameters
+W1201:2531,24: DeviceTree.resolveDevice: Specify string format arguments as logging function parameters
+W1201:2541,24: DeviceTree.resolveDevice: Specify string format arguments as logging function parameters
+W1201:2556,24: DeviceTree.resolveDevice: Specify string format arguments as logging function parameters
+W1201:2564,28: DeviceTree.resolveDevice: Specify string format arguments as logging function parameters
+W1201:2568,28: DeviceTree.resolveDevice: Specify string format arguments as logging function parameters
+dm.c: 1693: not running as root returning empty list
+W1201:2619,12: DeviceTree.resolveDevice: Specify string format arguments as logging function parameters
+W1201:2621,12: DeviceTree.resolveDevice: Specify string format arguments as logging function parameters
+W0612:2590,30: DeviceTree.resolveDevice: Unused variable 'slash'
+W1201:2632,16: DeviceTree.getActiveMounts: Specify string format arguments as logging function parameters
+W1201:2643,24: DeviceTree.getActiveMounts: Specify string format arguments as logging function parameters
+W1201:2650,16: DeviceTree.getActiveMounts: Specify string format arguments as logging function parameters
+W0612:2629,55: DeviceTree.getActiveMounts: Unused variable 'rest'
+W0611: 50,0: : Unused import _ped
+W0611: 24,0: : Unused import stat
+************* Module ./../../updates/run/install/updates/blivet/formats/fs.py
+W0401: 31,0: : Wildcard import errors
+W0602: 51,4: update_kernel_filesystems: Using global for 'kernel_filesystems' but no assignment is done
+W0602: 52,4: update_kernel_filesystems: Using global for 'nodev_filesystems' but no assignment is done
+E0602:186,18: FS._setTargetSize: Undefined variable 'FSError'
+W1201:235,16: FS._getFSInfo: Specify string format arguments as logging function parameters
+W0703:317,19: FS._getExistingSize: Catching too general exception Exception
+W1201:318,16: FS._getExistingSize: Specify string format arguments as logging function parameters
+E0602:376,18: FS.doFormat: Undefined variable 'FormatCreateError'
+E0602:385,18: FS.doFormat: Undefined variable 'FormatCreateError'
+E0602:393,18: FS.doFormat: Undefined variable 'FormatCreateError'
+E0602:396,18: FS.doFormat: Undefined variable 'FormatCreateError'
+E0602:404,19: FS.doFormat: Undefined variable 'FSError'
+E0602:418,18: FS.doResize: Undefined variable 'FSResizeError'
+E0602:421,18: FS.doResize: Undefined variable 'FSResizeError'
+E0602:431,18: FS.doResize: Undefined variable 'FSResizeError'
+W1201:442,12: FS.doResize: Specify string format arguments as logging function parameters
+E0602:447,18: FS.doResize: Undefined variable 'FSResizeError'
+E0602:450,18: FS.doResize: Undefined variable 'FSResizeError'
+E0602:476,18: FS.doCheck: Undefined variable 'FSError'
+E0602:482,18: FS.doCheck: Undefined variable 'FSError'
+E0602:487,18: FS.doCheck: Undefined variable 'FSError'
+E0602:494,18: FS.doCheck: Undefined variable 'FSError'
+W0602:498,8: FS.loadModule: Using global for 'kernel_filesystems' but no assignment is done
+W1201:507,16: FS.loadModule: Specify string format arguments as logging function parameters
+W1201:512,16: FS.loadModule: Specify string format arguments as logging function parameters
+W0703:534,15: FS.testMount: Catching too general exception Exception
+W1201:535,12: FS.testMount: Specify string format arguments as logging function parameters
+E0602:558,18: FS.mount: Undefined variable 'FSError'
+E0602:564,18: FS.mount: Undefined variable 'FSError'
+E0602:570,18: FS.mount: Undefined variable 'FSError'
+E0602:592,18: FS.mount: Undefined variable 'FSError'
+E0602:595,18: FS.mount: Undefined variable 'FSError'
+E0602:610,18: FS.unmount: Undefined variable 'FSError'
+E0602:617,18: FS.unmount: Undefined variable 'FSError'
+E0602:623,18: FS.unmount: Undefined variable 'FSError'
+E0602:636,18: FS.readLabel: Undefined variable 'FSError'
+E0602:639,18: FS.readLabel: Undefined variable 'FSError'
+E0602:642,18: FS.readLabel: Undefined variable 'FSError'
+E0602:646,18: FS.readLabel: Undefined variable 'FSError'
+E0602:667,18: FS.writeLabel: Undefined variable 'FSError'
+E0602:670,18: FS.writeLabel: Undefined variable 'FSError'
+E0602:673,18: FS.writeLabel: Undefined variable 'FSError'
+E0602:676,18: FS.writeLabel: Undefined variable 'FSError'
+E0602:679,18: FS.writeLabel: Undefined variable 'FSError'
+E0602:683,18: FS.writeLabel: Undefined variable 'FSError'
+W0612:755,22: FS.mountable: Unused variable 'dirs'
+W0612:755,16: FS.mountable: Unused variable 'root'
+E0602:821,18: FS.create: Undefined variable 'FSError'
+E0602:923,18: Ext2FS.writeRandomUUID: Undefined variable 'FSError'
+E0602:935,18: Ext2FS.writeRandomUUID: Undefined variable 'FSError'
+E0602:961,22: Ext2FS._getMinSize: Undefined variable 'FSError'
+W1201:982,16: Ext2FS._getMinSize: Specify string format arguments as logging function parameters
+W1201:986,16: Ext2FS._getMinSize: Specify string format arguments as logging function parameters
+W1201:989,20: Ext2FS._getMinSize: Specify string format arguments as logging function parameters
+W1201:991,20: Ext2FS._getMinSize: Specify string format arguments as logging function parameters
+W0612:976,23: Ext2FS._getMinSize: Unused variable 'sep'
+W0612:976,17: Ext2FS._getMinSize: Unused variable 'text'
+W0223:1041,0: FATFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1070,0: EFIFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1085,0: BTRFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1148,0: GFS2: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1176,0: JFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1207,0: ReiserFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1245,0: XFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W1201:1276,12: XFS.sync: Specify string format arguments as logging function parameters
+W1201:1281,12: XFS.sync: Specify string format arguments as logging function parameters
+W0223:1286,0: HFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1297,0: AppleBootstrapFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1312,0: HFSPlus: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1329,0: MacEFIFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1343,0: NTFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W1201:1390,20: NTFS._getMinSize: Specify string format arguments as logging function parameters
+W1201:1393,16: NTFS._getMinSize: Specify string format arguments as logging function parameters
+W1201:1398,20: NTFS._getMinSize: Specify string format arguments as logging function parameters
+W1201:1400,20: NTFS._getMinSize: Specify string format arguments as logging function parameters
+W0223:1423,0: NFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+************* Module ./../../updates/run/install/updates/blivet/formats/fs.py
+W0201:299,8: DeviceFormat._setDevice: Attribute '_device' defined outside __init__
+W0223:1450,0: NFSv4: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1458,0: Iso9660FS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1472,0: NoDevFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0201:299,8: DeviceFormat._setDevice: Attribute '_device' defined outside __init__
+W0223:1501,0: DevPtsFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1510,0: ProcFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1516,0: SysFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1522,0: TmpFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1683,0: BindFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1696,0: SELinuxFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0223:1706,0: USBFS: Method 'writeRandomUUID' is abstract in class 'FS' but is not overridden
+W0611: 27,0: : Unused import sys
+************* Module ./../../updates/run/install/updates/pykickstart/commands/selinux.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.constants
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 62,15: FC3_SELinux.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/rhel5.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/commands/clearpart.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.constants
+W0401: 22,0: : Wildcard import pykickstart.errors
+W0401: 23,0: : Wildcard import pykickstart.options
+W0612: 84,15: FC3_ClearPart.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/zfcp.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.options
+W0612:105,15: FC3_ZFCP.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/url.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 60,15: FC3_Url.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/blivet/platform.py
+W1201:107,8: Platform.bestDiskLabelType: Specify string format arguments as logging function parameters
+W1201:113,12: Platform.bestDiskLabelType: Specify string format arguments as logging function parameters
+W1201:119,20: Platform.bestDiskLabelType: Specify string format arguments as logging function parameters
+W0121:401,12: getPlatform: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0121:420,8: getPlatform: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0601:423,4: reset_platform: Global variable 'platform' undefined at the module level
+W0611: 22,0: : Unused import os
+************* Module ./../../updates/run/install/updates/pykickstart/commands/vnc.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 59,15: FC3_Vnc.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/cdrom.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 48,9: FC3_Cdrom.parse: Unused variable 'opts'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/iscsiname.py
+W0401: 21,0: : Wildcard import pykickstart.base
+W0401: 22,0: : Wildcard import pykickstart.errors
+W0401: 23,0: : Wildcard import pykickstart.options
+W0612: 50,9: FC6_IscsiName.parse: Unused variable 'opts'
+************* Module ./../../updates/run/install/updates/blivet/util.py
+W0403:  9,0: : Relative import 'udev', should be 'blivet.udev'
+W0403: 10,0: : Relative import 'size', should be 'blivet.size'
+W1201: 29,8: _run_program: Specify string format arguments as logging function parameters
+W1201: 51,12: _run_program: Specify string format arguments as logging function parameters
+W1201: 54,8: _run_program: Specify string format arguments as logging function parameters
+W0612: 78,22: mount: Unused variable 'e'
+W0612: 87,22: umount: Unused variable 'e'
+W0621: 96,8: get_mount_paths: Redefining name 'mount' from outer scope (line 67)
+W1201:106,8: get_mount_paths: Specify string format arguments as logging function parameters
+W0612: 98,27: get_mount_paths: Unused variable 'rest'
+W0621:113,8: get_mount_device: Redefining name 'mount' from outer scope (line 67)
+W1201:127,8: get_mount_device: Specify string format arguments as logging function parameters
+W1201:131,8: get_mount_device: Specify string format arguments as logging function parameters
+W0612:115,27: get_mount_device: Unused variable 'rest'
+W1201:160,4: notify_kernel: Specify string format arguments as logging function parameters
+W1201:163,8: notify_kernel: Specify string format arguments as logging function parameters
+W1201:179,8: get_sysfs_attr: Specify string format arguments as logging function parameters
+W1201:211,8: match_path_context: Specify string format arguments as logging function parameters
+W1201:241,8: set_file_context: Specify string format arguments as logging function parameters
+W1201:287,8: copy_to_system: Specify string format arguments as logging function parameters
+W1201:292,4: copy_to_system: Specify string format arguments as logging function parameters
+W0201:356,8: ObjectID.__new__: Attribute 'id' defined outside __init__
+************* Module ./../../updates/run/install/updates/blivet/formats/swap.py
+W0401: 25,0: : Wildcard import errors
+W1201:132,20: SwapSpace._setOptions: Specify string format arguments as logging function parameters
+E0602:158,18: SwapSpace.setup: Undefined variable 'SwapSpaceError'
+E0602:171,18: SwapSpace.teardown: Undefined variable 'SwapSpaceError'
+E0602:192,18: SwapSpace.create: Undefined variable 'SwapSpaceError'
+W0201:106,8: SwapSpace._setPriority: Attribute '_priority' defined outside __init__
+W0611: 26,0: : Unused import numeric_type
+************* Module ./../../updates/run/install/updates/pykickstart/commands/mouse.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/blivet/arch.py
+W0404: 41,0: : Reimport 'logging' (imported line 36)
+W1201: 97,4: getPPCMachine: Specify string format arguments as logging function parameters
+W1201:151,4: getPPCMacGen: Specify string format arguments as logging function parameters
+W0621:246,10: isX86: Redefining name 'bits' from outer scope (line 353)
+W0621:276,10: isPPC: Redefining name 'bits' from outer scope (line 353)
+W0621:364,8: bits: Redefining name 'bits' from outer scope (line 353)
+W0703:372,11: bits: Catching too general exception Exception
+W1201:373,8: bits: Specify string format arguments as logging function parameters
+************* Module ./../../pyanaconda/ui/tui/spokes/storage.py
+E0611: 34,0: : No name 'SanityError' in module 'blivet.errors'
+E0611: 35,0: : No name 'SanityWarning' in module 'blivet.errors'
+F0401: 37,0: : Unable to import 'blivet.devicelibs.dasd'
+E0611: 37,0: : No name 'dasd' in module 'blivet.devicelibs'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/logvol.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/f18.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/commands/lang.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 49,9: FC3_Lang.parse: Unused variable 'opts'
+W0612: 86,15: F19_Lang.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/f10.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../pyanaconda/isys/__init__.py
+F0401: 30,4: : Unable to import '_isys'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/ignoredisk.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.options
+W0612: 55,15: FC3_IgnoreDisk.parse: Unused variable 'extra'
+W0221: 78,4: F8_IgnoreDisk.parse: Arguments number differs from overridden method
+W0221:118,4: RHEL6_IgnoreDisk.parse: Arguments number differs from overridden method
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/fc3.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/f9.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/commands/skipx.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 49,9: FC3_SkipX.parse: Unused variable 'opts'
+************* Module ./../../updates/run/install/updates/blivet/devices.py
+W0403: 30,0: : Relative import 'devicelibs', should be 'blivet.devicelibs'
+W0403: 31,0: : Relative import 'devicelibs', should be 'blivet.devicelibs'
+W0403: 32,0: : Relative import 'devicelibs', should be 'blivet.devicelibs'
+W0403: 33,0: : Relative import 'devicelibs', should be 'blivet.devicelibs'
+W0403: 34,0: : Relative import 'devicelibs', should be 'blivet.devicelibs'
+W0403: 35,0: : Relative import 'devicelibs', should be 'blivet.devicelibs'
+W0403: 40,0: : Relative import 'errors', should be 'blivet.errors'
+W0401: 40,0: : Wildcard import errors
+W0403: 41,0: : Relative import 'util', should be 'blivet.util'
+W0403: 42,0: : Relative import 'arch', should be 'blivet.arch'
+W0403: 43,0: : Relative import 'flags', should be 'blivet.flags'
+W0403: 44,0: : Relative import 'storage_log', should be 'blivet.storage_log'
+W0403: 45,0: : Relative import 'udev', should be 'blivet.udev'
+W0401: 45,0: : Wildcard import udev
+W0403: 46,0: : Relative import 'formats', should be 'blivet.formats'
+W0403: 47,0: : Relative import 'size', should be 'blivet.size'
+W0403: 48,0: : Relative import 'i18n', should be 'blivet.i18n'
+W0622:384,29: StorageDevice.__init__: Redefining built-in 'format'
+W1201:533,12: StorageDevice.partedDevice: Specify string format arguments as logging function parameters
+W1201:602,8: StorageDevice.updateSysfsPath: Specify string format arguments as logging function parameters
+W1201:631,12: StorageDevice.notifyKernel: Specify string format arguments as logging function parameters
+W0221:672,4: StorageDevice.setup: Arguments number differs from overridden method
+W0622:875,25: StorageDevice._setFormat: Redefining built-in 'format'
+W0223:973,0: DiskDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0622:984,29: DiskDevice.__init__: Redefining built-in 'format'
+W0622:1071,29: PartitionDevice.__init__: Redefining built-in 'format'
+W1201:1159,12: PartitionDevice.__init__: Specify string format arguments as logging function parameters
+W1201:1323,8: PartitionDevice._setPartedPartition: Specify string format arguments as logging function parameters
+W0612:1317,12: PartitionDevice._setPartedPartition: Unused variable 'path'
+W1201:1343,12: PartitionDevice.preCommitFixup: Specify string format arguments as logging function parameters
+W1201:1350,12: PartitionDevice.preCommitFixup: Specify string format arguments as logging function parameters
+W0622:1405,25: PartitionDevice._setFormat: Redefining built-in 'format'
+W1201:1530,8: PartitionDevice._postCreate: Specify string format arguments as logging function parameters
+dm.c: 1693: not running as root returning empty list
+W0223:1769,0: DMDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0622:1774,29: DMDevice.__init__: Redefining built-in 'format'
+W0622:1825,12: DMDevice.status: Redefining built-in 'map'
+W0223:1888,0: DMLinearDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0622:1893,29: DMLinearDevice.__init__: Redefining built-in 'format'
+W1201:1947,8: DMLinearDevice.teardown: Specify string format arguments as logging function parameters
+W0223:1954,0: DMCryptDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0622:1958,29: DMCryptDevice.__init__: Redefining built-in 'format'
+W0223:1978,0: LUKSDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0622:1983,29: LUKSDevice.__init__: Redefining built-in 'format'
+W0223:2033,0: LVMVolumeGroupDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W1201:2309,8: LVMVolumeGroupDevice._addLogVol: Specify string format arguments as logging function parameters
+W0612:2380,13: LVMVolumeGroupDevice.snapshotSpace: Unused variable 'vname'
+W1201:2427,8: LVMVolumeGroupDevice.freeSpace: Specify string format arguments as logging function parameters
+W1201:2437,8: LVMVolumeGroupDevice.freeSpace: Specify string format arguments as logging function parameters
+W0622:2500,17: LVMLogicalVolumeDevice.__init__: Redefining built-in 'format'
+W1201:2628,8: LVMLogicalVolumeDevice._setSize: Specify string format arguments as logging function parameters
+W1201:2633,12: LVMLogicalVolumeDevice._setSize: Specify string format arguments as logging function parameters
+W1201:2712,16: LVMLogicalVolumeDevice._postTeardown: Specify string format arguments as logging function parameters
+W0622:2807,17: LVMThinPoolDevice.__init__: Redefining built-in 'format'
+W1201:2868,8: LVMThinPoolDevice._addLogVol: Specify string format arguments as logging function parameters
+W0223:2964,0: MDRaidArrayDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0622:2972,28: MDRaidArrayDevice.__init__: Redefining built-in 'format'
+W0121:3009,12: MDRaidArrayDevice.__init__: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W1201:3087,8: MDRaidArrayDevice.rawArraySize: Specify string format arguments as logging function parameters
+W1201:3124,12: MDRaidArrayDevice.size: Specify string format arguments as logging function parameters
+W1201:3127,12: MDRaidArrayDevice.size: Specify string format arguments as logging function parameters
+W1201:3270,16: MDRaidArrayDevice._addDevice: Specify string format arguments as logging function parameters
+W0201:3062,8: MDRaidArrayDevice.level: Attribute '_level' defined outside __init__
+W0201:3194,8: MDRaidArrayDevice._setMemberDevices: Attribute '_memberDevices' defined outside __init__
+W0201:3426,12: MDRaidArrayDevice.preCommitFixup: Attribute 'createBitmap' defined outside __init__
+W0223:3504,0: DMRaidArrayDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0622:3511,43: DMRaidArrayDevice.__init__: Redefining built-in 'format'
+W1201:3603,8: DMRaidArrayDevice.teardown: Specify string format arguments as logging function parameters
+W0223:3616,0: MultipathDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0622:3624,29: MultipathDevice.__init__: Redefining built-in 'format'
+W0223:3729,0: NoDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0622:3733,23: NoDevice.__init__: Redefining built-in 'format'
+W0223:3773,0: TmpFSDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0622:3779,8: TmpFSDevice.__init__: Redefining built-in 'format'
+W0223:3806,0: FileDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0622:3814,29: FileDevice.__init__: Redefining built-in 'format'
+W0612:3842,12: FileDevice.path: Unused variable 'status'
+W0612:3882,12: FileDevice._create: Unused variable 'n'
+W0223:3897,0: SparseFileDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0223:3909,0: DirectoryDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0223:3922,0: LoopDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0622:3926,34: LoopDevice.__init__: Redefining built-in 'format'
+W0223:4010,0: iScsiDiskDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W1201:4053,12: iScsiDiskDevice.__init__: Specify string format arguments as logging function parameters
+W1201:4059,12: iScsiDiskDevice.__init__: Specify string format arguments as logging function parameters
+W0223:4098,0: FcoeDiskDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W1201:4122,8: FcoeDiskDevice.__init__: Specify string format arguments as logging function parameters
+W0631:4140,11: FcoeDiskDevice.dracutSetupArgs: Using possibly undefined loop variable 'nic'
+W0631:4141,40: FcoeDiskDevice.dracutSetupArgs: Using possibly undefined loop variable 'nic'
+W0612:4129,22: FcoeDiskDevice.dracutSetupArgs: Unused variable 'auto_vlan'
+W0223:4145,0: OpticalDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0622:4153,17: OpticalDevice.__init__: Redefining built-in 'format'
+W1201:4193,12: OpticalDevice.eject: Specify string format arguments as logging function parameters
+W0223:4196,0: ZFCPDiskDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0223:4239,0: DASDDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0702:4306,12: DASDDevice.dracutSetupArgs: No exception type(s) specified
+W1201:4310,16: DASDDevice.dracutSetupArgs: Specify string format arguments as logging function parameters
+W0223:4318,0: NFSDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W0622:4323,31: NFSDevice.__init__: Redefining built-in 'format'
+W0223:4361,0: BTRFSDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+W1201:4382,8: BTRFSDevice.updateSysfsPath: Specify string format arguments as logging function parameters
+W0622:4486,25: BTRFSVolumeDevice._setFormat: Redefining built-in 'format'
+W1201:4584,12: BTRFSVolumeDevice.listSubVolumes: Specify string format arguments as logging function parameters
+W1201:4590,12: BTRFSVolumeDevice.listSubVolumes: Specify string format arguments as logging function parameters
+W0612:4600,12: BTRFSVolumeDevice.createSubVolumes: Unused variable 'name'
+W1201:4614,12: BTRFSVolumeDevice._getDefaultSubVolumeID: Specify string format arguments as logging function parameters
+W0223:4662,0: BTRFSSubVolumeDevice: Method 'resize' is abstract in class 'StorageDevice' but is not overridden
+************* Module ./../../updates/run/install/updates/pykickstart/commands/zerombr.py
+W0401: 22,0: : Wildcard import pykickstart.base
+W0401: 23,0: : Wildcard import pykickstart.options
+W0612: 50,9: FC3_ZeroMbr.parse: Unused variable 'opts'
+W0612: 63,9: F9_ZeroMbr.parse: Unused variable 'opts'
+************* Module ./../../updates/run/install/updates/blivet/__init__.py
+W0311:350,0: : Bad indentation. Found 23 spaces, expected 20
+W0311:353,0: : Bad indentation. Found 21 spaces, expected 20
+W0311:354,0: : Bad indentation. Found 21 spaces, expected 20
+************* Module ./../../updates/run/install/updates/blivet/__init__.py
+W0401: 65,0: : Wildcard import pykickstart.constants
+W0403: 67,0: : Relative import 'storage_log', should be 'blivet.storage_log'
+W0403: 68,0: : Relative import 'errors', should be 'blivet.errors'
+W0401: 68,0: : Wildcard import errors
+W0403: 69,0: : Relative import 'devices', should be 'blivet.devices'
+W0401: 69,0: : Wildcard import devices
+W0403: 70,0: : Relative import 'devicetree', should be 'blivet.devicetree'
+W0403: 71,0: : Relative import 'deviceaction', should be 'blivet.deviceaction'
+W0401: 71,0: : Wildcard import deviceaction
+W0403: 72,0: : Relative import 'formats', should be 'blivet.formats'
+W0403: 73,0: : Relative import 'formats', should be 'blivet.formats'
+W0403: 74,0: : Relative import 'formats', should be 'blivet.formats'
+W0403: 75,0: : Relative import 'devicefactory', should be 'blivet.devicefactory'
+W0403: 76,0: : Relative import 'devicelibs.dm', should be 'blivet.devicelibs.dm'
+W0403: 77,0: : Relative import 'devicelibs.crypto', should be 'blivet.devicelibs.crypto'
+W0403: 78,0: : Relative import 'devicelibs.edd', should be 'blivet.devicelibs.edd'
+W0403: 79,0: : Relative import 'devicelibs.dasd', should be 'blivet.devicelibs.dasd'
+W0403: 80,0: : Relative import 'udev', should be 'blivet.udev'
+W0403: 81,0: : Relative import 'iscsi', should be 'blivet.iscsi'
+W0403: 82,0: : Relative import 'fcoe', should be 'blivet.fcoe'
+W0403: 83,0: : Relative import 'zfcp', should be 'blivet.zfcp'
+W0403: 84,0: : Relative import 'util', should be 'blivet.util'
+W0403: 85,0: : Relative import 'arch', should be 'blivet.arch'
+W0403: 86,0: : Relative import 'flags', should be 'blivet.flags'
+W0403: 87,0: : Relative import 'platform', should be 'blivet.platform'
+W0403: 88,0: : Relative import 'size', should be 'blivet.size'
+W0403: 89,0: : Relative import 'i18n', should be 'blivet.i18n'
+W0621:109,4: enable_installer_mode: Redefining name 'ROOT_PATH' from outer scope (line 32)
+W0621:122,4: enable_installer_mode: Redefining name 'progress_report' from outer scope (line 71)
+W0621:114,4: enable_installer_mode: Redefining name 'errorHandler' from outer scope (line 42)
+W0621:111,4: enable_installer_mode: Redefining name 'productName' from outer scope (line 34)
+W0621:108,4: enable_installer_mode: Redefining name 'isys' from outer scope (line 31)
+W0621:115,4: enable_installer_mode: Redefining name 'ERROR_RAISE' from outer scope (line 36)
+W0621:110,4: enable_installer_mode: Redefining name 'shortProductName' from outer scope (line 33)
+W0602: 99,4: enable_installer_mode: Using global for 'isys' but no assignment is done
+W0602:100,4: enable_installer_mode: Using global for 'ROOT_PATH' but no assignment is done
+W0602:101,4: enable_installer_mode: Using global for 'shortProductName' but no assignment is done
+W0602:102,4: enable_installer_mode: Using global for 'productName' but no assignment is done
+W0602:103,4: enable_installer_mode: Using global for 'get_bootloader' but no assignment is done
+W0602:104,4: enable_installer_mode: Using global for 'BootLoaderError' but no assignment is done
+W0602:105,4: enable_installer_mode: Using global for 'errorHandler' but no assignment is done
+W0602:106,4: enable_installer_mode: Using global for 'ERROR_RAISE' but no assignment is done
+E0602:123,4: enable_installer_mode: Undefined variable 'deviceaction'
+W0612:112,4: enable_installer_mode: Unused variable 'get_bootloader'
+W0612:113,4: enable_installer_mode: Unused variable 'BootLoaderError'
+W0612:109,4: enable_installer_mode: Unused variable 'ROOT_PATH'
+W0612:114,4: enable_installer_mode: Unused variable 'errorHandler'
+W0612:111,4: enable_installer_mode: Unused variable 'productName'
+W0612:108,4: enable_installer_mode: Unused variable 'isys'
+W0612:115,4: enable_installer_mode: Unused variable 'ERROR_RAISE'
+W0612:110,4: enable_installer_mode: Unused variable 'shortProductName'
+W0403:131,4: storageInitialize: Relative import 'platform', should be 'blivet.platform'
+W1201:157,12: storageInitialize: Specify string format arguments as logging function parameters
+W1201:211,12: writeEscrowPackets: Specify string format arguments as logging function parameters
+W1201:218,8: writeEscrowPackets: Specify string format arguments as logging function parameters
+W0201:263,8: StorageDiscoveryConfig.update: Attribute 'zeroMbr' defined outside __init__
+W0622:377,8: Blivet.nextID: Redefining built-in 'id'
+W0703:388,15: Blivet.shutdown: Catching too general exception Exception
+W1201:389,12: Blivet.shutdown: Specify string format arguments as logging function parameters
+W1201:403,8: Blivet.reset: Specify string format arguments as logging function parameters
+W0703:441,19: Blivet.reset: Catching too general exception Exception
+W1201:442,16: Blivet.reset: Specify string format arguments as logging function parameters
+W1201:497,20: Blivet.disks: Specify string format arguments as logging function parameters
+W1201:522,16: Blivet.partitioned: Specify string format arguments as logging function parameters
+W1201:762,8: Blivet.recursiveRemove: Specify string format arguments as logging function parameters
+W1201:772,12: Blivet.recursiveRemove: Specify string format arguments as logging function parameters
+W1201:774,12: Blivet.recursiveRemove: Specify string format arguments as logging function parameters
+W1201:794,12: Blivet.clearPartitions: Specify string format arguments as logging function parameters
+W1201:799,12: Blivet.clearPartitions: Specify string format arguments as logging function parameters
+W1201:809,12: Blivet.clearPartitions: Specify string format arguments as logging function parameters
+W1201:837,24: Blivet.initializeDisk: Specify string format arguments as logging function parameters
+W1201:860,12: Blivet.removeEmptyExtendedPartitions: Specify string format arguments as logging function parameters
+W1201:863,12: Blivet.removeEmptyExtendedPartitions: Specify string format arguments as logging function parameters
+W1201:865,16: Blivet.removeEmptyExtendedPartitions: Specify string format arguments as logging function parameters
+W1201:1009,16: Blivet.newMDArray: Specify string format arguments as logging function parameters
+W1201:1042,16: Blivet.newVG: Specify string format arguments as logging function parameters
+W1201:1105,16: Blivet.newLV: Specify string format arguments as logging function parameters
+W1201:1160,8: Blivet.newBTRFS: Specify string format arguments as logging function parameters
+W0622:1257,35: Blivet.formatDevice: Redefining built-in 'format'
+W1201:1406,16: Blivet.suggestContainerName: Specify string format arguments as logging function parameters
+W1201:1461,16: Blivet.suggestDeviceName: Specify string format arguments as logging function parameters
+E1101:1472,8: Blivet.savePassphrase: Instance of 'DeviceTree' has no '_DeviceTree__luksDevs' member
+E1101:1473,8: Blivet.savePassphrase: Instance of 'DeviceTree' has no '_DeviceTree__passphrases' member
+W0612:1547,12: Blivet.sanityCheck: Unused variable 'boot'
+E0602:1752,31: Blivet.bootloader: Undefined variable 'get_bootloader'
+W1201:1827,8: Blivet.setDefaultFSType: Specify string format arguments as logging function parameters
+W1201:1834,12: Blivet.setDefaultFSType: Specify string format arguments as logging function parameters
+W1201:2105,16: Blivet.updateKSData: Specify string format arguments as logging function parameters
+W0201:1837,8: Blivet.setDefaultFSType: Attribute '_defaultFSType' defined outside __init__
+W1201:2189,12: mountExistingSystem: Specify string format arguments as logging function parameters
+W0612:2184,30: mountExistingSystem: Unused variable 'e'
+W1201:2207,8: BlkidTab.parse: Specify string format arguments as logging function parameters
+W0612:2216,23: BlkidTab.parse: Unused variable 'sep'
+W1201:2250,8: CryptTab.parse: Specify string format arguments as logging function parameters
+W0703:2256,23: CryptTab.parse: Catching too general exception Exception
+W0612:2260,30: CryptTab.parse: Unused variable 'comment'
+W0612:2260,23: CryptTab.parse: Unused variable 'pound'
+W0703:2332,11: get_containing_device: Catching too general exception Exception
+W0622:2495,12: FSSet._parseOneLine: Redefining built-in 'format'
+W1201:2502,12: FSSet._parseOneLine: Specify string format arguments as logging function parameters
+W1201:2509,12: FSSet._parseOneLine: Specify string format arguments as logging function parameters
+W1201:2519,12: FSSet._parseOneLine: Specify string format arguments as logging function parameters
+W1201:2560,12: FSSet.parseFSTab: Specify string format arguments as logging function parameters
+W0703:2567,15: FSSet.parseFSTab: Catching too general exception Exception
+W1201:2566,12: FSSet.parseFSTab: Specify string format arguments as logging function parameters
+W1201:2568,12: FSSet.parseFSTab: Specify string format arguments as logging function parameters
+W0703:2575,15: FSSet.parseFSTab: Catching too general exception Exception
+W1201:2574,12: FSSet.parseFSTab: Specify string format arguments as logging function parameters
+W1201:2576,12: FSSet.parseFSTab: Specify string format arguments as logging function parameters
+W1201:2583,12: FSSet.parseFSTab: Specify string format arguments as logging function parameters
+W0612:2592,30: FSSet.parseFSTab: Unused variable 'comment'
+W0612:2592,23: FSSet.parseFSTab: Unused variable 'pound'
+W1201:2632,20: FSSet.turnOnSwap: Specify string format arguments as logging function parameters
+W1201:2681,20: FSSet.mountFilesystems: Specify string format arguments as logging function parameters
+W0703:2691,19: FSSet.mountFilesystems: Catching too general exception Exception
+W0703:2703,19: FSSet.mountFilesystems: Catching too general exception Exception
+W1201:2704,16: FSSet.mountFilesystems: Specify string format arguments as logging function parameters
+W0622:2736,12: FSSet.createSwapFile: Redefining built-in 'file'
+W0612:2736,12: FSSet.createSwapFile: Unused variable 'file'
+W0622:2858,8: FSSet.fstab: Redefining built-in 'format'
+W1201:2897,20: FSSet.fstab: Specify string format arguments as logging function parameters
+W0702:3044,4: getReleaseString: No exception type(s) specified
+W0621:3088,13: findExistingInstallations: Redefining name 'arch' from outer scope (line 69)
+W0703:3069,15: findExistingInstallations: Catching too general exception Exception
+W1201:3070,12: findExistingInstallations: Specify string format arguments as logging function parameters
+W0703:3076,15: findExistingInstallations: Catching too general exception Exception
+W1201:3077,12: findExistingInstallations: Specify string format arguments as logging function parameters
+W1201:3151,8: parseFSTab: Specify string format arguments as logging function parameters
+W0703:3158,11: parseFSTab: Catching too general exception Exception
+W1201:3157,8: parseFSTab: Specify string format arguments as logging function parameters
+W1201:3159,8: parseFSTab: Specify string format arguments as logging function parameters
+W0703:3166,11: parseFSTab: Catching too general exception Exception
+W1201:3165,8: parseFSTab: Specify string format arguments as logging function parameters
+W1201:3167,8: parseFSTab: Specify string format arguments as logging function parameters
+W1201:3171,8: parseFSTab: Specify string format arguments as logging function parameters
+W0612:3174,26: parseFSTab: Unused variable 'comment'
+W0612:3174,19: parseFSTab: Unused variable 'pound'
+W0612:3180,51: parseFSTab: Unused variable 'rest'
+************* Module ./../../anaconda
+I0011:398,0: : Locally disabling W0621
+I0011:467,0: : Locally disabling F0401
+I0011:723,0: : Locally disabling W0611
+F0401: 39,4: : Unable to import 'coverage'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/firstboot.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.constants
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 60,15: FC3_Firstboot.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/interactive.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 49,9: FC3_Interactive.parse: Unused variable 'opts'
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/f11.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../pyanaconda/ui/helpers.py
+I0011:364,0: : Locally disabling W0223
+E0611: 87,8: StorageChecker.checkStorage: No name 'SanityError' in module 'blivet.errors'
+E0611: 88,8: StorageChecker.checkStorage: No name 'SanityWarning' in module 'blivet.errors'
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/f19.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/commands/iscsi.py
+W0401: 21,0: : Wildcard import pykickstart.base
+W0401: 22,0: : Wildcard import pykickstart.errors
+W0401: 23,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/fc4.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/commands/eula.py
+W0401: 21,0: : Wildcard import pykickstart.base
+W0401: 22,0: : Wildcard import pykickstart.errors
+W0401: 23,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/blivet/formats/multipath.py
+W0401: 28,0: : Wildcard import errors
+E0602: 77,14: MultipathMember.create: Undefined variable 'MultipathMemberError'
+E0602: 82,14: MultipathMember.destroy: Undefined variable 'MultipathMemberError'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/liveimg.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 74,15: F19_Liveimg.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/rescue.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 61,15: F10_Rescue.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/blivet/formats/__init__.py
+W0401: 31,0: : Wildcard import errors
+W1201: 48,4: register_device_format: Specify string format arguments as logging function parameters
+E0602: 62,10: get_default_filesystem_type: Undefined variable 'DeviceFormatError'
+W1201: 91,4: getFormat: Specify string format arguments as logging function parameters
+W0622:103,4: collect_device_format_classes: Redefining built-in 'dir'
+W1201:112,16: collect_device_format_classes: Specify string format arguments as logging function parameters
+E0602:333,19: DeviceFormat.notifyKernel: Undefined variable 'DMError'
+W1201:334,16: DeviceFormat.notifyKernel: Specify string format arguments as logging function parameters
+E0602:339,19: DeviceFormat.notifyKernel: Undefined variable 'MDRaidError'
+W1201:340,16: DeviceFormat.notifyKernel: Specify string format arguments as logging function parameters
+W1201:349,12: DeviceFormat.notifyKernel: Specify string format arguments as logging function parameters
+E0602:362,15: DeviceFormat.cacheMajorminor: Undefined variable 'StorageError'
+E0602:391,18: DeviceFormat.create: Undefined variable 'FormatCreateError'
+E0602:412,18: DeviceFormat.destroy: Undefined variable 'FormatDestroyError'
+E0602:433,18: DeviceFormat.setup: Undefined variable 'FormatSetupError'
+E0602:444,18: DeviceFormat.setup: Undefined variable 'FormatSetupError'
+E0602:527,19: DeviceFormat.majorminor: Undefined variable 'DMError'
+E0602:533,22: DeviceFormat.majorminor: Undefined variable 'StorageError'
+W0201:276,8: DeviceFormat._setLabel: Attribute '_label' defined outside __init__
+W0201:289,8: DeviceFormat._setOptions: Attribute '_options' defined outside __init__
+W0201:299,8: DeviceFormat._setDevice: Attribute '_device' defined outside __init__
+************* Module ./../../updates/run/install/updates/pykickstart/commands/harddrive.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 71,15: FC3_HardDrive.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/blivet/formats/lvmpv.py
+W0401: 27,0: : Wildcard import errors
+E0602: 98,18: LVMPhysicalVolume.probe: Undefined variable 'PhysicalVolumeError'
+E0602:147,18: LVMPhysicalVolume.destroy: Undefined variable 'PhysicalVolumeError'
+E0602:150,18: LVMPhysicalVolume.destroy: Undefined variable 'PhysicalVolumeError'
+E0602:155,15: LVMPhysicalVolume.destroy: Undefined variable 'LVMError'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/bootloader.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612:106,15: FC3_Bootloader.parse: Unused variable 'extra'
+W0612:147,15: FC4_Bootloader.parse: Unused variable 'extra'
+W0612:245,15: F17_Bootloader.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/blivet/errors.py
+E0102:189,0: NoDisksError: class already defined line 28
+************* Module ./../../updates/run/install/updates/pykickstart/commands/multipath.py
+W0401: 21,0: : Wildcard import pykickstart.base
+W0401: 22,0: : Wildcard import pykickstart.errors
+W0401: 23,0: : Wildcard import pykickstart.options
+W0612: 86,15: FC6_MultiPath.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/blivet/formats/prepboot.py
+W0311: 85,0: : Bad indentation. Found 21 spaces, expected 20
+W0311: 86,0: : Bad indentation. Found 21 spaces, expected 20
+W0311: 88,0: : Bad indentation. Found 21 spaces, expected 20
+W0311: 89,0: : Bad indentation. Found 21 spaces, expected 20
+W0311: 90,0: : Bad indentation. Found 21 spaces, expected 20
+W0401: 23,0: : Wildcard import errors
+E0602: 74,18: PPCPRePBoot.create: Undefined variable 'FormatCreateError'
+W1201: 93,12: PPCPRePBoot.create: Specify string format arguments as logging function parameters
+************* Module ./../../updates/run/install/updates/blivet/devicelibs/edd.py
+W1201: 91,16: EddEntry.load: Specify string format arguments as logging function parameters
+W1201:117,16: EddMatcher.devname_from_pci_dev: Specify string format arguments as logging function parameters
+W1201:168,12: collect_mbrs: Specify string format arguments as logging function parameters
+W1201:175,12: collect_mbrs: Specify string format arguments as logging function parameters
+W1201:180,20: collect_mbrs: Specify string format arguments as logging function parameters
+W1201:186,4: collect_mbrs: Specify string format arguments as logging function parameters
+W0602:205,4: get_edd_dict: Using global for 'edd_dict' but no assignment is done
+W1201:207,8: get_edd_dict: Specify string format arguments as logging function parameters
+W1201:213,12: get_edd_dict: Specify string format arguments as logging function parameters
+W1201:217,16: get_edd_dict: Specify string format arguments as logging function parameters
+W1201:222,16: get_edd_dict: Specify string format arguments as logging function parameters
+W1201:228,8: get_edd_dict: Specify string format arguments as logging function parameters
+************* Module ./../../updates/run/install/updates/pykickstart/commands/nfs.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 63,15: FC3_NFS.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/f20.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/commands/autostep.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.options
+W0612: 52,15: FC3_AutoStep.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/blivet/deviceaction.py
+W0403: 24,0: : Relative import 'udev', should be 'blivet.udev'
+W0401: 24,0: : Wildcard import udev
+W0403: 25,0: : Relative import 'util', should be 'blivet.util'
+W0403: 27,0: : Relative import 'devices', should be 'blivet.devices'
+W0403: 28,0: : Relative import 'devices', should be 'blivet.devices'
+W0403: 29,0: : Relative import 'devices', should be 'blivet.devices'
+W0403: 30,0: : Relative import 'formats', should be 'blivet.formats'
+W0403: 31,0: : Relative import 'errors', should be 'blivet.errors'
+W0401: 31,0: : Wildcard import errors
+W0403: 33,0: : Relative import 'i18n', should be 'blivet.i18n'
+E1101:174,52: DeviceAction.isShrink: Instance of 'DeviceAction' has no 'dir' member
+E1101:178,52: DeviceAction.isGrow: Instance of 'DeviceAction' has no 'dir' member
+E1101:207,31: DeviceAction.resizeString: Instance of 'DeviceAction' has no 'dir' member
+W0703:316,19: ActionDestroyDevice.execute: Catching too general exception Exception
+W0622:437,31: ActionCreateFormat.__init__: Redefining built-in 'format'
+W1201:480,16: ActionCreateFormat.execute: Specify string format arguments as logging function parameters
+************* Module ./../../updates/run/install/updates/pykickstart/commands/sshpw.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/pykickstart/commands/logging.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 66,15: FC6_Logging.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/rhel7.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/blivet/formats/fslabel.py
+E1101: 40,15: FSLabelApp.name: Instance of 'FSLabelApp' has no '_name' member
+E1101:111,25: FSLabelApp.extractLabel: Instance of 'FSLabelApp' has no '_labelstrRegex' member
+E0213:146,4: DosFsLabel._readLabelArgs: Method should have "self" as first argument
+E0213:164,4: JFSTune._readLabelArgs: Method should have "self" as first argument
+E0213:200,4: XFSAdmin._readLabelArgs: Method should have "self" as first argument
+E0213:220,4: NTFSLabel._readLabelArgs: Method should have "self" as first argument
+************* Module ./../../updates/run/install/updates/blivet/devicelibs/lvm.py
+W0312:131,0: : Found indentation with tabs instead of spaces
+W0312:132,0: : Found indentation with tabs instead of spaces
+W0401: 34,0: : Wildcard import errors
+W0602: 67,4: _getConfigArgs: Using global for 'config_args_data' but no assignment is done
+W0602: 95,4: lvm_cc_addFilterRejectRegexp: Using global for 'config_args_data' but no assignment is done
+W1201: 96,4: lvm_cc_addFilterRejectRegexp: Specify string format arguments as logging function parameters
+W0602:101,4: lvm_cc_removeFilterRejectRegexp: Using global for 'config_args_data' but no assignment is done
+W1201:102,4: lvm_cc_removeFilterRejectRegexp: Specify string format arguments as logging function parameters
+W1201:106,8: lvm_cc_removeFilterRejectRegexp: Specify string format arguments as logging function parameters
+W0602:110,4: lvm_cc_resetFilter: Using global for 'config_args_data' but no assignment is done
+W0602:118,4: blacklistVG: Using global for 'lvm_vg_blacklist' but no assignment is done
+E0602:215,14: lvm: Undefined variable 'LVMError'
+E0602:227,11: pvcreate: Undefined variable 'LVMError'
+E0602:228,14: pvcreate: Undefined variable 'LVMError'
+E0602:238,11: pvresize: Undefined variable 'LVMError'
+E0602:239,14: pvresize: Undefined variable 'LVMError'
+E0602:248,11: pvremove: Undefined variable 'LVMError'
+E0602:249,14: pvremove: Undefined variable 'LVMError'
+E0602:258,11: pvscan: Undefined variable 'LVMError'
+E0602:259,14: pvscan: Undefined variable 'LVMError'
+E0602:304,11: vgcreate: Undefined variable 'LVMError'
+E0602:305,14: vgcreate: Undefined variable 'LVMError'
+E0602:314,11: vgremove: Undefined variable 'LVMError'
+E0602:315,14: vgremove: Undefined variable 'LVMError'
+E0602:324,11: vgactivate: Undefined variable 'LVMError'
+E0602:325,14: vgactivate: Undefined variable 'LVMError'
+E0602:334,11: vgdeactivate: Undefined variable 'LVMError'
+E0602:335,14: vgdeactivate: Undefined variable 'LVMError'
+E0602:353,11: vgreduce: Undefined variable 'LVMError'
+E0602:354,14: vgreduce: Undefined variable 'LVMError'
+E0602:366,14: vginfo: Undefined variable 'LVMError'
+W9901:366,25: vginfo: Found % in a call to a _() method
+W0102:409,0: lvcreate: Dangerous default value [] as argument
+E0602:419,11: lvcreate: Undefined variable 'LVMError'
+E0602:420,14: lvcreate: Undefined variable 'LVMError'
+E0602:429,11: lvremove: Undefined variable 'LVMError'
+E0602:430,14: lvremove: Undefined variable 'LVMError'
+E0602:440,11: lvresize: Undefined variable 'LVMError'
+E0602:441,14: lvresize: Undefined variable 'LVMError'
+E0602:451,11: lvactivate: Undefined variable 'LVMError'
+E0602:452,14: lvactivate: Undefined variable 'LVMError'
+E0602:461,11: lvdeactivate: Undefined variable 'LVMError'
+E0602:462,14: lvdeactivate: Undefined variable 'LVMError'
+E0602:480,11: thinpoolcreate: Undefined variable 'LVMError'
+E0602:481,14: thinpoolcreate: Undefined variable 'LVMError'
+E0602:491,11: thinlvcreate: Undefined variable 'LVMError'
+E0602:492,14: thinlvcreate: Undefined variable 'LVMError'
+W0611: 25,0: : Unused import re
+W0611: 23,0: : Unused import os
+************* Module ./../../updates/run/install/updates/blivet/size.py
+W0403: 31,0: : Relative import 'errors', should be 'blivet.errors'
+W0401: 31,0: : Wildcard import errors
+W0403: 32,0: : Relative import 'i18n', should be 'blivet.i18n'
+W0622:174,21: Size.__new__: Redefining built-in 'bytes'
+W0221:211,4: Size.__str__: Arguments number differs from overridden method
+W0631:319,11: Size.humanReadable: Using possibly undefined loop variable 'abbr'
+W0631:320,34: Size.humanReadable: Using possibly undefined loop variable 'abbr'
+W0631:322,34: Size.humanReadable: Using possibly undefined loop variable 'prefix'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/deviceprobe.py
+W0401: 20,0: : Wildcard import pykickstart.base
+************* Module ./../../updates/run/install/updates/pykickstart/sections.py
+W0403: 32,0: : Relative import 'constants', should be 'pykickstart.constants'
+W0401: 32,0: : Wildcard import constants
+W0403: 33,0: : Relative import 'options', should be 'pykickstart.options'
+W0403: 34,0: : Relative import 'version', should be 'pykickstart.version'
+W0401: 34,0: : Wildcard import version
+W0612:167,15: ScriptSection.handleHeader: Unused variable 'extra'
+W0612:211,12: PackageSection.handleLine: Unused variable 's'
+W0612:211,15: PackageSection.handleLine: Unused variable 't'
+W0612:240,15: PackageSection.handleHeader: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/blivet/fcoe.py
+W1201: 77,12: fcoe._startEDD: Specify string format arguments as logging function parameters
+W1201: 85,8: fcoe._startEDD: Specify string format arguments as logging function parameters
+W0612: 80,9: fcoe._startEDD: Unused variable 'key'
+W0121:111,12: fcoe.addSan: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W1201:113,8: fcoe.addSan: Specify string format arguments as logging function parameters
+W1201:142,12: fcoe.addSan: Specify string format arguments as logging function parameters
+************* Module ./../../updates/run/install/updates/blivet/devicelibs/dm.py
+W0401: 27,0: : Wildcard import errors
+E0602: 35,14: dm_setup: Undefined variable 'DMError'
+E0602: 73,14: dm_node_from_name: Undefined variable 'DMError'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/mediacheck.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 48,9: FC4_MediaCheck.parse: Unused variable 'opts'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/partition.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612:323,8: FC4_Partition.__init__.part_cb: Unused variable 'part_cb'
+W0612:344,8: RHEL5_Partition.__init__.part_cb: Unused variable 'part_cb'
+W0612:363,8: F9_Partition.__init__.part_cb: Unused variable 'part_cb'
+************* Module ./../../updates/run/install/updates/pykickstart/parser.py
+W0401: 40,0: : Wildcard import optparse
+W0403: 44,0: : Relative import 'constants', should be 'pykickstart.constants'
+W0403: 45,0: : Relative import 'errors', should be 'pykickstart.errors'
+W0403: 46,0: : Relative import 'ko', should be 'pykickstart.ko'
+W0403: 47,0: : Relative import 'sections', should be 'pykickstart.sections'
+W0401: 47,0: : Wildcard import sections
+W0403: 48,0: : Relative import 'version', should be 'pykickstart.version'
+W0703:604,15: KickstartParser._tryFunc: Catching too general exception Exception
+W9901:671,79: KickstartParser._stateMachine: Found % in a call to a _() method
+W0611: 39,0: : Unused import copy
+W0611: 37,0: : Unused import sys
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/rhel4.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/commands/displaymode.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.constants
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 56,9: FC3_DisplayMode.parse: Unused variable 'opts'
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/fc6.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/f12.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/blivet/zfcp.py
+W0403: 24,0: : Relative import 'udev', should be 'blivet.udev'
+W1201: 33,4: loggedWriteLineToFile: Specify string format arguments as logging function parameters
+W0121: 48,12: ZFCPDevice.__init__: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0121: 50,12: ZFCPDevice.__init__: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0121: 52,12: ZFCPDevice.__init__: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0622: 69,32: ZFCPDevice.sanitizeWWPNInput: Redefining built-in 'id'
+W0622: 89,23: ZFCPDevice._hextest: Redefining built-in 'hex'
+W0622: 96,31: ZFCPDevice.checkValidDevice: Redefining built-in 'id'
+W0622:107,33: ZFCPDevice.checkValid64BitHex: Redefining built-in 'hex'
+W1201:124,12: ZFCPDevice.onlineDevice: Specify string format arguments as logging function parameters
+W0121:128,12: ZFCPDevice.onlineDevice: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W9901:129,16: ZFCPDevice.onlineDevice: Found % in a call to a _() method
+W0121:139,12: ZFCPDevice.onlineDevice: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0121:150,20: ZFCPDevice.onlineDevice: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0121:157,16: ZFCPDevice.onlineDevice: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W1201:163,16: ZFCPDevice.onlineDevice: Specify string format arguments as logging function parameters
+W0121:172,16: ZFCPDevice.onlineDevice: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0121:178,12: ZFCPDevice.onlineDevice: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0121:190,12: ZFCPDevice.onlineDevice: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0121:199,12: ZFCPDevice.onlineDevice: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0622:219,12: ZFCPDevice.offlineSCSIDevice: Redefining built-in 'id'
+W1201:242,8: ZFCPDevice.offlineSCSIDevice: Specify string format arguments as logging function parameters
+W0121:256,12: ZFCPDevice.offlineDevice: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0121:265,12: ZFCPDevice.offlineDevice: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W1201:276,20: ZFCPDevice.offlineDevice: Specify string format arguments as logging function parameters
+W0121:283,16: ZFCPDevice.offlineDevice: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W1201:293,20: ZFCPDevice.offlineDevice: Specify string format arguments as logging function parameters
+W1201:302,16: ZFCPDevice.offlineDevice: Specify string format arguments as logging function parameters
+W0121:309,12: ZFCPDevice.offlineDevice: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W1201:341,12: ZFCP.readConfig: Specify string format arguments as logging function parameters
+W1201:364,16: ZFCP.readConfig: Specify string format arguments as logging function parameters
+************* Module ./../../updates/run/install/updates/blivet/devicelibs/raid.py
+E1121:189,15: RAIDLevel.get_recommended_stride: Too many positional arguments for function call
+E0213:192,4: RAIDLevel._get_recommended_stride: Method should have "self" as first argument
+W0221:332,4: RAID0._get_recommended_stride: Arguments number differs from overridden method
+W0221:355,4: RAID1._get_recommended_stride: Arguments number differs from overridden method
+W0221:379,4: RAID4._get_recommended_stride: Arguments number differs from overridden method
+W0221:403,4: RAID5._get_recommended_stride: Arguments number differs from overridden method
+W0221:427,4: RAID6._get_recommended_stride: Arguments number differs from overridden method
+W0221:451,4: RAID10._get_recommended_stride: Arguments number differs from overridden method
+W0611: 27,0: : Unused import Size
+************* Module ./../../pyanaconda/ui/gui/spokes/storage.py
+I0011:161,0: : Locally disabling W0221
+F0401: 64,0: : Unable to import 'blivet.devicelibs.dasd'
+E0611: 64,0: : No name 'dasd' in module 'blivet.devicelibs'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/timezone.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/blivet/iscsi.py
+W0301:152,0: : Unnecessary semicolon
+W0403: 21,0: : Relative import 'udev', should be 'blivet.udev'
+W1201: 55,8: has_iscsi: Specify string format arguments as logging function parameters
+W0703: 89,19: iscsi.__init__: Catching too general exception Exception
+W0121:104,12: iscsi._setInitiator: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0121:106,12: iscsi._setInitiator: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0703:151,15: iscsi._startIBFT: Catching too general exception Exception
+W1201:159,16: iscsi._startIBFT: Specify string format arguments as logging function parameters
+W1201:163,16: iscsi._startIBFT: Specify string format arguments as logging function parameters
+W0107:165,16: iscsi._startIBFT: Unnecessary pass statement
+W1201:189,12: iscsi.create_interfaces: Specify string format arguments as logging function parameters
+W0622:222,12: iscsi.startup: Redefining built-in 'dir'
+W1201:211,8: iscsi.startup: Specify string format arguments as logging function parameters
+W1201:237,12: iscsi.startup: Specify string format arguments as logging function parameters
+W0121:263,12: iscsi.discover: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0121:265,12: iscsi.discover: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W1201:268,12: iscsi.discover: Specify string format arguments as logging function parameters
+W1201:288,16: iscsi.discover: Specify string format arguments as logging function parameters
+W1201:314,12: iscsi.log_into_node: Specify string format arguments as logging function parameters
+W1201:320,12: iscsi.log_into_node: Specify string format arguments as logging function parameters
+W0121:333,12: iscsi.addTarget: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W1201:337,16: iscsi.addTarget: Specify string format arguments as logging function parameters
+W1201:343,20: iscsi.addTarget: Specify string format arguments as logging function parameters
+W0121:354,12: iscsi.addTarget: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0121:357,12: iscsi.addTarget: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0612:349,17: iscsi.addTarget: Unused variable 'msg'
+************* Module ./../../updates/run/install/updates/blivet/devicelibs/crypto.py
+W0401: 26,0: : Wildcard import errors
+E0602: 99,14: luks_format: Undefined variable 'CryptoError'
+E0602:104,14: luks_format: Undefined variable 'CryptoError'
+E0602:115,14: luks_open: Undefined variable 'CryptoError'
+E0602:122,14: luks_close: Undefined variable 'CryptoError'
+E0602:135,14: luks_add_key: Undefined variable 'CryptoError'
+E0602:148,14: luks_remove_key: Undefined variable 'CryptoError'
+************* Module ./../../updates/run/install/updates/blivet/udev.py
+W1401:623,0: : Anomalous backslash in string: '\d'. String constant might be missing an r prefix.
+W1401:642,0: : Anomalous backslash in string: '\d'. String constant might be missing an r prefix.
+W1401:685,0: : Anomalous backslash in string: '\d'. String constant might be missing an r prefix.
+W0403: 27,0: : Relative import 'util', should be 'blivet.util'
+W0403: 28,0: : Relative import 'errors', should be 'blivet.errors'
+W0401: 28,0: : Wildcard import errors
+W0403: 29,0: : Relative import 'size', should be 'blivet.size'
+W0403: 31,0: : Relative import 'pyudev', should be 'blivet.pyudev'
+W1201: 43,8: udev_get_device: Specify string format arguments as logging function parameters
+W0403:103,4: udev_resolve_devspec: Relative import 'devices', should be 'blivet.devices'
+W1201:178,16: __is_blacklisted_blockdev: Specify string format arguments as logging function parameters
+W0621:184,4: udev_enumerate_block_devices: Redefining name 'os' from outer scope (line 24)
+W1201:289,8: udev_device_get_zfcp_attribute: Specify string format arguments as logging function parameters
+W0403:523,4: udev_device_is_biosraid_member: Relative import 'formats.dmraid', should be 'blivet.formats.dmraid'
+W0403:524,4: udev_device_is_biosraid_member: Relative import 'formats.mdraid', should be 'blivet.formats.mdraid'
+W1201:627,8: udev_device_get_iscsi_session: Specify string format arguments as logging function parameters
+W1201:647,16: udev_device_get_iscsi_initiator: Specify string format arguments as logging function parameters
+W1201:656,12: udev_device_get_iscsi_initiator: Specify string format arguments as logging function parameters
+W1201:728,12: udev_device_get_fcoe_nic: Specify string format arguments as logging function parameters
+************* Module ./../../updates/run/install/updates/pykickstart/commands/autopart.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/pykickstart/options.py
+W0401: 32,0: : Wildcard import optparse
+W0403: 34,0: : Relative import 'constants', should be 'pykickstart.constants'
+W0401: 34,0: : Wildcard import constants
+W0403: 35,0: : Relative import 'errors', should be 'pykickstart.errors'
+W0401: 35,0: : Wildcard import errors
+W0403: 36,0: : Relative import 'version', should be 'pykickstart.version'
+W0401: 36,0: : Wildcard import version
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/control.py
+W0401: 20,0: : Wildcard import pykickstart.version
+W0401: 21,0: : Wildcard import pykickstart.commands
+************* Module ./../../updates/run/install/updates/pykickstart/commands/group.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.constants
+W0401: 22,0: : Wildcard import pykickstart.errors
+W0401: 23,0: : Wildcard import pykickstart.options
+W0612: 83,15: F12_Group.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/f17.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/commands/upgrade.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 54,9: FC3_Upgrade.parse: Unused variable 'opts'
+************* Module ./../../pyanaconda/kickstart.py
+E0611:247,8: AutoPart.execute: No name 'sanityCheck' in module 'blivet.partitioning'
+E1101:554,16: Fcoe.parse: Instance of 'fcoe' has no 'added_nics' member
+************* Module ./../../updates/run/install/updates/blivet/formats/biosboot.py
+W0401: 25,0: : Wildcard import errors
+************* Module ./../../updates/run/install/updates/pykickstart/commands/method.py
+W0401: 20,0: : Wildcard import pykickstart.base
+************* Module ./../../updates/run/install/updates/pykickstart/commands/xconfig.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/pykickstart/commands/user.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.constants
+W0401: 22,0: : Wildcard import pykickstart.errors
+W0401: 23,0: : Wildcard import pykickstart.options
+W0612:166,15: FC6_User.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/key.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.constants
+W0401: 22,0: : Wildcard import pykickstart.errors
+W0401: 23,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/pykickstart/commands/realm.py
+W0401: 21,0: : Wildcard import pykickstart.base
+W9901: 53,16: F19_Realm._parseArguments: Found % in a call to a _() method
+************* Module ./../../pyanaconda/ui/gui/spokes/lib/custom_storage_helpers.py
+I0011:222,0: : Locally disabling W0221
+E1101:429,23: ContainerDialog.on_save_clicked: Module 'blivet.devicelibs.mdraid' has no 'getRaidLevel' member
+************* Module ./../../updates/run/install/updates/pykickstart/commands/driverdisk.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.options
+************* Module ./../../pyanaconda/ui/gui/spokes/custom.py
+E0611: 60,0: : No name 'SanityError' in module 'blivet.errors'
+E0611: 61,0: : No name 'SanityWarning' in module 'blivet.errors'
+E0611: 62,0: : No name 'LUKSDeviceWithoutKeyError' in module 'blivet.errors'
+E1101:759,23: CustomPartitioningSpoke._save_right_side: Module 'blivet.devicelibs.mdraid' has no 'getRaidLevel' member
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/f13.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/commands/keyboard.py
+I0011: 58,0: : Locally disabling W0231
+I0011: 60,0: : Locally disabling W0233
+I0011:139,0: : Locally disabling E0202
+I0011:147,0: : Locally disabling E0102
+I0011:147,0: : Locally disabling E1101
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 49,9: FC3_Keyboard.parse: Unused variable 'opts'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/lilocheck.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 49,9: FC3_LiloCheck.parse: Unused variable 'opts'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/unsupported_hardware.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 49,9: RHEL6_UnsupportedHardware.parse: Unused variable 'opts'
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/rhel6.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/blivet/pyudev.py
+W0401:  6,0: : Wildcard import ctypes
+W0622: 23,45: find_library: Redefining built-in 'file'
+W0621: 10,17: find_library: Redefining name 'name' from outer scope (line 34)
+W0621: 10,23: find_library: Redefining name 'somajor' from outer scope (line 35)
+W0622: 21,8: find_library: Redefining built-in 'dir'
+W0121: 39,4: : Use raise ErrorClass(args) instead of raise ErrorClass, args.
+W0621:147,12: UdevDevice.__init__: Redefining name 'name' from outer scope (line 34)
+W0622:185,8: Udev.enumerate_devices: Redefining built-in 'enumerate'
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/f16.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/blivet/devicefactory.py
+W0403: 23,0: : Relative import 'storage_log', should be 'blivet.storage_log'
+W0403: 24,0: : Relative import 'errors', should be 'blivet.errors'
+W0401: 24,0: : Wildcard import errors
+W0403: 25,0: : Relative import 'devices', should be 'blivet.devices'
+W0403: 26,0: : Relative import 'formats', should be 'blivet.formats'
+W0403: 27,0: : Relative import 'devicelibs', should be 'blivet.devicelibs'
+W0403: 28,0: : Relative import 'devicelibs.lvm', should be 'blivet.devicelibs.lvm'
+W0403: 29,0: : Relative import 'devicelibs.lvm', should be 'blivet.devicelibs.lvm'
+W0403: 30,0: : Relative import 'devicelibs.lvm', should be 'blivet.devicelibs.lvm'
+W1201:105,4: get_device_factory: Specify string format arguments as logging function parameters
+E0602:334,20: DeviceFactory._get_total_space: Undefined variable 'container'
+W1201:481,8: DeviceFactory._set_container_members: Specify string format arguments as logging function parameters
+W1201:482,8: DeviceFactory._set_container_members: Specify string format arguments as logging function parameters
+W1201:556,12: DeviceFactory._create_device: Specify string format arguments as logging function parameters
+W1201:564,12: DeviceFactory._create_device: Specify string format arguments as logging function parameters
+W1201:620,12: DeviceFactory._set_size: Specify string format arguments as logging function parameters
+E0702:626,12: DeviceFactory._set_size: Raising NoneType while only classes, instances or string are allowed
+W0612:637,12: DeviceFactory._set_format: Unused variable 'current_mountpoint'
+W1201:683,16: DeviceFactory._set_name: Specify string format arguments as logging function parameters
+W1201:687,12: DeviceFactory._set_name: Specify string format arguments as logging function parameters
+E1101:699,26: DeviceFactory._get_child_factory_kwargs: Instance of 'DeviceFactory' has no 'child_factory_fstype' member
+W1201:708,8: DeviceFactory._set_up_child_factory: Specify string format arguments as logging function parameters
+W1201:709,8: DeviceFactory._set_up_child_factory: Specify string format arguments as logging function parameters
+W1201:710,8: DeviceFactory._set_up_child_factory: Specify string format arguments as logging function parameters
+E1102:711,18: DeviceFactory._set_up_child_factory: self.child_factory_class is not callable
+W1201:735,12: DeviceFactory.configure: Specify string format arguments as logging function parameters
+W0201:796,8: DeviceFactory._save_devicetree: Attribute '__roots' defined outside __init__
+W1201:832,12: PartitionFactory._set_device_size: Specify string format arguments as logging function parameters
+W1201:878,12: PartitionFactory._post_create: Specify string format arguments as logging function parameters
+W0201:815,12: PartitionFactory._get_base_size: Attribute '__fmt' defined outside __init__
+W1201:932,8: PartitionSetFactory.configure: Specify string format arguments as logging function parameters
+W1201:942,8: PartitionSetFactory.configure: Specify string format arguments as logging function parameters
+W1201:965,8: PartitionSetFactory.configure: Specify string format arguments as logging function parameters
+W1201:966,8: PartitionSetFactory.configure: Specify string format arguments as logging function parameters
+W1201:1048,16: PartitionSetFactory.configure: Specify string format arguments as logging function parameters
+W1201:1071,8: PartitionSetFactory.configure: Specify string format arguments as logging function parameters
+W1201:1127,12: LVMFactory._get_device_size: Specify string format arguments as logging function parameters
+W1201:1136,12: LVMFactory._set_device_size: Specify string format arguments as logging function parameters
+W1201:1156,16: LVMFactory._get_total_space: Specify string format arguments as logging function parameters
+W1201:1159,12: LVMFactory._get_total_space: Specify string format arguments as logging function parameters
+W1201:1167,12: LVMFactory._get_total_space: Specify string format arguments as logging function parameters
+W1201:1174,16: LVMFactory._get_total_space: Specify string format arguments as logging function parameters
+W1201:1247,16: LVMFactory._set_name: Specify string format arguments as logging function parameters
+W1201:1252,16: LVMFactory._set_name: Specify string format arguments as logging function parameters
+W1201:1257,12: LVMFactory._set_name: Specify string format arguments as logging function parameters
+W1201:1342,8: LVMThinPFactory._get_device_size: Specify string format arguments as logging function parameters
+W1201:1349,12: LVMThinPFactory._get_device_size: Specify string format arguments as logging function parameters
+W1201:1366,8: LVMThinPFactory._get_device_space: Specify string format arguments as logging function parameters
+W1201:1368,8: LVMThinPFactory._get_device_space: Specify string format arguments as logging function parameters
+W1201:1383,16: LVMThinPFactory._get_total_space: Specify string format arguments as logging function parameters
+W1201:1388,16: LVMThinPFactory._get_total_space: Specify string format arguments as logging function parameters
+W1201:1399,16: LVMThinPFactory._get_total_space: Specify string format arguments as logging function parameters
+W1201:1401,16: LVMThinPFactory._get_total_space: Specify string format arguments as logging function parameters
+W1201:1448,8: LVMThinPFactory._get_pool_size: Specify string format arguments as logging function parameters
+W1201:1456,12: LVMThinPFactory._get_pool_size: Specify string format arguments as logging function parameters
+W1201:1458,16: LVMThinPFactory._get_pool_size: Specify string format arguments as logging function parameters
+W1201:1464,12: LVMThinPFactory._get_pool_size: Specify string format arguments as logging function parameters
+W1201:1473,8: LVMThinPFactory._get_pool_size: Specify string format arguments as logging function parameters
+W1201:1477,12: LVMThinPFactory._get_pool_size: Specify string format arguments as logging function parameters
+W1201:1511,12: LVMThinPFactory._set_container: Specify string format arguments as logging function parameters
+W1201:1515,16: LVMThinPFactory._set_container: Specify string format arguments as logging function parameters
+************* Module ./../../updates/run/install/updates/blivet/devicelibs/swap.py
+W0401: 27,0: : Wildcard import errors
+E0602: 49,14: mkswap: Undefined variable 'SwapError'
+E0602: 75,18: swapon: Undefined variable 'OldSwapError'
+E0602: 77,18: swapon: Undefined variable 'SuspendError'
+E0602: 80,14: swapon: Undefined variable 'UnknownSwapError'
+E0602: 90,14: swapon: Undefined variable 'SwapError'
+E0602: 96,14: swapoff: Undefined variable 'SwapError'
+E0602:105,15: swapstatus: Undefined variable 'DMError'
+W1201:167,12: swapSuggestion: Specify string format arguments as logging function parameters
+************* Module ./../../updates/run/install/updates/blivet/formats/disklabel.py
+W0401: 29,0: : Wildcard import errors
+E0602:153,26: DiskLabel.partedDisk: Undefined variable 'InvalidDiskLabelError'
+E0602:160,26: DiskLabel.partedDisk: Undefined variable 'InvalidDiskLabelError'
+W1201:177,20: DiskLabel.partedDisk: Specify string format arguments as logging function parameters
+W1201:180,20: DiskLabel.partedDisk: Specify string format arguments as logging function parameters
+W1201:182,16: DiskLabel.partedDisk: Specify string format arguments as logging function parameters
+W1201:197,20: DiskLabel.partedDevice: Specify string format arguments as logging function parameters
+W1201:199,16: DiskLabel.partedDevice: Specify string format arguments as logging function parameters
+W0703:210,15: DiskLabel.labelType: Catching too general exception Exception
+W0703:224,19: DiskLabel.size: Catching too general exception Exception
+E0602:239,18: DiskLabel.create: Undefined variable 'DeviceFormatError'
+E0602:242,18: DiskLabel.create: Undefined variable 'DeviceFormatError'
+E0602:258,18: DiskLabel.destroy: Undefined variable 'DeviceFormatError'
+E0602:261,18: DiskLabel.destroy: Undefined variable 'DeviceFormatError'
+E0602:273,18: DiskLabel.commit: Undefined variable 'DiskLabelCommitError'
+E0602:285,18: DiskLabel.commitToDisk: Undefined variable 'DiskLabelCommitError'
+W0703:332,15: DiskLabel.extendedPartition: Catching too general exception Exception
+W0703:340,15: DiskLabel.logicalPartitions: Catching too general exception Exception
+W0703:348,15: DiskLabel.firstPartition: Catching too general exception Exception
+W0703:356,15: DiskLabel.partitions: Catching too general exception Exception
+W0703:416,15: DiskLabel.free: Catching too general exception Exception
+************* Module ./../../updates/run/install/updates/pykickstart/commands/repo.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.constants
+W0401: 22,0: : Wildcard import pykickstart.errors
+W0401: 23,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/blivet/devicelibs/dasd.py
+W1201:106,8: dasd_needs_format: Specify string format arguments as logging function parameters
+************* Module ./../../pyanaconda/bootloader.py
+I0011:1783,0: : Locally disabling W0223
+E0611: 32,0: : No name 'raid' in module 'blivet.devicelibs'
+E1101:2271,26: : Module 'blivet.platform' has no 'Aarch64EFI' member
+************* Module ./../../updates/run/install/updates/pykickstart/commands/authconfig.py
+W0401: 20,0: : Wildcard import pykickstart.base
+************* Module ./../../updates/run/install/updates/pykickstart/commands/monitor.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/pykickstart/commands/services.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 65,15: FC6_Services.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/firewall.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/pykickstart/commands/btrfs.py
+W0401: 21,0: : Wildcard import pykickstart.base
+W0401: 22,0: : Wildcard import pykickstart.errors
+W0401: 23,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/blivet/formats/dmraid.py
+W0401: 25,0: : Wildcard import errors
+E0602: 91,14: DMRaidMember.create: Undefined variable 'DMRaidMemberError'
+E0602: 96,14: DMRaidMember.destroy: Undefined variable 'DMRaidMemberError'
+************* Module ./../../updates/run/install/updates/blivet/tsort.py
+W0621: 26,10: tsort: Redefining name 'graph' from outer scope (line 102)
+W0612: 45,8: tsort: Unused variable 'i'
+W0621: 61,17: create_graph: Redefining name 'items' from outer scope (line 96)
+W0621: 61,24: create_graph: Redefining name 'edges' from outer scope (line 97)
+W0621: 79,4: create_graph: Redefining name 'graph' from outer scope (line 102)
+W0612: 88,9: create_graph: Unused variable 'parent'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/volgroup.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/blivet/devicelibs/loop.py
+W0401: 26,0: : Wildcard import errors
+E0602: 42,14: losetup: Undefined variable 'LoopError'
+E0602: 59,14: get_loop_name: Undefined variable 'LoopError'
+E0602: 69,11: loop_setup: Undefined variable 'LoopError'
+E0602: 73,14: loop_setup: Undefined variable 'LoopError'
+E0602: 80,11: loop_teardown: Undefined variable 'LoopError'
+E0602: 84,14: loop_teardown: Undefined variable 'DeviceError'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/updates.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+W0612: 51,9: F7_Updates.parse: Unused variable 'opts'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/device.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/f15.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/commands/dmraid.py
+W0401: 21,0: : Wildcard import pykickstart.base
+W0401: 22,0: : Wildcard import pykickstart.errors
+W0401: 23,0: : Wildcard import pykickstart.options
+W0612: 85,15: FC6_DmRaid.parse: Unused variable 'extra'
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/f7.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/pykickstart/commands/fcoe.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/pykickstart/commands/rootpw.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.errors
+W0401: 22,0: : Wildcard import pykickstart.options
+************* Module ./../../updates/run/install/updates/blivet/formats/mdraid.py
+W0401: 27,0: : Wildcard import errors
+E0602: 86,18: MDRaidMember.probe: Undefined variable 'MDMemberError'
+E0602:101,18: MDRaidMember.destroy: Undefined variable 'MDMemberError'
+E0602:104,18: MDRaidMember.destroy: Undefined variable 'MDMemberError'
+************* Module ./../../updates/run/install/updates/pykickstart/commands/__init__.py
+W0403: 20,0: : Relative import 'authconfig', should be 'pykickstart.commands.authconfig'
+W0403: 20,0: : Relative import 'autopart', should be 'pykickstart.commands.autopart'
+W0403: 20,0: : Relative import 'autostep', should be 'pykickstart.commands.autostep'
+W0403: 20,0: : Relative import 'bootloader', should be 'pykickstart.commands.bootloader'
+W0403: 20,0: : Relative import 'btrfs', should be 'pykickstart.commands.btrfs'
+W0403: 20,0: : Relative import 'clearpart', should be 'pykickstart.commands.clearpart'
+W0403: 20,0: : Relative import 'cdrom', should be 'pykickstart.commands.cdrom'
+W0403: 20,0: : Relative import 'device', should be 'pykickstart.commands.device'
+W0403: 21,0: : Relative import 'deviceprobe', should be 'pykickstart.commands.deviceprobe'
+W0403: 21,0: : Relative import 'displaymode', should be 'pykickstart.commands.displaymode'
+W0403: 21,0: : Relative import 'dmraid', should be 'pykickstart.commands.dmraid'
+W0403: 21,0: : Relative import 'driverdisk', should be 'pykickstart.commands.driverdisk'
+W0403: 21,0: : Relative import 'eula', should be 'pykickstart.commands.eula'
+W0403: 21,0: : Relative import 'fcoe', should be 'pykickstart.commands.fcoe'
+W0403: 21,0: : Relative import 'firewall', should be 'pykickstart.commands.firewall'
+W0403: 21,0: : Relative import 'firstboot', should be 'pykickstart.commands.firstboot'
+W0403: 22,0: : Relative import 'group', should be 'pykickstart.commands.group'
+W0403: 22,0: : Relative import 'harddrive', should be 'pykickstart.commands.harddrive'
+W0403: 22,0: : Relative import 'ignoredisk', should be 'pykickstart.commands.ignoredisk'
+W0403: 22,0: : Relative import 'interactive', should be 'pykickstart.commands.interactive'
+W0403: 22,0: : Relative import 'iscsi', should be 'pykickstart.commands.iscsi'
+W0403: 22,0: : Relative import 'iscsiname', should be 'pykickstart.commands.iscsiname'
+W0403: 22,0: : Relative import 'key', should be 'pykickstart.commands.key'
+W0403: 22,0: : Relative import 'keyboard', should be 'pykickstart.commands.keyboard'
+W0403: 22,0: : Relative import 'lang', should be 'pykickstart.commands.lang'
+W0403: 23,0: : Relative import 'langsupport', should be 'pykickstart.commands.langsupport'
+W0403: 23,0: : Relative import 'lilocheck', should be 'pykickstart.commands.lilocheck'
+W0403: 23,0: : Relative import 'liveimg', should be 'pykickstart.commands.liveimg'
+W0403: 23,0: : Relative import 'logging', should be 'pykickstart.commands.logging'
+W0403: 23,0: : Relative import 'logvol', should be 'pykickstart.commands.logvol'
+W0403: 23,0: : Relative import 'mediacheck', should be 'pykickstart.commands.mediacheck'
+W0403: 23,0: : Relative import 'method', should be 'pykickstart.commands.method'
+W0403: 23,0: : Relative import 'monitor', should be 'pykickstart.commands.monitor'
+W0403: 24,0: : Relative import 'mouse', should be 'pykickstart.commands.mouse'
+W0403: 24,0: : Relative import 'multipath', should be 'pykickstart.commands.multipath'
+W0403: 24,0: : Relative import 'network', should be 'pykickstart.commands.network'
+W0403: 24,0: : Relative import 'nfs', should be 'pykickstart.commands.nfs'
+W0403: 24,0: : Relative import 'partition', should be 'pykickstart.commands.partition'
+W0403: 24,0: : Relative import 'raid', should be 'pykickstart.commands.raid'
+W0403: 24,0: : Relative import 'realm', should be 'pykickstart.commands.realm'
+W0403: 24,0: : Relative import 'reboot', should be 'pykickstart.commands.reboot'
+W0403: 24,0: : Relative import 'repo', should be 'pykickstart.commands.repo'
+W0403: 24,0: : Relative import 'rescue', should be 'pykickstart.commands.rescue'
+W0403: 25,0: : Relative import 'rootpw', should be 'pykickstart.commands.rootpw'
+W0403: 25,0: : Relative import 'selinux', should be 'pykickstart.commands.selinux'
+W0403: 25,0: : Relative import 'services', should be 'pykickstart.commands.services'
+W0403: 25,0: : Relative import 'skipx', should be 'pykickstart.commands.skipx'
+W0403: 25,0: : Relative import 'sshpw', should be 'pykickstart.commands.sshpw'
+W0403: 25,0: : Relative import 'timezone', should be 'pykickstart.commands.timezone'
+W0403: 25,0: : Relative import 'updates', should be 'pykickstart.commands.updates'
+W0403: 25,0: : Relative import 'upgrade', should be 'pykickstart.commands.upgrade'
+W0403: 25,0: : Relative import 'url', should be 'pykickstart.commands.url'
+W0403: 25,0: : Relative import 'user', should be 'pykickstart.commands.user'
+W0403: 26,0: : Relative import 'unsupported_hardware', should be 'pykickstart.commands.unsupported_hardware'
+W0403: 26,0: : Relative import 'vnc', should be 'pykickstart.commands.vnc'
+W0403: 26,0: : Relative import 'volgroup', should be 'pykickstart.commands.volgroup'
+W0403: 26,0: : Relative import 'xconfig', should be 'pykickstart.commands.xconfig'
+W0403: 26,0: : Relative import 'zerombr', should be 'pykickstart.commands.zerombr'
+W0403: 26,0: : Relative import 'zfcp', should be 'pykickstart.commands.zfcp'
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/rhel3.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../scripts/makeupdates.orig
+E0001:592,0: : invalid syntax
+************* Module ./../../updates/run/install/updates/blivet/formats/luks.py
+F0401: 28,4: : Unable to import 'volume_key'
+W0401: 33,0: : Wildcard import errors
+E0602:185,18: LUKS.setup: Undefined variable 'LUKSError'
+E0602:200,18: LUKS.teardown: Undefined variable 'LUKSError'
+W1201:203,12: LUKS.teardown: Specify string format arguments as logging function parameters
+E0602:222,18: LUKS.create: Undefined variable 'LUKSError'
+E0602:266,18: LUKS.addKeyFromFile: Undefined variable 'LUKSError'
+E1123:268,8: LUKS.addKeyFromFile: Passing unexpected keyword argument 'new_key_file' in function call
+E0602:282,18: LUKS.addPassphrase: Undefined variable 'LUKSError'
+E0602:294,18: LUKS.removePassphrase: Undefined variable 'LUKSError'
+W1201:321,8: LUKS.escrow: Specify string format arguments as logging function parameters
+E0602:323,18: LUKS.escrow: Undefined variable 'LUKSError'
+W1201:360,8: LUKS.escrow: Specify string format arguments as logging function parameters
+************* Module ./../../updates/run/install/updates/pykickstart/handlers/fc5.py
+W0401: 20,0: : Wildcard import pykickstart.base
+W0401: 21,0: : Wildcard import pykickstart.version
+************* Module ./../../updates/run/install/updates/blivet/flags.py
+W0612: 71,18: Flags.get_boot_cmdline: Unused variable 'equals'
+************* Module ./../../updates/run/install/updates/pykickstart/base.py
+W0401: 47,0: : Wildcard import pykickstart.errors
+W0401: 48,0: : Wildcard import pykickstart.ko
+W0612:374,17: BaseHandler._registerCommands: Unused variable 'key'
+W9901:423,67: BaseHandler.dispatcher: Found % in a call to a _() method
+W0612:446,18: BaseHandler.maskAllExcept: Unused variable 'val'
+************* Module ./../../updates/run/install/updates/blivet/partitioning.py
+W0401: 28,0: : Wildcard import pykickstart.constants
+W0403: 30,0: : Relative import 'errors', should be 'blivet.errors'
+W0401: 30,0: : Wildcard import errors
+W0403: 31,0: : Relative import 'deviceaction', should be 'blivet.deviceaction'
+W0401: 31,0: : Wildcard import deviceaction
+W0403: 32,0: : Relative import 'flags', should be 'blivet.flags'
+W0403: 33,0: : Relative import 'devices', should be 'blivet.devices'
+W0403: 34,0: : Relative import 'formats', should be 'blivet.formats'
+W0403: 35,0: : Relative import 'devicelibs.lvm', should be 'blivet.devicelibs.lvm'
+W0403: 36,0: : Relative import 'size', should be 'blivet.size'
+W0403: 37,0: : Relative import 'i18n', should be 'blivet.i18n'
+W1201:135,8: _schedulePartitions: Specify string format arguments as logging function parameters
+W1201:170,12: _schedulePartitions: Specify string format arguments as logging function parameters
+W1201:191,16: _schedulePartitions: Specify string format arguments as logging function parameters
+W1201:352,4: doAutoPartition: Specify string format arguments as logging function parameters
+W1201:353,4: doAutoPartition: Specify string format arguments as logging function parameters
+W1201:354,4: doAutoPartition: Specify string format arguments as logging function parameters
+W1201:355,4: doAutoPartition: Specify string format arguments as logging function parameters
+W1201:356,4: doAutoPartition: Specify string format arguments as logging function parameters
+W1201:357,4: doAutoPartition: Specify string format arguments as logging function parameters
+W1201:358,4: doAutoPartition: Specify string format arguments as logging function parameters
+W1201:359,4: doAutoPartition: Specify string format arguments as logging function parameters
+W1201:360,4: doAutoPartition: Specify string format arguments as logging function parameters
+W1201:361,4: doAutoPartition: Specify string format arguments as logging function parameters
+W1201:374,4: doAutoPartition: Specify string format arguments as logging function parameters
+W1201:375,4: doAutoPartition: Specify string format arguments as logging function parameters
+W1201:574,4: getBestFreeSpaceRegion: Specify string format arguments as logging function parameters
+W1201:581,8: getBestFreeSpaceRegion: Specify string format arguments as logging function parameters
+W1201:607,8: getBestFreeSpaceRegion: Specify string format arguments as logging function parameters
+W1201:669,4: removeNewPartitions: Specify string format arguments as logging function parameters
+W1201:694,12: removeNewPartitions: Specify string format arguments as logging function parameters
+W1201:740,12: addPartition: Specify string format arguments as logging function parameters
+W1201:751,12: addPartition: Specify string format arguments as logging function parameters
+W0712:860,8: doPartitioning: Implicit unpacking of exceptions is not supported in Python 3
+W1201:861,12: doPartitioning: Specify string format arguments as logging function parameters
+W1201:894,12: doPartitioning: Specify string format arguments as logging function parameters
+W1201:950,4: allocatePartitions: Specify string format arguments as logging function parameters
+W1201:990,8: allocatePartitions: Specify string format arguments as logging function parameters
+W1201:1016,12: allocatePartitions: Specify string format arguments as logging function parameters
+W1201:1021,16: allocatePartitions: Specify string format arguments as logging function parameters
+W1201:1032,20: allocatePartitions: Specify string format arguments as logging function parameters
+W1201:1068,24: allocatePartitions: Specify string format arguments as logging function parameters
+W1201:1126,32: allocatePartitions: Specify string format arguments as logging function parameters
+W1201:1135,24: allocatePartitions: Specify string format arguments as logging function parameters
+W1201:1148,20: allocatePartitions: Specify string format arguments as logging function parameters
+W1201:1153,24: allocatePartitions: Specify string format arguments as logging function parameters
+W1201:1162,20: allocatePartitions: Specify string format arguments as logging function parameters
+W1201:1166,20: allocatePartitions: Specify string format arguments as logging function parameters
+W1201:1169,20: allocatePartitions: Specify string format arguments as logging function parameters
+W1201:1209,8: allocatePartitions: Specify string format arguments as logging function parameters
+W0612:1005,12: allocatePartitions: Unused variable 'sectorSize'
+W1201:1355,8: Chunk.addRequest: Specify string format arguments as logging function parameters
+W1201:1373,8: Chunk.reclaim: Specify string format arguments as logging function parameters
+W1201:1375,12: Chunk.reclaim: Specify string format arguments as logging function parameters
+W1201:1434,16: Chunk.trimOverGrownRequest: Specify string format arguments as logging function parameters
+W1201:1466,8: Chunk.growRequests: Specify string format arguments as logging function parameters
+W1201:1470,12: Chunk.growRequests: Specify string format arguments as logging function parameters
+W1201:1483,12: Chunk.growRequests: Specify string format arguments as logging function parameters
+W1201:1498,16: Chunk.growRequests: Specify string format arguments as logging function parameters
+W1201:1503,16: Chunk.growRequests: Specify string format arguments as logging function parameters
+W1201:1518,16: Chunk.growRequests: Specify string format arguments as logging function parameters
+W1201:1523,16: Chunk.growRequests: Specify string format arguments as logging function parameters
+W1201:1593,16: DiskChunk.addRequest: Specify string format arguments as logging function parameters
+W1201:1712,12: VGChunk.growRequests: Specify string format arguments as logging function parameters
+W1201:1717,12: VGChunk.growRequests: Specify string format arguments as logging function parameters
+W0612:1704,8: VGChunk.growRequests: Unused variable 'last_pool'
+W0612:1716,12: VGChunk.growRequests: Unused variable 'new_base'
+E1003:1744,8: ThinPoolChunk.__init__: Bad first argument 'VGChunk' given to super()
+W1201:1807,8: TotalSizeSet.__init__: Specify string format arguments as logging function parameters
+W1201:1810,8: TotalSizeSet.allocate: Specify string format arguments as logging function parameters
+W1201:1819,8: TotalSizeSet.deallocate: Specify string format arguments as logging function parameters
+W1201:1867,16: manageSizeSets: Specify string format arguments as logging function parameters
+W1201:1885,20: manageSizeSets: Specify string format arguments as logging function parameters
+W1201:1886,20: manageSizeSets: Specify string format arguments as logging function parameters
+W1201:1910,16: manageSizeSets: Specify string format arguments as logging function parameters
+W1201:1911,16: manageSizeSets: Specify string format arguments as logging function parameters
+W1201:1915,20: manageSizeSets: Specify string format arguments as logging function parameters
+W1201:1956,4: growPartitions: Specify string format arguments as logging function parameters
+W1201:1967,4: growPartitions: Specify string format arguments as logging function parameters
+W1201:1977,12: growPartitions: Specify string format arguments as logging function parameters
+W1201:1981,8: growPartitions: Specify string format arguments as logging function parameters
+W1201:1998,8: growPartitions: Specify string format arguments as logging function parameters
+W1201:2022,16: growPartitions: Specify string format arguments as logging function parameters
+W1201:2042,16: growPartitions: Specify string format arguments as logging function parameters
+W1201:2056,12: growPartitions: Specify string format arguments as logging function parameters
+W1201:2059,16: growPartitions: Specify string format arguments as logging function parameters
+W1201:2074,16: growPartitions: Specify string format arguments as logging function parameters
+W1201:2094,16: growPartitions: Specify string format arguments as logging function parameters
+W0612:2033,16: growPartitions: Unused variable 'old_geometry'
+W1201:2160,12: growLVM: Specify string format arguments as logging function parameters
+W1201:2163,8: growLVM: Specify string format arguments as logging function parameters
+W0611: 25,0: : Unused import add
+W0611: 24,0: : Unused import os
+W0611: 23,0: : Unused import sys
+W0611: 25,0: : Unused import sub

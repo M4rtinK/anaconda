@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Installation_Guide.ent">
+<!ENTITY PRODUCT "Fedora">
+<!ENTITY NEXTVER "21">
+<!ENTITY PRODVER "20">
+<!ENTITY PREVVER "19">
+<!ENTITY BOOKID "install-guide">
+<!ENTITY YEAR "2014">
+<!ENTITY HOLDER "Red Hat, Inc. and others">
+<!ENTITY BZURL "https://bugzilla.redhat.com/enter_bug.cgi?product=&PRODUCT;&amp;component=&BOOKID;">
+<!ENTITY IGURL '<ulink url="http://docs.fedoraproject.org/" />'>
+]>
+<section id="sect-installation-gui-welcome">
+	<title>Welcome Screen and Language Selection</title>
+	<para>
+		The first screen displayed immediately after the graphical installer starts is the Welcome screen.
+	</para>
+	<para>
+		</para>
+	<para>
+		First, select your preferred language in the left hand side column, and then select your locale from the right hand side column. You can use the text input field in the bottom left corner to search for your language instead of looking for it in the full list of more than 70 languages.
+	</para>
+	<para>
+		The language you select on this screen will be used during the installation, and it will also be used on the installed system by default. You can change the language for the installed system later, but once you click <guilabel>Continue</guilabel> on this screen, you will not be able to go back and change the language used inside the installer itself.
+	</para>
+	<para>
+		One language is pre-selected by default on top of the list. If network access is configured at this point (for example, if you booted from a network server instead of local media), the pre-selected language will be determined based on automatic location detection using the GeoIP module. Alternatively, if you used the <option>inst.lang=</option> option on the boot command line or in your PXE server configuration, this language will be selected by default, but you will still be able to change it.
+	</para>
+	<para>
+		After you select your language and locale, click <guilabel>Continue</guilabel> to confirm your selection and proceed to <ulink url="SummaryHub.xml">Installation Summary</ulink>.
+	</para>
+	<note>
+		<para>
+			If you are installing a pre-release version of Fedora, a message will be shown after you click <guilabel>Continue</guilabel> warning you about the pre-release status of your installation media. Click <guilabel>I accept my fate</guilabel> to continue with the installation, or <guilabel>Get me out of here</guilabel> to quit the installation and reboot your system.
+		</para>
+	</note>
+</section>

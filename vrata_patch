@@ -1,0 +1,41 @@
+From 77de34df7515da2b6f16055998c7978dc7a1a0e7 Mon Sep 17 00:00:00 2001
+From: Vratislav Podzimek <vpodzime@redhat.com>
+Date: Thu, 28 Aug 2014 16:09:22 +0200
+Subject: [PATCH] Snapshot free space after clearpart for swap suggestion
+ (#1167965)
+
+Otherwise when creating swap on an LV there's no free space on the disk by that
+time, because it is occupied by the LV's VG's PV.
+
+Signed-off-by: Vratislav Podzimek <vpodzime@redhat.com>
+---
+ pyanaconda/kickstart.py | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/pyanaconda/kickstart.py b/pyanaconda/kickstart.py
+index 9c96d59..72d77f3 100644
+--- a/pyanaconda/kickstart.py
++++ b/pyanaconda/kickstart.py
+@@ -236,7 +236,7 @@ def getAvailableDiskSpace(storage):
+ 
+     """
+ 
+-    free_space = storage.getFreeSpace()
++    free_space = storage.freeSpaceSnapshot
+     return sum(disk_free for disk_free, fs_free in free_space.values())
+ 
+ def refreshAutoSwapSize(storage):
+@@ -2001,6 +2001,10 @@ def doKickstartStorage(storage, ksdata, instClass):
+     if not any(d for d in storage.disks
+                if not d.format.hidden and not d.protected):
+         return
++
++    # snapshot free space now so that we know how much we had available
++    storage.createFreeSpaceSnapshot()
++
+     ksdata.bootloader.execute(storage, ksdata, instClass)
+     ksdata.autopart.execute(storage, ksdata, instClass)
+     ksdata.partition.execute(storage, ksdata, instClass)
+-- 
+1.9.3
+

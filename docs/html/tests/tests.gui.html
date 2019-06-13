@@ -1,0 +1,851 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tests.gui package &mdash; Anaconda 26.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Anaconda 26.1 documentation" href="../index.html"/>
+        <link rel="up" title="tests package" href="tests.html"/>
+        <link rel="next" title="tests.lib package" href="tests.lib.html"/>
+        <link rel="prev" title="tests.glade package" href="tests.glade.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Anaconda
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                26.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction to Anaconda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release.html">Building a Release</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../boot-options.html">Anaconda Boot Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kickstart.html">Anaconda Kickstart Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commit-log.html">Rules for commit messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driverdisc.html">Brief description of DriverDisc version 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iscsi.html">iSCSI and Anaconda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multipath.html">Multipath and Anaconda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">pyanaconda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">tests</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="tests.html">tests package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="tests.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="tests.dd_tests.html">tests.dd_tests package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.dracut_tests.html">tests.dracut_tests package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.gettext_tests.html">tests.gettext_tests package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.glade.html">tests.glade package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">tests.gui package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.lib.html">tests.lib package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.pyanaconda_tests.html">tests.pyanaconda_tests package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.regex_tests.html">tests.regex_tests package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.storage.html">tests.storage package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#module-tests.usercustomize">tests.usercustomize module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#module-tests">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Anaconda</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="modules.html">tests</a> &raquo;</li>
+      
+          <li><a href="tests.html">tests package</a> &raquo;</li>
+      
+    <li>tests.gui package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/tests/tests.gui.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tests-gui-package">
+<h1>tests.gui package<a class="headerlink" href="#tests-gui-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-tests.gui.base">
+<span id="tests-gui-base-module"></span><h2>tests.gui.base module<a class="headerlink" href="#module-tests.gui.base" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.gui.base.DogtailTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.base.</code><code class="descname">DogtailTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.DogtailTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>A subclass that defines all the parameters for starting a local
+copy of anaconda, inspecting results, and managing temporary data!</p>
+<p>Most subclasses will only need to define the following four attributes:</p>
+<dl class="docutils">
+<dt>drives       &#8211; A list of tuples describing disk images to create.  Each</dt>
+<dd>tuple is the name of the drive and its size as a blivet.Size.</dd>
+<dt>environ      &#8211; A dictionary of environment variables that should be added</dt>
+<dd>to the environment the test suite will run under.</dd>
+<dt>name         &#8211; A unique string that names the test.  This name will</dt>
+<dd>be used in creating the results directory (and perhaps
+other places in the future) so make sure it doesn&#8217;t
+conflict with another object.</dd>
+<dt>tests        &#8211; A list describing which test cases make up this test.</dt>
+<dd>Each item is the class name containing the test case.
+Items <em>must</em> be descendants of UITestCase().
+Tests will be run in the order provided.</dd>
+</dl>
+<dl class="method">
+<dt id="tests.gui.base.DogtailTestCase.cleanup">
+<code class="descname">cleanup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.DogtailTestCase.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all disk images used during this test case and the temporary
+directory they were stored in.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.DogtailTestCase.collect_logs">
+<code class="descname">collect_logs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.DogtailTestCase.collect_logs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.DogtailTestCase.die">
+<code class="descname">die</code><span class="sig-paren">(</span><em>terminate=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.DogtailTestCase.die" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kill any running process previously started by this test.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tests.gui.base.DogtailTestCase.drives">
+<code class="descname">drives</code><em class="property"> = []</em><a class="headerlink" href="#tests.gui.base.DogtailTestCase.drives" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tests.gui.base.DogtailTestCase.environ">
+<code class="descname">environ</code><em class="property"> = {}</em><a class="headerlink" href="#tests.gui.base.DogtailTestCase.environ" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.DogtailTestCase.makeDrives">
+<code class="descname">makeDrives</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.DogtailTestCase.makeDrives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create all hard drive images associated with this test.  Images
+must be listed in self.drives and will be stored in a temporary
+directory this method creates.  It is up to the caller to remove
+everything later by calling self.cleanup().</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tests.gui.base.DogtailTestCase.name">
+<code class="descname">name</code><em class="property"> = 'DogtailTestCase'</em><a class="headerlink" href="#tests.gui.base.DogtailTestCase.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.DogtailTestCase.remove_anaconda_logs">
+<code class="descname">remove_anaconda_logs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.DogtailTestCase.remove_anaconda_logs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.DogtailTestCase.runTest">
+<code class="descname">runTest</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.DogtailTestCase.runTest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.DogtailTestCase.setUp">
+<code class="descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.DogtailTestCase.setUp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.DogtailTestCase.tearDown">
+<code class="descname">tearDown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.DogtailTestCase.tearDown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tests.gui.base.DogtailTestCase.tests">
+<code class="descname">tests</code><em class="property"> = []</em><a class="headerlink" href="#tests.gui.base.DogtailTestCase.tests" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tests.gui.base.UITestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.base.</code><code class="descname">UITestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>A UITestCase is a class that incorporates all the test functions for a
+single anaconda Hub or Spoke window.  Moving to the window, and dealing
+with what happens after we move away is left up to whatever wraps up
+all the test cases.  A single Hub or Spoke may have multiple instances
+of this class - one may test the assumption that everything works as it
+should, while another may test that a specific initial setup fails in
+an expected way, and another may attempt fuzz testing on all entries on
+the screen.  However, a single TestSuite will only have one instance
+for each anaconda window.</p>
+<p>Some basic assumptions about the existence of UI elements are made in
+UITestCase subclasses.  If an element is required to be there (for
+instance, a button we are going to click) we simply grab the element
+with the exception-raising dogtail functions and call click on it.
+If the element does not exist, the exception will be propagated up and
+fail the test.  If we are testing for the existence of some element
+(for instance, that a dialog was displayed after a button was clicked)
+then we use UITestCase.find and the unittest.assert* functions.</p>
+<p>This is kind of subtle, but look at existing test cases for examples.</p>
+<p>Due to the unusual nature of running such a large program as anaconda
+in a test suite, combined with the special environment, tests are
+organized inside a UITestCase as follows:</p>
+<ul class="simple">
+<li>Testing one little piece of the window is handled by a check_*
+function.  These are explicitly not named test_* as that is special
+to unittest.</li>
+<li>Multiple check_* functions are called linearly in the _run method,
+which is used instead of runTest for error handling purposes.</li>
+</ul>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.check_dialog_displayed">
+<code class="descname">check_dialog_displayed</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.check_dialog_displayed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that a dialog given by the provided name is currently
+displayed on the screen.  If not, the current test case will
+be failed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.check_help_button">
+<code class="descname">check_help_button</code><span class="sig-paren">(</span><em>node=None</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.check_help_button" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.check_keyboard_layout_indicator">
+<code class="descname">check_keyboard_layout_indicator</code><span class="sig-paren">(</span><em>layout</em>, <em>node=None</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.check_keyboard_layout_indicator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that the keyboard layout indicator is present and that
+the currently enabled layout is what we expect.  If not, the
+current test case will be failed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.check_no_warning_bar">
+<code class="descname">check_no_warning_bar</code><span class="sig-paren">(</span><em>node=None</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.check_no_warning_bar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that the warning bar is not currently displayed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.check_warning_bar">
+<code class="descname">check_warning_bar</code><span class="sig-paren">(</span><em>msg=None</em>, <em>node=None</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.check_warning_bar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that the warning bar is currently displayed.  If msg is given,
+verify that it is contained in whatever message the warning bar is
+showing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.check_window_displayed">
+<code class="descname">check_window_displayed</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.check_window_displayed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that a window (such as a hub or spoke) given by the
+provided name is currently displayed on the screen.  If not,
+the current test case will be failed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.click_button">
+<code class="descname">click_button</code><span class="sig-paren">(</span><em>name</em>, <em>node=None</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.click_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that a button with the given name exists and is sensitive,
+and then click it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.enter_spoke">
+<code class="descname">enter_spoke</code><span class="sig-paren">(</span><em>spokeSelectorName</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.enter_spoke" title="Permalink to this definition">¶</a></dt>
+<dd><p>Click on the spoke selector for the given spoke, then wait a moment
+to make sure it has appeared.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.exit_spoke">
+<code class="descname">exit_spoke</code><span class="sig-paren">(</span><em>hubName='INSTALLATION SUMMARY'</em>, <em>node=None</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.exit_spoke" title="Permalink to this definition">¶</a></dt>
+<dd><p>Leave a spoke by clicking the Done button in the upper left corner,
+then verify we have returned to the proper hub.  Since most spokes
+are off the summary hub, that&#8217;s the default.  If we are not back
+on the hub, the current test case will be failed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.find">
+<code class="descname">find</code><span class="sig-paren">(</span><em>name</em>, <em>roleName=None</em>, <em>node=None</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap findChild, returning None if no widget is found instead of
+raising an exception.  This method also allows for checking if
+anaconda has hit a traceback and if so, fails the test
+immediately.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.runTest">
+<code class="descname">runTest</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.runTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>A version of TestCase.runTest that attempts to take a screenshot of
+anaconda should a test fail.  Subclasses should not override this.
+See the documentation for _run.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.selected_view_children">
+<code class="descname">selected_view_children</code><span class="sig-paren">(</span><em>view</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.selected_view_children" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.setUp">
+<code class="descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.setUp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tests.gui.base.UITestCase.suite_name">
+<code class="descname">suite_name</code><em class="property"> = None</em><a class="headerlink" href="#tests.gui.base.UITestCase.suite_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.update_scratch_dir">
+<code class="descname">update_scratch_dir</code><span class="sig-paren">(</span><em>name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.update_scratch_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the directory where Dogtail saves screenshots.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.view_children">
+<code class="descname">view_children</code><span class="sig-paren">(</span><em>view</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.view_children" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.base.UITestCase.wait_for_configuration_to_settle">
+<code class="descname">wait_for_configuration_to_settle</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.base.UITestCase.wait_for_configuration_to_settle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for some of the configuration to settle down
+before continuing further.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.gui.date_time">
+<span id="tests-gui-date-time-module"></span><h2>tests.gui.date_time module<a class="headerlink" href="#module-tests.gui.date_time" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.gui.date_time.DateTimeTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.date_time.</code><code class="descname">DateTimeTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.date_time.DateTimeTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.base.UITestCase" title="tests.gui.base.UITestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.base.UITestCase</span></code></a></p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="method">
+<dt id="tests.gui.date_time.DateTimeTestCase.check_ntp">
+<code class="descname">check_ntp</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.date_time.DateTimeTestCase.check_ntp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.date_time.DateTimeTestCase.check_region_city">
+<code class="descname">check_region_city</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.date_time.DateTimeTestCase.check_region_city" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.gui.keyboard">
+<span id="tests-gui-keyboard-module"></span><h2>tests.gui.keyboard module<a class="headerlink" href="#module-tests.gui.keyboard" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.gui.keyboard.BasicKeyboardTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.keyboard.</code><code class="descname">BasicKeyboardTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.keyboard.BasicKeyboardTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.base.UITestCase" title="tests.gui.base.UITestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.base.UITestCase</span></code></a></p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="method">
+<dt id="tests.gui.keyboard.BasicKeyboardTestCase.check_add_layout_dialog">
+<code class="descname">check_add_layout_dialog</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.keyboard.BasicKeyboardTestCase.check_add_layout_dialog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.keyboard.BasicKeyboardTestCase.check_layout_buttons_after_click">
+<code class="descname">check_layout_buttons_after_click</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.keyboard.BasicKeyboardTestCase.check_layout_buttons_after_click" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.keyboard.BasicKeyboardTestCase.check_layout_buttons_initial">
+<code class="descname">check_layout_buttons_initial</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.keyboard.BasicKeyboardTestCase.check_layout_buttons_initial" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.keyboard.BasicKeyboardTestCase.check_layout_indicator">
+<code class="descname">check_layout_indicator</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.keyboard.BasicKeyboardTestCase.check_layout_indicator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.keyboard.BasicKeyboardTestCase.check_num_layouts">
+<code class="descname">check_num_layouts</code><span class="sig-paren">(</span><em>spoke</em>, <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.keyboard.BasicKeyboardTestCase.check_num_layouts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.keyboard.BasicKeyboardTestCase.check_options_dialog">
+<code class="descname">check_options_dialog</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.keyboard.BasicKeyboardTestCase.check_options_dialog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.keyboard.BasicKeyboardTestCase.check_preview_dialog">
+<code class="descname">check_preview_dialog</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.keyboard.BasicKeyboardTestCase.check_preview_dialog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.gui.network">
+<span id="tests-gui-network-module"></span><h2>tests.gui.network module<a class="headerlink" href="#module-tests.gui.network" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.gui.network.NetworkTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.network.</code><code class="descname">NetworkTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.network.NetworkTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.base.UITestCase" title="tests.gui.base.UITestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.base.UITestCase</span></code></a></p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="method">
+<dt id="tests.gui.network.NetworkTestCase.check_hostname_entry">
+<code class="descname">check_hostname_entry</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.network.NetworkTestCase.check_hostname_entry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.gui.progress">
+<span id="tests-gui-progress-module"></span><h2>tests.gui.progress module<a class="headerlink" href="#module-tests.gui.progress" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.gui.progress.FinishTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.progress.</code><code class="descname">FinishTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.progress.FinishTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.base.UITestCase" title="tests.gui.base.UITestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.base.UITestCase</span></code></a></p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="method">
+<dt id="tests.gui.progress.FinishTestCase.check_finish_config_button">
+<code class="descname">check_finish_config_button</code><span class="sig-paren">(</span><em>hub</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.progress.FinishTestCase.check_finish_config_button" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tests.gui.progress.ProgressTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.progress.</code><code class="descname">ProgressTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.progress.ProgressTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.base.UITestCase" title="tests.gui.base.UITestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.base.UITestCase</span></code></a></p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="method">
+<dt id="tests.gui.progress.ProgressTestCase.check_begin_installation_button">
+<code class="descname">check_begin_installation_button</code><span class="sig-paren">(</span><em>hub</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.progress.ProgressTestCase.check_begin_installation_button" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.progress.ProgressTestCase.check_shown_spoke_selectors">
+<code class="descname">check_shown_spoke_selectors</code><span class="sig-paren">(</span><em>hub</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.progress.ProgressTestCase.check_shown_spoke_selectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.gui.rootpassword">
+<span id="tests-gui-rootpassword-module"></span><h2>tests.gui.rootpassword module<a class="headerlink" href="#module-tests.gui.rootpassword" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.gui.rootpassword.BasicRootPasswordTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.rootpassword.</code><code class="descname">BasicRootPasswordTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.rootpassword.BasicRootPasswordTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.base.UITestCase" title="tests.gui.base.UITestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.base.UITestCase</span></code></a></p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="method">
+<dt id="tests.gui.rootpassword.BasicRootPasswordTestCase.check_click_done">
+<code class="descname">check_click_done</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.rootpassword.BasicRootPasswordTestCase.check_click_done" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.rootpassword.BasicRootPasswordTestCase.check_enter_password">
+<code class="descname">check_enter_password</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.rootpassword.BasicRootPasswordTestCase.check_enter_password" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.gui.storage">
+<span id="tests-gui-storage-module"></span><h2>tests.gui.storage module<a class="headerlink" href="#module-tests.gui.storage" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.gui.storage.BasicReclaimTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.storage.</code><code class="descname">BasicReclaimTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.storage.BasicReclaimTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.storage.BasicStorageTestCase" title="tests.gui.storage.BasicStorageTestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.storage.BasicStorageTestCase</span></code></a></p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="method">
+<dt id="tests.gui.storage.BasicReclaimTestCase.check_reclaim">
+<code class="descname">check_reclaim</code><span class="sig-paren">(</span><em>optionsDlg</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.storage.BasicReclaimTestCase.check_reclaim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.storage.BasicReclaimTestCase.check_reclaim_buttons_after">
+<code class="descname">check_reclaim_buttons_after</code><span class="sig-paren">(</span><em>dlg</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.storage.BasicReclaimTestCase.check_reclaim_buttons_after" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.storage.BasicReclaimTestCase.check_reclaim_buttons_before">
+<code class="descname">check_reclaim_buttons_before</code><span class="sig-paren">(</span><em>dlg</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.storage.BasicReclaimTestCase.check_reclaim_buttons_before" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tests.gui.storage.BasicStorageTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.storage.</code><code class="descname">BasicStorageTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.storage.BasicStorageTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.base.UITestCase" title="tests.gui.base.UITestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.base.UITestCase</span></code></a></p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="method">
+<dt id="tests.gui.storage.BasicStorageTestCase.check_select_disks">
+<code class="descname">check_select_disks</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.storage.BasicStorageTestCase.check_select_disks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.storage.BasicStorageTestCase.check_shopping_cart">
+<code class="descname">check_shopping_cart</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.storage.BasicStorageTestCase.check_shopping_cart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.storage.BasicStorageTestCase.check_storage_options">
+<code class="descname">check_storage_options</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.storage.BasicStorageTestCase.check_storage_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tests.gui.storage.CantReclaimTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.storage.</code><code class="descname">CantReclaimTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.storage.CantReclaimTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.storage.BasicStorageTestCase" title="tests.gui.storage.BasicStorageTestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.storage.BasicStorageTestCase</span></code></a></p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.gui.summary">
+<span id="tests-gui-summary-module"></span><h2>tests.gui.summary module<a class="headerlink" href="#module-tests.gui.summary" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.gui.summary.SummaryTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.summary.</code><code class="descname">SummaryTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.summary.SummaryTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.base.UITestCase" title="tests.gui.base.UITestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.base.UITestCase</span></code></a></p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="method">
+<dt id="tests.gui.summary.SummaryTestCase.check_begin_installation_button">
+<code class="descname">check_begin_installation_button</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.summary.SummaryTestCase.check_begin_installation_button" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.summary.SummaryTestCase.check_quit_button">
+<code class="descname">check_quit_button</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.summary.SummaryTestCase.check_quit_button" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.summary.SummaryTestCase.check_shown_spoke_selectors">
+<code class="descname">check_shown_spoke_selectors</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.summary.SummaryTestCase.check_shown_spoke_selectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.gui.test_reclaim">
+<span id="tests-gui-test-reclaim-module"></span><h2>tests.gui.test_reclaim module<a class="headerlink" href="#module-tests.gui.test_reclaim" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.gui.test_reclaim.BasicReclaimTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.test_reclaim.</code><code class="descname">BasicReclaimTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.test_reclaim.BasicReclaimTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.base.DogtailTestCase" title="tests.gui.base.DogtailTestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.base.DogtailTestCase</span></code></a></p>
+<dl class="attribute">
+<dt id="tests.gui.test_reclaim.BasicReclaimTestCase.drives">
+<code class="descname">drives</code><em class="property"> = [('one', Size('8 GiB'))]</em><a class="headerlink" href="#tests.gui.test_reclaim.BasicReclaimTestCase.drives" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.test_reclaim.BasicReclaimTestCase.makeDrives">
+<code class="descname">makeDrives</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.test_reclaim.BasicReclaimTestCase.makeDrives" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tests.gui.test_reclaim.BasicReclaimTestCase.name">
+<code class="descname">name</code><em class="property"> = 'basicreclaim'</em><a class="headerlink" href="#tests.gui.test_reclaim.BasicReclaimTestCase.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tests.gui.test_reclaim.BasicReclaimTestCase.tests">
+<code class="descname">tests</code><em class="property"> = [&lt;class 'tests.gui.welcome.BasicWelcomeTestCase'&gt;, &lt;class 'tests.gui.summary.SummaryTestCase'&gt;, &lt;class 'tests.gui.storage.BasicReclaimTestCase'&gt;, &lt;class 'tests.gui.progress.ProgressTestCase'&gt;, &lt;class 'tests.gui.rootpassword.BasicRootPasswordTestCase'&gt;, &lt;class 'tests.gui.progress.FinishTestCase'&gt;]</em><a class="headerlink" href="#tests.gui.test_reclaim.BasicReclaimTestCase.tests" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tests.gui.test_reclaim.CantReclaimTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.test_reclaim.</code><code class="descname">CantReclaimTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.test_reclaim.CantReclaimTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.base.DogtailTestCase" title="tests.gui.base.DogtailTestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.base.DogtailTestCase</span></code></a></p>
+<dl class="attribute">
+<dt id="tests.gui.test_reclaim.CantReclaimTestCase.drives">
+<code class="descname">drives</code><em class="property"> = [('one', Size('1 GiB'))]</em><a class="headerlink" href="#tests.gui.test_reclaim.CantReclaimTestCase.drives" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tests.gui.test_reclaim.CantReclaimTestCase.name">
+<code class="descname">name</code><em class="property"> = 'cantreclaim'</em><a class="headerlink" href="#tests.gui.test_reclaim.CantReclaimTestCase.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tests.gui.test_reclaim.CantReclaimTestCase.tests">
+<code class="descname">tests</code><em class="property"> = [&lt;class 'tests.gui.welcome.BasicWelcomeTestCase'&gt;, &lt;class 'tests.gui.summary.SummaryTestCase'&gt;, &lt;class 'tests.gui.storage.CantReclaimTestCase'&gt;]</em><a class="headerlink" href="#tests.gui.test_reclaim.CantReclaimTestCase.tests" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.gui.test_simple">
+<span id="tests-gui-test-simple-module"></span><h2>tests.gui.test_simple module<a class="headerlink" href="#module-tests.gui.test_simple" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.gui.test_simple.SimpleTestSuite">
+<em class="property">class </em><code class="descclassname">tests.gui.test_simple.</code><code class="descname">SimpleTestSuite</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.test_simple.SimpleTestSuite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.base.DogtailTestCase" title="tests.gui.base.DogtailTestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.base.DogtailTestCase</span></code></a></p>
+<dl class="attribute">
+<dt id="tests.gui.test_simple.SimpleTestSuite.drives">
+<code class="descname">drives</code><em class="property"> = [('one', Size('10 GiB'))]</em><a class="headerlink" href="#tests.gui.test_simple.SimpleTestSuite.drives" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tests.gui.test_simple.SimpleTestSuite.name">
+<code class="descname">name</code><em class="property"> = 'simple'</em><a class="headerlink" href="#tests.gui.test_simple.SimpleTestSuite.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="tests.gui.test_simple.SimpleTestSuite.tests">
+<code class="descname">tests</code><em class="property"> = [&lt;class 'tests.gui.welcome.BasicWelcomeTestCase'&gt;, &lt;class 'tests.gui.summary.SummaryTestCase'&gt;, &lt;class 'tests.gui.date_time.DateTimeTestCase'&gt;, &lt;class 'tests.gui.keyboard.BasicKeyboardTestCase'&gt;, &lt;class 'tests.gui.network.NetworkTestCase'&gt;, &lt;class 'tests.gui.storage.BasicStorageTestCase'&gt;, &lt;class 'tests.gui.progress.ProgressTestCase'&gt;, &lt;class 'tests.gui.rootpassword.BasicRootPasswordTestCase'&gt;, &lt;class 'tests.gui.progress.FinishTestCase'&gt;]</em><a class="headerlink" href="#tests.gui.test_simple.SimpleTestSuite.tests" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.gui.user">
+<span id="tests-gui-user-module"></span><h2>tests.gui.user module<a class="headerlink" href="#module-tests.gui.user" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.gui.user.BasicUserTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.user.</code><code class="descname">BasicUserTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.user.BasicUserTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.base.UITestCase" title="tests.gui.base.UITestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.base.UITestCase</span></code></a></p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="method">
+<dt id="tests.gui.user.BasicUserTestCase.check_click_done">
+<code class="descname">check_click_done</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.user.BasicUserTestCase.check_click_done" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.user.BasicUserTestCase.check_enter_name">
+<code class="descname">check_enter_name</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.user.BasicUserTestCase.check_enter_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.user.BasicUserTestCase.check_enter_password">
+<code class="descname">check_enter_password</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.user.BasicUserTestCase.check_enter_password" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.gui.welcome">
+<span id="tests-gui-welcome-module"></span><h2>tests.gui.welcome module<a class="headerlink" href="#module-tests.gui.welcome" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tests.gui.welcome.BasicWelcomeTestCase">
+<em class="property">class </em><code class="descclassname">tests.gui.welcome.</code><code class="descname">BasicWelcomeTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.welcome.BasicWelcomeTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.gui.base.UITestCase" title="tests.gui.base.UITestCase"><code class="xref py py-class docutils literal"><span class="pre">tests.gui.base.UITestCase</span></code></a></p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p>
+<dl class="method">
+<dt id="tests.gui.welcome.BasicWelcomeTestCase.check_continue_button">
+<code class="descname">check_continue_button</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.welcome.BasicWelcomeTestCase.check_continue_button" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.welcome.BasicWelcomeTestCase.check_lang_locale_views">
+<code class="descname">check_lang_locale_views</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.welcome.BasicWelcomeTestCase.check_lang_locale_views" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="tests.gui.welcome.BasicWelcomeTestCase.check_quit_button">
+<code class="descname">check_quit_button</code><span class="sig-paren">(</span><em>spoke</em><span class="sig-paren">)</span><a class="headerlink" href="#tests.gui.welcome.BasicWelcomeTestCase.check_quit_button" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.gui">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tests.gui" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tests.lib.html" class="btn btn-neutral float-right" title="tests.lib package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tests.glade.html" class="btn btn-neutral" title="tests.glade package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Red Hat, Inc..
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'26.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

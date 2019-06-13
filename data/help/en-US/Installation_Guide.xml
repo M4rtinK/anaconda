@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Installation_Guide.ent">
+<!ENTITY PRODUCT "Fedora">
+<!ENTITY NEXTVER "21">
+<!ENTITY PRODVER "20">
+<!ENTITY PREVVER "19">
+<!ENTITY BOOKID "install-guide">
+<!ENTITY YEAR "2014">
+<!ENTITY HOLDER "Red Hat, Inc. and others">
+<!ENTITY BZURL "https://bugzilla.redhat.com/enter_bug.cgi?product=&PRODUCT;&amp;component=&BOOKID;">
+<!ENTITY IGURL '<ulink url="http://docs.fedoraproject.org/" />'>
+]>
+<book>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Book_Info.xml"/>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Preface.xml"/>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Introduction.xml"/>
+
+	<part id="part-installing-fedora">
+		<title>Installing Fedora</title>
+		<partintro>
+			<para>
+				This part of the <citetitle>Fedora Installation Guide</citetitle> details the installation process itself, starting with the steps you must take to prepare for the installation, and ending with the steps you need to take immediately after the installation finishes and your system reboots for the first time. It also includes a section about troubleshooting common problems which may appear before, during or immediately after the installation.
+			</para>
+		</partintro>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Preparing_for_Installation.xml"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Booting_the_Installation.xml"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Installing_Using_Anaconda.xml"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="After_Installation.xml"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Troubleshooting.xml"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Next_Steps.xml"/>
+	</part>
+
+	<part id="part-advanced-installation-options">
+		<title>Advanced Installation Options</title>
+		<partintro>
+			<para>
+				This part of the <citetitle>Fedora Installation Guide</citetitle> covers more advanced topics, which will be useful to users who need to perform a non-standard installation. It contains information about custom boot options, automating the installation using Kickstart, booting from a network location instead of local media, etc.
+			</para>
+		</partintro>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Boot_Options.xml"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Kickstart_Installations.xml"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Network_based_Installations.xml"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="VNC_Installations.xml"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Upgrading_Your_Current_System.xml"/>
+	</part>
+
+	<part id="part-technical-appendixes">
+		<title>Technical Appendixes</title>
+		<partintro>
+			<para>
+				The following appendixes do not contain instructions that tell you how to install Fedora. Instead, they provide technical background that you might find helpful to understand the options that Fedora offers you at various points in the installation process.
+			</para>
+		</partintro>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Kickstart_Syntax_Reference.xml"/>
+	</part>
+
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Revision_History.xml"/>
+	<index/>
+</book>

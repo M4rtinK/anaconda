@@ -1,0 +1,8 @@
+specfile_path: anaconda.spec.in
+synced_files:
+  - packit.yaml
+  - anaconda.spec.in
+upstream_project_name: anaconda
+downstream_package_name: anaconda
+current_version_command: ["sh", "-c", "git describe --tags | cut -d - -f 1-2 | cut -b 10-"]
+current_tarball_command: ["make", "release"]

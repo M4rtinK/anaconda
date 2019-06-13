@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Installation_Guide.ent">
+<!ENTITY PRODUCT "Fedora">
+<!ENTITY NEXTVER "21">
+<!ENTITY PRODVER "20">
+<!ENTITY PREVVER "19">
+<!ENTITY BOOKID "install-guide">
+<!ENTITY YEAR "2014">
+<!ENTITY HOLDER "Red Hat, Inc. and others">
+<!ENTITY BZURL "https://bugzilla.redhat.com/enter_bug.cgi?product=&PRODUCT;&amp;component=&BOOKID;">
+<!ENTITY IGURL '<ulink url="http://docs.fedoraproject.org/" />'>
+]>
+<section id="sect-installation-gui-date-and-time">
+	<title>Date &amp; Time</title>
+	<para>
+		The <guilabel>Date &amp; Time</guilabel> screen allows you to configure time and date-related settings for your system. This screen is automatically configured based on the settings you selected in <ulink url="WelcomeSpoke.xml">Welcome Screen and Language Selection</ulink>, but you can change your date, time and location settings before you begin the installation.
+	</para>
+	<para>
+		</para>
+	<para>
+		First, select your <guilabel>Region</guilabel> using the drop-down menu in the top left corner of the screen. Then, select your <guilabel>City</guilabel>, or the city closest to your location in the same time zone. Selecting a specific location helps Fedora ensure that your time is always set correctly including automatic time changes for daylight savings time if applicable.
+	</para>
+	<para>
+		You can also select a time zone relative to Greenwich Mean Time (GMT) without setting your location to a specific region. To do so, select <guilabel>Etc</guilabel> as your region.
+	</para>
+	<note>
+		<para>
+			The list of cities and regions comes from the Time Zone Database (<package>tzdata</package>) public domain, which is maintained by the Internet Assigned Numbers Authority (IANA). The Fedora Project can not add cities or regions into this database. You can find more information at the <ulink url="http://www.iana.org/time-zones">IANA official website</ulink>. 
+		</para>
+	</note>
+	<para>
+		The switch labeled <guilabel>Network Time</guilabel> in the top right corner of the screen can be used to enable or disable network time synchronization using the Network Time Protol (NTP). Enabling this option will keep your system time correct as long as the system can access the internet. By default, four NTP <firstterm>pools</firstterm> are configured; you can add others and disable or remove the default ones by clicking the gear wheel button next to the switch.
+	</para>
+	<para>
+		</para>
+	<para>
+		If you disable network time synchronization, the controls at the bottom of the screen will become active, and you will be able to set the current time and date manually.
+	</para>
+	<para>
+		After configuring your time and date settings, press the <guilabel>Done</guilabel> button in the top left corner to return to <ulink url="SummaryHub.xml">Installation Summary</ulink>.
+	</para>
+</section>

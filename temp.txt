@@ -1,0 +1,47 @@
+    Add help placeholders
+    
+    These place holders are used as a fallback in case that the
+    installation guide is not available in the installation environment in
+    any form. There are two placeholder variant, one for the livecd
+    installation environment with clickable links and one for the
+    installation media without clickable links.
+
+
+
+
+
+
+
+
+
+
+
+
+
+From 3fde42486888a19b1b14777b8713e5bb59370a2d Mon Sep 17 00:00:00 2001
+From: Martin Kolman <mkolman@redhat.com>
+Date: Tue, 15 Jul 2014 14:46:07 +0200
+Subject: [anaconda][master][rhel7-branch][PATCH 0/2] Don't create configured.ini & fix typos
+
+The first patch drops some old code we probably wanted to use early in the Initial Setup
+development but never did in the end. The end result is that we will no longer needlessly
+create the configured.ini file in the /var/lib/inital_setup folder (yes, there is even a
+spelling mistake in the path - we would probably never know about it if the mistake was no
+there :) ).
+
+The second patch fixes a few typos I've discovered while working on the first patch.
+
+Martin Kolman (2):
+  Don't create the configured.ini file (#1119166)
+  Fix a typo: inital -> initial
+
+ pyanaconda/install.py                   |  1 -
+ pyanaconda/kickstart.py                 | 26 --------------------------
+ pyanaconda/ui/tui/simpleline/base.py    |  2 +-
+ pyanaconda/users.py                     |  4 ++--
+ tests/pyanaconda_tests/timezone_test.py |  2 +-
+ 5 files changed, 4 insertions(+), 31 deletions(-)
+
+-- 
+1.9.3
+

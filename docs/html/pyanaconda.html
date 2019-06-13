@@ -1,0 +1,926 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pyanaconda package &mdash; Anaconda 26.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Anaconda 26.1 documentation" href="index.html"/>
+        <link rel="up" title="pyanaconda" href="modules.html"/>
+        <link rel="next" title="pyanaconda.installclasses package" href="pyanaconda.installclasses.html"/>
+        <link rel="prev" title="pyanaconda" href="modules.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Anaconda
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                26.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction to Anaconda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release.html">Building a Release</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boot-options.html">Anaconda Boot Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kickstart.html">Anaconda Kickstart Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commit-log.html">Rules for commit messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="driverdisc.html">Brief description of DriverDisc version 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iscsi.html">iSCSI and Anaconda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multipath.html">Multipath and Anaconda</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">pyanaconda</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyanaconda package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.installclasses.html">pyanaconda.installclasses package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.isys.html">pyanaconda.isys package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.packaging.html">pyanaconda.packaging package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.html">pyanaconda.ui package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-addons-module">pyanaconda.addons module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-anaconda-module">pyanaconda.anaconda module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-anaconda-argparse-module">pyanaconda.anaconda_argparse module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-anaconda-log-module">pyanaconda.anaconda_log module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-bootloader-module">pyanaconda.bootloader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyanaconda.build_manpage">pyanaconda.build_manpage module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-constants-module">pyanaconda.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-constants-text-module">pyanaconda.constants_text module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-desktop-module">pyanaconda.desktop module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-display-module">pyanaconda.display module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-errors-module">pyanaconda.errors module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-exception-module">pyanaconda.exception module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-flags-module">pyanaconda.flags module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-geoloc-module">pyanaconda.geoloc module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyanaconda.i18n">pyanaconda.i18n module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-ihelp-module">pyanaconda.ihelp module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-image-module">pyanaconda.image module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-install-module">pyanaconda.install module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-installclass-module">pyanaconda.installclass module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-iutil-module">pyanaconda.iutil module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-kexec-module">pyanaconda.kexec module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-keyboard-module">pyanaconda.keyboard module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-kickstart-module">pyanaconda.kickstart module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-localization-module">pyanaconda.localization module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-network-module">pyanaconda.network module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-nm-module">pyanaconda.nm module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-ntp-module">pyanaconda.ntp module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-product-module">pyanaconda.product module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-progress-module">pyanaconda.progress module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyanaconda.pwpolicy">pyanaconda.pwpolicy module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-queuefactory-module">pyanaconda.queuefactory module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyanaconda.regexes">pyanaconda.regexes module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-rescue-module">pyanaconda.rescue module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-safe-dbus-module">pyanaconda.safe_dbus module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-screen-access-module">pyanaconda.screen_access module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-screensaver-module">pyanaconda.screensaver module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-simpleconfig-module">pyanaconda.simpleconfig module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-startup-utils-module">pyanaconda.startup_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-storage-utils-module">pyanaconda.storage_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyanaconda.threads">pyanaconda.threads module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-timezone-module">pyanaconda.timezone module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-users-module">pyanaconda.users module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyanaconda.version">pyanaconda.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyanaconda-vnc-module">pyanaconda.vnc module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyanaconda">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/modules.html">tests</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Anaconda</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="modules.html">pyanaconda</a> &raquo;</li>
+      
+    <li>pyanaconda package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/pyanaconda.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pyanaconda-package">
+<h1>pyanaconda package<a class="headerlink" href="#pyanaconda-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyanaconda.installclasses.html">pyanaconda.installclasses package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.installclasses.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.installclasses.html#pyanaconda-installclasses-centos-module">pyanaconda.installclasses.centos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.installclasses.html#pyanaconda-installclasses-fedora-module">pyanaconda.installclasses.fedora module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.installclasses.html#pyanaconda-installclasses-rhel-module">pyanaconda.installclasses.rhel module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.installclasses.html#pyanaconda-installclasses-scientific-module">pyanaconda.installclasses.scientific module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.installclasses.html#module-pyanaconda.installclasses">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyanaconda.isys.html">pyanaconda.isys package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.isys.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyanaconda.packaging.html">pyanaconda.packaging package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.packaging.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.packaging.html#pyanaconda-packaging-dnfpayload-module">pyanaconda.packaging.dnfpayload module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.packaging.html#pyanaconda-packaging-livepayload-module">pyanaconda.packaging.livepayload module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.packaging.html#pyanaconda-packaging-rpmostreepayload-module">pyanaconda.packaging.rpmostreepayload module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.packaging.html#pyanaconda-packaging-tarpayload-module">pyanaconda.packaging.tarpayload module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.packaging.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyanaconda.ui.html">pyanaconda.ui package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.ui.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyanaconda.ui.categories.html">pyanaconda.ui.categories package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.categories.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.categories.html#pyanaconda-ui-categories-customization-module">pyanaconda.ui.categories.customization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.categories.html#pyanaconda-ui-categories-localization-module">pyanaconda.ui.categories.localization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.categories.html#pyanaconda-ui-categories-software-module">pyanaconda.ui.categories.software module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.categories.html#pyanaconda-ui-categories-system-module">pyanaconda.ui.categories.system module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.categories.html#pyanaconda-ui-categories-user-settings-module">pyanaconda.ui.categories.user_settings module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.categories.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyanaconda.ui.gui.html">pyanaconda.ui.gui package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.gui.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="pyanaconda.ui.gui.hubs.html">pyanaconda.ui.gui.hubs package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.hubs.html#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.hubs.html#pyanaconda-ui-gui-hubs-progress-module">pyanaconda.ui.gui.hubs.progress module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.hubs.html#pyanaconda-ui-gui-hubs-summary-module">pyanaconda.ui.gui.hubs.summary module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.hubs.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html">pyanaconda.ui.gui.spokes package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="pyanaconda.ui.gui.spokes.advstorage.html">pyanaconda.ui.gui.spokes.advstorage package</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.advstorage.html#submodules">Submodules</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.advstorage.html#pyanaconda-ui-gui-spokes-advstorage-dasd-module">pyanaconda.ui.gui.spokes.advstorage.dasd module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.advstorage.html#pyanaconda-ui-gui-spokes-advstorage-fcoe-module">pyanaconda.ui.gui.spokes.advstorage.fcoe module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.advstorage.html#pyanaconda-ui-gui-spokes-advstorage-iscsi-module">pyanaconda.ui.gui.spokes.advstorage.iscsi module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.advstorage.html#pyanaconda-ui-gui-spokes-advstorage-zfcp-module">pyanaconda.ui.gui.spokes.advstorage.zfcp module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.advstorage.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="pyanaconda.ui.gui.spokes.lib.html">pyanaconda.ui.gui.spokes.lib package</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.lib.html#submodules">Submodules</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.lib.html#pyanaconda-ui-gui-spokes-lib-accordion-module">pyanaconda.ui.gui.spokes.lib.accordion module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.lib.html#pyanaconda-ui-gui-spokes-lib-cart-module">pyanaconda.ui.gui.spokes.lib.cart module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.lib.html#pyanaconda-ui-gui-spokes-lib-custom-storage-helpers-module">pyanaconda.ui.gui.spokes.lib.custom_storage_helpers module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.lib.html#pyanaconda-ui-gui-spokes-lib-dasdfmt-module">pyanaconda.ui.gui.spokes.lib.dasdfmt module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.lib.html#pyanaconda-ui-gui-spokes-lib-detailederror-module">pyanaconda.ui.gui.spokes.lib.detailederror module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.lib.html#pyanaconda-ui-gui-spokes-lib-entropy-dialog-module">pyanaconda.ui.gui.spokes.lib.entropy_dialog module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.lib.html#pyanaconda-ui-gui-spokes-lib-lang-locale-handler-module">pyanaconda.ui.gui.spokes.lib.lang_locale_handler module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.lib.html#pyanaconda-ui-gui-spokes-lib-passphrase-module">pyanaconda.ui.gui.spokes.lib.passphrase module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.lib.html#pyanaconda-ui-gui-spokes-lib-refresh-module">pyanaconda.ui.gui.spokes.lib.refresh module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.lib.html#pyanaconda-ui-gui-spokes-lib-resize-module">pyanaconda.ui.gui.spokes.lib.resize module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.lib.html#pyanaconda-ui-gui-spokes-lib-summary-module">pyanaconda.ui.gui.spokes.lib.summary module</a></li>
+<li class="toctree-l8"><a class="reference internal" href="pyanaconda.ui.gui.spokes.lib.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#pyanaconda-ui-gui-spokes-custom-module">pyanaconda.ui.gui.spokes.custom module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#pyanaconda-ui-gui-spokes-datetime-spoke-module">pyanaconda.ui.gui.spokes.datetime_spoke module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#pyanaconda-ui-gui-spokes-filter-module">pyanaconda.ui.gui.spokes.filter module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#pyanaconda-ui-gui-spokes-keyboard-module">pyanaconda.ui.gui.spokes.keyboard module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#pyanaconda-ui-gui-spokes-langsupport-module">pyanaconda.ui.gui.spokes.langsupport module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#pyanaconda-ui-gui-spokes-network-module">pyanaconda.ui.gui.spokes.network module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#pyanaconda-ui-gui-spokes-password-module">pyanaconda.ui.gui.spokes.password module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#pyanaconda-ui-gui-spokes-software-module">pyanaconda.ui.gui.spokes.software module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#pyanaconda-ui-gui-spokes-source-module">pyanaconda.ui.gui.spokes.source module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#pyanaconda-ui-gui-spokes-storage-module">pyanaconda.ui.gui.spokes.storage module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#pyanaconda-ui-gui-spokes-user-module">pyanaconda.ui.gui.spokes.user module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#pyanaconda-ui-gui-spokes-welcome-module">pyanaconda.ui.gui.spokes.welcome module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.gui.spokes.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.gui.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.gui.html#pyanaconda-ui-gui-helpers-module">pyanaconda.ui.gui.helpers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.gui.html#pyanaconda-ui-gui-utils-module">pyanaconda.ui.gui.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.gui.html#pyanaconda-ui-gui-xkl-wrapper-module">pyanaconda.ui.gui.xkl_wrapper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.gui.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyanaconda.ui.lib.html">pyanaconda.ui.lib package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.lib.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.lib.html#pyanaconda-ui-lib-disks-module">pyanaconda.ui.lib.disks module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.lib.html#pyanaconda-ui-lib-entropy-module">pyanaconda.ui.lib.entropy module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.lib.html#pyanaconda-ui-lib-space-module">pyanaconda.ui.lib.space module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.lib.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyanaconda.ui.tui.html">pyanaconda.ui.tui package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.tui.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="pyanaconda.ui.tui.hubs.html">pyanaconda.ui.tui.hubs package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.hubs.html#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.hubs.html#pyanaconda-ui-tui-hubs-summary-module">pyanaconda.ui.tui.hubs.summary module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.hubs.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="pyanaconda.ui.tui.simpleline.html">pyanaconda.ui.tui.simpleline package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.simpleline.html#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.simpleline.html#pyanaconda-ui-tui-simpleline-base-module">pyanaconda.ui.tui.simpleline.base module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.simpleline.html#pyanaconda-ui-tui-simpleline-prompt-module">pyanaconda.ui.tui.simpleline.prompt module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.simpleline.html#pyanaconda-ui-tui-simpleline-widgets-module">pyanaconda.ui.tui.simpleline.widgets module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.simpleline.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html">pyanaconda.ui.tui.spokes package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html#pyanaconda-ui-tui-spokes-askvnc-module">pyanaconda.ui.tui.spokes.askvnc module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html#pyanaconda-ui-tui-spokes-langsupport-module">pyanaconda.ui.tui.spokes.langsupport module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html#pyanaconda-ui-tui-spokes-network-module">pyanaconda.ui.tui.spokes.network module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html#pyanaconda-ui-tui-spokes-password-module">pyanaconda.ui.tui.spokes.password module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html#pyanaconda-ui-tui-spokes-progress-module">pyanaconda.ui.tui.spokes.progress module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html#pyanaconda-ui-tui-spokes-shell-spoke-module">pyanaconda.ui.tui.spokes.shell_spoke module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html#pyanaconda-ui-tui-spokes-software-module">pyanaconda.ui.tui.spokes.software module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html#pyanaconda-ui-tui-spokes-source-module">pyanaconda.ui.tui.spokes.source module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html#pyanaconda-ui-tui-spokes-storage-module">pyanaconda.ui.tui.spokes.storage module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html#pyanaconda-ui-tui-spokes-time-spoke-module">pyanaconda.ui.tui.spokes.time_spoke module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html#pyanaconda-ui-tui-spokes-user-module">pyanaconda.ui.tui.spokes.user module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html#pyanaconda-ui-tui-spokes-warnings-spoke-module">pyanaconda.ui.tui.spokes.warnings_spoke module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="pyanaconda.ui.tui.spokes.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.tui.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.tui.html#pyanaconda-ui-tui-tuiobject-module">pyanaconda.ui.tui.tuiobject module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyanaconda.ui.tui.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.ui.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.ui.html#pyanaconda-ui-common-module">pyanaconda.ui.common module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.ui.html#pyanaconda-ui-communication-module">pyanaconda.ui.communication module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.ui.html#pyanaconda-ui-helpers-module">pyanaconda.ui.helpers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyanaconda.ui.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-addons-module">
+<h2>pyanaconda.addons module<a class="headerlink" href="#pyanaconda-addons-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-anaconda-module">
+<h2>pyanaconda.anaconda module<a class="headerlink" href="#pyanaconda-anaconda-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-anaconda-argparse-module">
+<h2>pyanaconda.anaconda_argparse module<a class="headerlink" href="#pyanaconda-anaconda-argparse-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-anaconda-log-module">
+<h2>pyanaconda.anaconda_log module<a class="headerlink" href="#pyanaconda-anaconda-log-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-bootloader-module">
+<h2>pyanaconda.bootloader module<a class="headerlink" href="#pyanaconda-bootloader-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyanaconda.build_manpage">
+<span id="pyanaconda-build-manpage-module"></span><h2>pyanaconda.build_manpage module<a class="headerlink" href="#module-pyanaconda.build_manpage" title="Permalink to this headline">¶</a></h2>
+<p>build_manpage.py</p>
+<p>Add a <cite>build_manpage</cite> command  to your setup.py.
+To use this Command class import the class to your setup.py,
+and add a command to call this class:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">build_manpage</span> <span class="k">import</span> <span class="n">BuildManPage</span>
+
+<span class="o">...</span>
+<span class="o">...</span>
+
+<span class="n">setup</span><span class="p">(</span>
+<span class="o">...</span>
+<span class="o">...</span>
+<span class="n">cmdclass</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;build_manpage&#39;</span><span class="p">:</span> <span class="n">BuildManPage</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>You can then use the following setup command to produce a man page:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ python setup.py build_manpage --output=prog.1 --parser=yourmodule:argparser
+</pre></div>
+</div>
+<p>Alternatively, set the variable AUTO_BUILD to True, and just invoke:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ python setup.py build
+</pre></div>
+</div>
+<p>If automatically want to build the man page every time you invoke your build,
+add to your <code class="docutils literal"><span class="pre">`setup.cfg`</span></code> the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">build_manpage</span><span class="p">]</span>
+<span class="n">output</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">appname</span><span class="o">&gt;.</span><span class="mi">1</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">path_to_your_parser</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="pyanaconda.build_manpage.BuildManPage">
+<em class="property">class </em><code class="descclassname">pyanaconda.build_manpage.</code><code class="descname">BuildManPage</code><span class="sig-paren">(</span><em>dist</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.build_manpage.BuildManPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/distutils/apiref.html#distutils.cmd.Command" title="(in Python v3.5)"><code class="xref py py-class docutils literal"><span class="pre">distutils.cmd.Command</span></code></a></p>
+<p>Create and initialize a new Command object.  Most importantly,
+invokes the &#8216;initialize_options()&#8217; method, which is the real
+initializer and depends on the actual command being
+instantiated.</p>
+<dl class="attribute">
+<dt id="pyanaconda.build_manpage.BuildManPage.description">
+<code class="descname">description</code><em class="property"> = 'Generate man page from an ArgumentParser instance.'</em><a class="headerlink" href="#pyanaconda.build_manpage.BuildManPage.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.build_manpage.BuildManPage.finalize_options">
+<code class="descname">finalize_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.build_manpage.BuildManPage.finalize_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.build_manpage.BuildManPage.initialize_options">
+<code class="descname">initialize_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.build_manpage.BuildManPage.initialize_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.build_manpage.BuildManPage.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.build_manpage.BuildManPage.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyanaconda.build_manpage.BuildManPage.user_options">
+<code class="descname">user_options</code><em class="property"> = [('output=', 'O', 'output file'), ('parser=', None, 'module path to an ArgumentParser instance(e.g. mymod:func, where func is a method or function which returnan arparse.ArgumentParser instance.')]</em><a class="headerlink" href="#pyanaconda.build_manpage.BuildManPage.user_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyanaconda.build_manpage.ManPageCreator">
+<em class="property">class </em><code class="descclassname">pyanaconda.build_manpage.</code><code class="descname">ManPageCreator</code><a class="headerlink" href="#pyanaconda.build_manpage.ManPageCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.5)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>This class takes a little different approach. Instead of relying on
+information from ArgumentParser, it relies on information retrieved
+from distutils.
+This class makes it easy for package maintainer to create man pages in cases,
+that there is no ArgumentParser.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyanaconda.build_manpage.ManPageFormatter">
+<em class="property">class </em><code class="descclassname">pyanaconda.build_manpage.</code><code class="descname">ManPageFormatter</code><span class="sig-paren">(</span><em>prog</em>, <em>indent_increment=2</em>, <em>max_help_position=24</em>, <em>width=None</em>, <em>section=1</em>, <em>desc=None</em>, <em>long_desc=None</em>, <em>ext_sections=None</em>, <em>authors=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.build_manpage.ManPageFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">argparse.HelpFormatter</span></code></p>
+<p>Formatter class to create man pages.
+This class relies only on the parser, and not distutils.
+The following shows a scenario for usage:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pwman</span> <span class="k">import</span> <span class="n">parser_options</span>
+<span class="kn">from</span> <span class="nn">build_manpage</span> <span class="k">import</span> <span class="n">ManPageFormatter</span>
+
+<span class="c1"># example usage ...</span>
+
+<span class="n">dist</span> <span class="o">=</span> <span class="n">distribution</span>
+<span class="n">mpf</span> <span class="o">=</span> <span class="n">ManPageFormatter</span><span class="p">(</span><span class="n">appname</span><span class="p">,</span>
+                       <span class="n">desc</span><span class="o">=</span><span class="n">dist</span><span class="o">.</span><span class="n">get_description</span><span class="p">(),</span>
+                       <span class="n">long_desc</span><span class="o">=</span><span class="n">dist</span><span class="o">.</span><span class="n">get_long_description</span><span class="p">(),</span>
+                       <span class="n">ext_sections</span><span class="o">=</span><span class="n">sections</span><span class="p">)</span>
+
+<span class="c1"># parser is an ArgumentParser instance</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">mpf</span><span class="o">.</span><span class="n">format_man_page</span><span class="p">(</span><span class="n">parsr</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The last line would print all the options and help infomation wrapped with
+man page macros where needed.</p>
+<dl class="method">
+<dt id="pyanaconda.build_manpage.ManPageFormatter.format_man_page">
+<code class="descname">format_man_page</code><span class="sig-paren">(</span><em>parser</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.build_manpage.ManPageFormatter.format_man_page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyanaconda-constants-module">
+<h2>pyanaconda.constants module<a class="headerlink" href="#pyanaconda-constants-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-constants-text-module">
+<h2>pyanaconda.constants_text module<a class="headerlink" href="#pyanaconda-constants-text-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-desktop-module">
+<h2>pyanaconda.desktop module<a class="headerlink" href="#pyanaconda-desktop-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-display-module">
+<h2>pyanaconda.display module<a class="headerlink" href="#pyanaconda-display-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-errors-module">
+<h2>pyanaconda.errors module<a class="headerlink" href="#pyanaconda-errors-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-exception-module">
+<h2>pyanaconda.exception module<a class="headerlink" href="#pyanaconda-exception-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-flags-module">
+<h2>pyanaconda.flags module<a class="headerlink" href="#pyanaconda-flags-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-geoloc-module">
+<h2>pyanaconda.geoloc module<a class="headerlink" href="#pyanaconda-geoloc-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyanaconda.i18n">
+<span id="pyanaconda-i18n-module"></span><h2>pyanaconda.i18n module<a class="headerlink" href="#module-pyanaconda.i18n" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyanaconda.i18n.N_">
+<code class="descclassname">pyanaconda.i18n.</code><code class="descname">N_</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.i18n.N_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyanaconda.i18n.P_">
+<code class="descclassname">pyanaconda.i18n.</code><code class="descname">P_</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.i18n.P_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyanaconda.i18n.C_">
+<code class="descclassname">pyanaconda.i18n.</code><code class="descname">C_</code><span class="sig-paren">(</span><em>msgctxt</em>, <em>msgid</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.i18n.C_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyanaconda.i18n.CN_">
+<code class="descclassname">pyanaconda.i18n.</code><code class="descname">CN_</code><span class="sig-paren">(</span><em>c</em>, <em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.i18n.CN_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyanaconda.i18n.CP_">
+<code class="descclassname">pyanaconda.i18n.</code><code class="descname">CP_</code><span class="sig-paren">(</span><em>msgctxt</em>, <em>msgid</em>, <em>msgid_plural</em>, <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.i18n.CP_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="pyanaconda-ihelp-module">
+<h2>pyanaconda.ihelp module<a class="headerlink" href="#pyanaconda-ihelp-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-image-module">
+<h2>pyanaconda.image module<a class="headerlink" href="#pyanaconda-image-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-install-module">
+<h2>pyanaconda.install module<a class="headerlink" href="#pyanaconda-install-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-installclass-module">
+<h2>pyanaconda.installclass module<a class="headerlink" href="#pyanaconda-installclass-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-iutil-module">
+<h2>pyanaconda.iutil module<a class="headerlink" href="#pyanaconda-iutil-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-kexec-module">
+<h2>pyanaconda.kexec module<a class="headerlink" href="#pyanaconda-kexec-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-keyboard-module">
+<h2>pyanaconda.keyboard module<a class="headerlink" href="#pyanaconda-keyboard-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-kickstart-module">
+<h2>pyanaconda.kickstart module<a class="headerlink" href="#pyanaconda-kickstart-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-localization-module">
+<h2>pyanaconda.localization module<a class="headerlink" href="#pyanaconda-localization-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-network-module">
+<h2>pyanaconda.network module<a class="headerlink" href="#pyanaconda-network-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-nm-module">
+<h2>pyanaconda.nm module<a class="headerlink" href="#pyanaconda-nm-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-ntp-module">
+<h2>pyanaconda.ntp module<a class="headerlink" href="#pyanaconda-ntp-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-product-module">
+<h2>pyanaconda.product module<a class="headerlink" href="#pyanaconda-product-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-progress-module">
+<h2>pyanaconda.progress module<a class="headerlink" href="#pyanaconda-progress-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyanaconda.pwpolicy">
+<span id="pyanaconda-pwpolicy-module"></span><h2>pyanaconda.pwpolicy module<a class="headerlink" href="#module-pyanaconda.pwpolicy" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyanaconda.pwpolicy.F22_PwPolicy">
+<em class="property">class </em><code class="descclassname">pyanaconda.pwpolicy.</code><code class="descname">F22_PwPolicy</code><span class="sig-paren">(</span><em>writePriority=0</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.pwpolicy.F22_PwPolicy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pykickstart.base.KickstartCommand</span></code></p>
+<p>Kickstart command implementing password policy.</p>
+<dl class="method">
+<dt id="pyanaconda.pwpolicy.F22_PwPolicy.dataList">
+<code class="descname">dataList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.pwpolicy.F22_PwPolicy.dataList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.pwpolicy.F22_PwPolicy.get_policy">
+<code class="descname">get_policy</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.pwpolicy.F22_PwPolicy.get_policy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the policy by name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) &#8211; Name of the policy to return.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.pwpolicy.F22_PwPolicy.parse">
+<code class="descname">parse</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.pwpolicy.F22_PwPolicy.parse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyanaconda.pwpolicy.F22_PwPolicy.removedAttrs">
+<code class="descname">removedAttrs</code><em class="property"> = []</em><a class="headerlink" href="#pyanaconda.pwpolicy.F22_PwPolicy.removedAttrs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyanaconda.pwpolicy.F22_PwPolicy.removedKeywords">
+<code class="descname">removedKeywords</code><em class="property"> = []</em><a class="headerlink" href="#pyanaconda.pwpolicy.F22_PwPolicy.removedKeywords" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyanaconda.pwpolicy.F22_PwPolicyData">
+<em class="property">class </em><code class="descclassname">pyanaconda.pwpolicy.</code><code class="descname">F22_PwPolicyData</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.pwpolicy.F22_PwPolicyData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pykickstart.base.BaseData</span></code></p>
+<p>Kickstart Data object to hold information about pwpolicy.</p>
+<dl class="attribute">
+<dt id="pyanaconda.pwpolicy.F22_PwPolicyData.removedAttrs">
+<code class="descname">removedAttrs</code><em class="property"> = []</em><a class="headerlink" href="#pyanaconda.pwpolicy.F22_PwPolicyData.removedAttrs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pyanaconda.pwpolicy.F22_PwPolicyData.removedKeywords">
+<code class="descname">removedKeywords</code><em class="property"> = []</em><a class="headerlink" href="#pyanaconda.pwpolicy.F22_PwPolicyData.removedKeywords" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="pyanaconda-queuefactory-module">
+<h2>pyanaconda.queuefactory module<a class="headerlink" href="#pyanaconda-queuefactory-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyanaconda.regexes">
+<span id="pyanaconda-regexes-module"></span><h2>pyanaconda.regexes module<a class="headerlink" href="#module-pyanaconda.regexes" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-rescue-module">
+<h2>pyanaconda.rescue module<a class="headerlink" href="#pyanaconda-rescue-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-safe-dbus-module">
+<h2>pyanaconda.safe_dbus module<a class="headerlink" href="#pyanaconda-safe-dbus-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-screen-access-module">
+<h2>pyanaconda.screen_access module<a class="headerlink" href="#pyanaconda-screen-access-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-screensaver-module">
+<h2>pyanaconda.screensaver module<a class="headerlink" href="#pyanaconda-screensaver-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-simpleconfig-module">
+<h2>pyanaconda.simpleconfig module<a class="headerlink" href="#pyanaconda-simpleconfig-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-startup-utils-module">
+<h2>pyanaconda.startup_utils module<a class="headerlink" href="#pyanaconda-startup-utils-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-storage-utils-module">
+<h2>pyanaconda.storage_utils module<a class="headerlink" href="#pyanaconda-storage-utils-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyanaconda.threads">
+<span id="pyanaconda-threads-module"></span><h2>pyanaconda.threads module<a class="headerlink" href="#module-pyanaconda.threads" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyanaconda.threads.AnacondaThread">
+<em class="property">class </em><code class="descclassname">pyanaconda.threads.</code><code class="descname">AnacondaThread</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.threads.AnacondaThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/threading.html#threading.Thread" title="(in Python v3.5)"><code class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></code></a></p>
+<p>A threading.Thread subclass that exists only for a couple purposes:</p>
+<ol class="arabic simple">
+<li>Make exceptions that happen in a thread invoke our exception handling
+code as well.  Otherwise, threads will silently die and we are doing
+a lot of complicated code in them now.</li>
+<li>Remove themselves from the thread manager when completed.</li>
+<li>All created threads are made daemonic, which means anaconda will quit
+when the main process is killed.</li>
+</ol>
+<dl class="method">
+<dt id="pyanaconda.threads.AnacondaThread.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.threads.AnacondaThread.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyanaconda.threads.ThreadManager">
+<em class="property">class </em><code class="descclassname">pyanaconda.threads.</code><code class="descname">ThreadManager</code><a class="headerlink" href="#pyanaconda.threads.ThreadManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.5)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A singleton class for managing threads and processes.</p>
+<p>Notes:
+THE INSTANCE HAS TO BE CREATED IN THE MAIN THREAD!</p>
+<p>This manager makes one assumption that contradicts python&#8217;s
+threading module documentation.  In this class, we assume that thread
+names are unique and meaningful.  This is an okay assumption for us
+to make given that anaconda is only ever going to have a handful of
+special purpose threads.</p>
+<dl class="method">
+<dt id="pyanaconda.threads.ThreadManager.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.threads.ThreadManager.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a Thread or Process object, add it to the list of known objects
+and start it.  It is assumed that obj.name is unique and descriptive.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyanaconda.threads.ThreadManager.any_errors">
+<code class="descname">any_errors</code><a class="headerlink" href="#pyanaconda.threads.ThreadManager.any_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True of there have been any errors in any threads</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.threads.ThreadManager.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.threads.ThreadManager.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine if a thread or process exists with the given name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.threads.ThreadManager.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.threads.ThreadManager.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an object name, see if it exists and return the object.
+Return None if no such object exists.  Additionally, this method
+will re-raise any uncaught exception in the thread.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.threads.ThreadManager.get_error">
+<code class="descname">get_error</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.threads.ThreadManager.get_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the error data for a thread using its name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.threads.ThreadManager.in_main_thread">
+<code class="descname">in_main_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.threads.ThreadManager.in_main_thread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if it is run in the main thread.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyanaconda.threads.ThreadManager.names">
+<code class="descname">names</code><a class="headerlink" href="#pyanaconda.threads.ThreadManager.names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the names of the running threads.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of thread names</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of strings</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.threads.ThreadManager.raise_if_error">
+<code class="descname">raise_if_error</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.threads.ThreadManager.raise_if_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>If a thread has failed due to an exception, raise it into the main
+thread and remove it from errors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.threads.ThreadManager.remove">
+<code class="descname">remove</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.threads.ThreadManager.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a thread from the list of known objects.  This should only
+be called when a thread exits, or there will be no way to get a
+handle on it.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyanaconda.threads.ThreadManager.running">
+<code class="descname">running</code><a class="headerlink" href="#pyanaconda.threads.ThreadManager.running" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of running threads.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">number of running threads</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.5)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.threads.ThreadManager.set_error">
+<code class="descname">set_error</code><span class="sig-paren">(</span><em>name</em>, <em>*exc_info</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.threads.ThreadManager.set_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the error data for a thread</p>
+<p>The exception data is expected to be the tuple from sys.exc_info()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.threads.ThreadManager.wait">
+<code class="descname">wait</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.threads.ThreadManager.wait" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for the thread to exit and if the thread exited with an error
+re-raise it here.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.threads.ThreadManager.wait_all">
+<code class="descname">wait_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.threads.ThreadManager.wait_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for all threads to exit and if there was an error re-raise it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyanaconda.threads.ThreadManager.wait_for_error_threads">
+<code class="descname">wait_for_error_threads</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.threads.ThreadManager.wait_for_error_threads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Waits for all threads that caused exceptions. In other words, waits for
+exception handling (possibly interactive) to be finished.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyanaconda.threads.initThreading">
+<code class="descclassname">pyanaconda.threads.</code><code class="descname">initThreading</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyanaconda.threads.initThreading" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up threading for anaconda&#8217;s use. This method must be called before
+any GTK or threading code is called, or else threads will only run when
+an event is triggered in the GTK main loop. And IT HAS TO BE CALLED IN
+THE MAIN THREAD.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="pyanaconda-timezone-module">
+<h2>pyanaconda.timezone module<a class="headerlink" href="#pyanaconda-timezone-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-users-module">
+<h2>pyanaconda.users module<a class="headerlink" href="#pyanaconda-users-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyanaconda.version">
+<span id="pyanaconda-version-module"></span><h2>pyanaconda.version module<a class="headerlink" href="#module-pyanaconda.version" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pyanaconda-vnc-module">
+<h2>pyanaconda.vnc module<a class="headerlink" href="#pyanaconda-vnc-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyanaconda">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyanaconda" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pyanaconda.installclasses.html" class="btn btn-neutral float-right" title="pyanaconda.installclasses package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral" title="pyanaconda" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Red Hat, Inc..
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'26.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

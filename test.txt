@@ -1,0 +1,33 @@
+From c500be3d767b2592f3a7b8761e66ebdebed3f059 Mon Sep 17 00:00:00 2001
+From: Martin Kolman <mkolman@redhat.com>
+Date: Thu, 22 Jan 2015 19:23:03 +0100
+Subject: [anaconda][master][PATCH] Replace urlgrabber usage by python-requests
+
+Replace the Python 2-only urlgrabber with the Python 3 compatible (and much nicer ;-) )
+python-requests library.
+
+The requests API maps quite nicely to the stuff we did with urlgrabber and should
+have the same end result & behavior as before.
+
+The only potential mismatch I've found I found is in SSL certificate verification,
+the urlgrabber API has two options - ssl_verify_host and ssl_verify_peer, while
+request just have a single verify option. We used to set both options always to True
+or to False with urlgrabber, so unless requests are skipping some verification urlgrabber
+did, so this should be probably fine.
+
+Certificate validation itself seem to work fine as far as I can tell - connections to
+server with valid certificates work fine and servers with self-signed certificates raise
+an exception.
+
+Martin Kolman (1):
+  Replace python-urlgrabber with python-requests (#1141242)
+
+ anaconda.spec.in                    |  5 ++-
+ pyanaconda/kickstart.py             | 13 +++++---
+ pyanaconda/packaging/__init__.py    | 36 ++++++++++-----------
+ pyanaconda/packaging/livepayload.py | 64 ++++++++++++++++++++-----------------
+ 4 files changed, 63 insertions(+), 55 deletions(-)
+
+-- 
+2.1.0
+

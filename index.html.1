@@ -1,0 +1,245 @@
+It has been deprecated in favor of the new global yelp-based context aware help
+system. Unlike the old "wall of plain text text in a dialogue" approach the new help
+system can use advanced text formatting and pictures.
+It should be also much more discoverable, unlike the currently used small weird icon
+tucked together in the accordion tool bar, and by removing it we have one one less
+humongous string to translate.
+
+Signed-off-by: Martin Kolman <mkolman at redhat.com>
+---
+ pyanaconda/ui/gui/spokes/custom.glade              | 17 -----
+ pyanaconda/ui/gui/spokes/custom.py                 |  7 +-
+ .../ui/gui/spokes/lib/custom_storage_helpers.glade | 71 --------------------
+ .../ui/gui/spokes/lib/custom_storage_helpers.py    | 78 +---------------------
+ 4 files changed, 2 insertions(+), 171 deletions(-)
+
+diff --git a/pyanaconda/ui/gui/spokes/custom.glade b/pyanaconda/ui/gui/spokes/custom.glade
+index 9143b1d..8616ca8 100644
+--- a/pyanaconda/ui/gui/spokes/custom.glade
++++ b/pyanaconda/ui/gui/spokes/custom.glade
+@@ -1039,23 +1039,6 @@ until you click on the main menu's 'Begin Installation' button.</property>
+                             <property name="homogeneous">True</property>
+                           </packing>
+                         </child>
+-                        <child>
+-                          <object class="GtkToolButton" id="helpButton">
+-                            <property name="width_request">42</property>
+-                            <property name="height_request">36</property>
+-                            <property name="visible">True</property>
+-                            <property name="can_focus">False</property>
+-                            <property name="tooltip_text" translatable="yes">Click for help.</property>
+-                            <property name="label" translatable="yes" context="GUI|Custom Partitioning">_Help</property>
+-                            <property name="use_underline">True</property>
+-                            <property name="icon_name">system-help-symbolic</property>
+-                            <signal name="clicked" handler="on_help_clicked" swapped="no"/>
+-                          </object>
+-                          <packing>
+-                            <property name="expand">False</property>
+-                            <property name="homogeneous">True</property>
+-                          </packing>
+-                        </child>
+                         <style>
+                           <class name="inline-toolbar"/>
+                         </style>
+diff --git a/pyanaconda/ui/gui/spokes/custom.py b/pyanaconda/ui/gui/spokes/custom.py
+index 5823ef4..f4c2d68 100644
+--- a/pyanaconda/ui/gui/spokes/custom.py
++++ b/pyanaconda/ui/gui/spokes/custom.py
+@@ -81,7 +81,7 @@ from pyanaconda.ui.gui.spokes.lib.custom_storage_helpers import size_from_entry
+ from pyanaconda.ui.gui.spokes.lib.custom_storage_helpers import validate_label, validate_mountpoint, get_raid_level
+ from pyanaconda.ui.gui.spokes.lib.custom_storage_helpers import selectedRaidLevel, raidLevelSelection, defaultRaidLevel, requiresRaidSelection, containerRaidLevelsSupported, raidLevelsSupported, defaultContainerRaidLevel
+ from pyanaconda.ui.gui.spokes.lib.custom_storage_helpers import get_container_type_name, RAID_NOT_ENOUGH_DISKS
+-from pyanaconda.ui.gui.spokes.lib.custom_storage_helpers import AddDialog, ConfirmDeleteDialog, DisksDialog, ContainerDialog, HelpDialog
++from pyanaconda.ui.gui.spokes.lib.custom_storage_helpers import AddDialog, ConfirmDeleteDialog, DisksDialog, ContainerDialog
+ 
+ from pyanaconda.ui.gui.utils import setViewportBackground, fancy_set_sensitive, ignoreEscape
+ from pyanaconda.ui.gui.utils import really_hide, really_show, GtkActionList, timed_action
+@@ -1848,11 +1848,6 @@ class CustomPartitioningSpoke(NormalSpoke, StorageChecker):
+         with self.main_window.enlightbox(dialog.window):
+             dialog.run()
+ 
+-    def on_help_clicked(self, button):
+-        help_window = HelpDialog(self.data)
+-        with self.main_window.enlightbox(help_window.window):
+-            help_window.run()
+-
+     def on_configure_clicked(self, button):
+         selector = self._current_selector
+         if not selector:
+diff --git a/pyanaconda/ui/gui/spokes/lib/custom_storage_helpers.glade b/pyanaconda/ui/gui/spokes/lib/custom_storage_helpers.glade
+index cb9e925..e81ef3e 100644
+--- a/pyanaconda/ui/gui/spokes/lib/custom_storage_helpers.glade
++++ b/pyanaconda/ui/gui/spokes/lib/custom_storage_helpers.glade
+@@ -291,77 +291,6 @@
+       <action-widget response="1">select_button</action-widget>
+     </action-widgets>
+   </object>
+-  <object class="GtkTextBuffer" id="help_text_buffer"/>
+-  <object class="GtkDialog" id="help_dialog">
+-    <property name="width_request">600</property>
+-    <property name="height_request">400</property>
+-    <property name="can_focus">False</property>
+-    <property name="border_width">6</property>
+-    <property name="title" translatable="yes">Help</property>
+-    <property name="modal">True</property>
+-    <property name="window_position">center-on-parent</property>
+-    <property name="type_hint">dialog</property>
+-    <signal name="close" handler="on_close" swapped="no"/>
+-    <child internal-child="vbox">
+-      <object class="GtkBox" id="dialog-vbox6">
+-        <property name="can_focus">False</property>
+-        <property name="orientation">vertical</property>
+-        <property name="spacing">2</property>
+-        <child internal-child="action_area">
+-          <object class="GtkButtonBox" id="dialog-action_area6">
+-            <property name="can_focus">False</property>
+-            <property name="layout_style">end</property>
+-            <child>
+-              <object class="GtkButton" id="help_close_button">
+-                <property name="label" translatable="yes" context="GUI|Custom Partitioning|Help">_Close</property>
+-                <property name="visible">True</property>
+-                <property name="can_focus">True</property>
+-                <property name="receives_default">True</property>
+-                <property name="use_underline">True</property>
+-                <signal name="clicked" handler="on_close" swapped="no"/>
+-              </object>
+-              <packing>
+-                <property name="expand">False</property>
+-                <property name="fill">True</property>
+-                <property name="position">0</property>
+-              </packing>
+-            </child>
+-          </object>
+-          <packing>
+-            <property name="expand">False</property>
+-            <property name="fill">True</property>
+-            <property name="pack_type">end</property>
+-            <property name="position">0</property>
+-          </packing>
+-        </child>
+-        <child>
+-          <object class="GtkScrolledWindow" id="scrolledwindow3">
+-            <property name="visible">True</property>
+-            <property name="can_focus">True</property>
+-            <property name="shadow_type">in</property>
+-            <child>
+-              <object class="GtkTextView" id="help_text_view">
+-                <property name="visible">True</property>
+-                <property name="can_focus">True</property>
+-                <property name="editable">False</property>
+-                <property name="wrap_mode">word</property>
+-                <property name="cursor_visible">False</property>
+-                <property name="buffer">help_text_buffer</property>
+-              </object>
+-            </child>
+-          </object>
+-          <packing>
+-            <property name="expand">True</property>
+-            <property name="fill">True</property>
+-            <property name="position">1</property>
+-          </packing>
+-        </child>
+-      </object>
+-    </child>
+-    <action-widgets>
+-      <action-widget response="0">help_close_button</action-widget>
+-    </action-widgets>
+-  </object>
+   <object class="GtkEntryBuffer" id="mountPointEntryBuffer"/>
+   <object class="GtkListStore" id="mountPointStore">
+     <columns>
+diff --git a/pyanaconda/ui/gui/spokes/lib/custom_storage_helpers.py b/pyanaconda/ui/gui/spokes/lib/custom_storage_helpers.py
+index 6f6a1e9..fd14ea1 100644
+--- a/pyanaconda/ui/gui/spokes/lib/custom_storage_helpers.py
++++ b/pyanaconda/ui/gui/spokes/lib/custom_storage_helpers.py
+@@ -28,8 +28,7 @@ __all__ = ["size_from_entry", "populate_mountpoint_store", "validate_label",
+            "selectedRaidLevel", "raidLevelSelection",
+            "defaultRaidLevel", "requiresRaidSelection", "defaultContainerRaidLevel",
+            "containerRaidLevelsSupported", "raidLevelsSupported", "get_container_type_name",
+-           "AddDialog", "ConfirmDeleteDialog", "DisksDialog", "ContainerDialog",
+-           "HelpDialog"]
++           "AddDialog", "ConfirmDeleteDialog", "DisksDialog", "ContainerDialog"]
+ 
+ import functools
+ import re
+@@ -655,78 +654,3 @@ class ContainerDialog(GUIObject, GUIDialogInputCheckHandler):
+ 
+         # Change the sensitivity of the Save button
+         self._save_button.set_sensitive(next(self.failed_checks, None) == None)
+-
+-class HelpDialog(GUIObject):
+-    builderObjects = ["help_dialog", "help_text_view", "help_text_buffer"]
+-    mainWidgetName = "help_dialog"
+-    uiFile = "spokes/lib/custom_storage_helpers.glade"
+-
+-    def run(self):
+-        help_text = _(help_text_template) % {"productName": productName}
+-        help_buffer = self.builder.get_object("help_text_buffer")
+-        help_buffer.set_text(_(help_text))
+-        self.window.run()
+-
+-    def on_close(self, button):
+-        self.window.destroy()
+-
+-help_text_template = N_("""You have chosen to manually set up the file systems for your new %(productName)s installation. Before you begin, you might want to take a minute to learn the lay of the land. Quite a bit has changed.
+-
+-The most important change is that creation of new file systems has been streamlined. You no longer have to build complex devices like LVM logical volumes in stages (physical volume, then volume group, then logical volume) -- now you just create a logical volume and we'll handle the legwork of setting up the physical volumes and volume group to contain it. We'll also handle adjusting the volume group as you add, remove, and resize logical volumes so you don't have to worry about the mundane details.
+-
+-
+-Screen Layout
+-
+-The left-hand side of the screen shows the OS installations we were able to find on this computer. The new %(productName)s installation is at the top of the list. You can click on the names of the installations to see what file systems they contain.
+-
+-Below the various installations and mount points on the left-hand side there are buttons to add a new file system, remove the selected file system, or configure the selected file system.
+-
+-The right-hand side of the screen is where you can customize the currently-selected mount point.
+-
+-On the bottom-left you will see a summary of the disks you have chosen to use for the installation. You can click on the blue text to see more detailed information about your selected disks.
+-
+-
+-How to create a new file system on a new device
+-
+-1. Click on the + button.
+-2. Enter the mount point and size. (Hint: Hover the mouse pointer over either of the text entry areas for help.)
+-3. Select the new mount point under "New %(productName)s Installation" on the left-hand side of the screen and customize it to suit your needs.
+-
+-
+-How to reformat a device/file system that already exists on your disk
+-
+-1. Select the file system from the left-hand side of the screen.
+-2. Click on the "Customize" expander in the mount point customization area on the right-hand side of the screen.
+-3. Activate the "Reformat" checkbutton, select a file system type and, if applicable, enter a mount point above in the "Mount Point" text entry area.
+-4. Click on "Apply changes"
+-
+-
+-How to set a mount point for a file system that already exists on your disk
+-
+-1. Select the file system from the left-hand side of the screen.
+-2. Enter a mount point in the "Mount Point" text entry area in the mount point customization area.
+-3. Click on "Apply changes"
+-
+-
+-How to remove a file system that already exists on your disk
+-
+-1. Select the file system you wish to remove on the left-hand side of the screen.
+-2. Click the - button.
+-
+-Hint: Removing a device that already exists on your disk from the "New %(productName)s Installation" does not remove it from the disk. It only resets that device to its original state. To remove a device that already exists on your disk, you must select it from under any of the other detected installations (or "Unknown") and hit the - button.
+-
+-
+-Tips and hints
+-
+-You can enter sizes for new file systems that are greater than the total available free space. The installer will come as close as possible to the size you request.
+-
+-By default, new devices use any/all of your selected disks.
+-
+-You can change which disks a new device may be allocated from by clicking the configure button (the one with a tools graphic) while that device is selected.
+-
+-When adding a new mount point by clicking the + button, leave the size entry blank to make the new device use all available free space.
+-
+-When you remove the last device from a container device like an LVM volume group, we will automatically remove that container device to make room for new devices.
+-
+-When the last partition is removed from a disk, that disk may be reinitialized with a new partition table if we think there is a more appropriate type for that disk.
+-""")
+-- 
+1.9.3

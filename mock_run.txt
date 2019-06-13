@@ -1,0 +1,153 @@
+INFO: mock.py version 1.4.14 starting (python version = 3.7.2)...
+Start: init plugins
+INFO: tmpfs initialized
+INFO: selinux disabled
+Finish: init plugins
+Start: run
+Start: clean chroot
+INFO: unmounting tmpfs.
+Finish: clean chroot
+Start: chroot init
+INFO: mounting tmpfs at /var/lib/mock/anaconda-fedora-devel-x86_64/root.
+WARNING: For multilib systems, both architectures of nosync library need to be installed
+INFO: calling preinit hooks
+INFO: enabled root cache
+Start: unpacking root cache
+Finish: unpacking root cache
+INFO: enabled dnf cache
+Start: cleaning dnf metadata
+Finish: cleaning dnf metadata
+INFO: enabled HW Info plugin
+Mock Version: 1.4.14
+INFO: Mock Version: 1.4.14
+Finish: chroot init
+Finish: run
+INFO: mock.py version 1.4.14 starting (python version = 3.7.2)...
+Start: init plugins
+INFO: tmpfs initialized
+INFO: selinux disabled
+Finish: init plugins
+Start: run
+Start: chroot init
+INFO: mounting tmpfs at /var/lib/mock/anaconda-fedora-devel-x86_64/root.
+INFO: reusing tmpfs at /var/lib/mock/anaconda-fedora-devel-x86_64/root.
+WARNING: For multilib systems, both architectures of nosync library need to be installed
+INFO: calling preinit hooks
+INFO: enabled root cache
+INFO: enabled dnf cache
+Start: cleaning dnf metadata
+Finish: cleaning dnf metadata
+INFO: enabled HW Info plugin
+Mock Version: 1.4.14
+INFO: Mock Version: 1.4.14
+Finish: chroot init
+INFO: installing package(s): bzip2 python3-productmd usermode desktop-file-utils gdb python3-pid pykickstart realmd udisks2-iscsi python3-dbus python3-blivet kexec-tools libtimezonemap-devel python3-meh-gui libxklavier python3-simpleline blivet-gui-runtime tigervnc-server-minimal python3-lxml python3-requests zenity pango-devel dbus-daemon python3-dnf rsync NetworkManager-libnm dhclient libtool adwaita-icon-theme libarchive-devel fcoe-utils python3-pydbus langtable-data python3-ntplib util-linux python3-mock python3-requests-file hfsplus-tools python3-coverage keybinder3 glib2-doc cracklib-dicts python3-pwquality isomd5sum python3-pytz python3 rpm-ostree dracut-network python3-nose-testconfig policycoreutils libblockdev-plugins-all dracut-live gdk-pixbuf2-devel glade-devel python3-blockdev libxml2 nm-connection-editor langtable-python3 e2fsprogs python3-systemd gtk-doc yelp kbd python3-pyparted python3-sphinx_rtd_theme rpm-python3 libxklavier-devel metacity python3-kickstart libgnomekbd rpm-devel python3-ordered-set teamd chrony system-logos python3-requests-ftp tmux gobject-introspection-devel openssh python3-nose systemd gsettings-desktop-schemas libtimezonemap libselinux-python3 gettext-devel glade createrepo_c gtk3-devel python3-gobject-base python3-libs NetworkManager-wifi gtk3-devel-docs NetworkManager-team python3-meh dracut libgnomekbd-devel NetworkManager python3-pip cppcheck git glibc-langpack-en xz python3-devel audit-libs-devel
+INFO: 
+Finish: run
+INFO: mock.py version 1.4.14 starting (python version = 3.7.2)...
+Start: init plugins
+INFO: tmpfs initialized
+INFO: selinux disabled
+Finish: init plugins
+Start: run
+Start: chroot init
+INFO: mounting tmpfs at /var/lib/mock/anaconda-fedora-devel-x86_64/root.
+INFO: reusing tmpfs at /var/lib/mock/anaconda-fedora-devel-x86_64/root.
+WARNING: For multilib systems, both architectures of nosync library need to be installed
+INFO: calling preinit hooks
+INFO: enabled root cache
+INFO: enabled dnf cache
+Start: cleaning dnf metadata
+Finish: cleaning dnf metadata
+INFO: enabled HW Info plugin
+Mock Version: 1.4.14
+INFO: Mock Version: 1.4.14
+Finish: chroot init
+INFO: Running in chroot: ['pip3 install rpmfluff dogtail pocketlint']
+Start: chroot ['pip3 install rpmfluff dogtail pocketlint']
+WARNING: Running pip install with root privileges is generally not a good idea. Try `pip3 install --user` instead.
+The directory '/builddir/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+The directory '/builddir/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+Collecting rpmfluff
+  Downloading https://files.pythonhosted.org/packages/f7/b7/56506fbf2a94daacf2b743e3c84997e08fe7e8d414a2a4aea9f7a63feef6/rpmfluff-0.5.6.tar.gz
+Collecting dogtail
+  Downloading https://files.pythonhosted.org/packages/86/cd/3cc8dae75602ed13cde989e91ff22f759e829342b64e94975d73852518ec/dogtail-0.9.10.tar.gz (125kB)
+Collecting pocketlint
+  Downloading https://files.pythonhosted.org/packages/a3/25/4f448fbd95f4618cf53c56dbf6446322ffe10075b0b8da0c521a32b9e257/pocketlint-0.19-py3-none-any.whl
+Collecting polib (from pocketlint)
+  Downloading https://files.pythonhosted.org/packages/30/a2/e407c3b00cace3d7fc8df14d364deeecfeb96044e1a317de583bc26eae58/polib-1.1.0-py2.py3-none-any.whl
+Collecting pylint (from pocketlint)
+  Downloading https://files.pythonhosted.org/packages/60/c2/b3f73f4ac008bef6e75bca4992f3963b3f85942e0277237721ef1c151f0d/pylint-2.3.1-py3-none-any.whl (765kB)
+Collecting mccabe<0.7,>=0.6 (from pylint->pocketlint)
+  Downloading https://files.pythonhosted.org/packages/87/89/479dc97e18549e21354893e4ee4ef36db1d237534982482c3681ee6e7b57/mccabe-0.6.1-py2.py3-none-any.whl
+Collecting astroid<3,>=2.2.0 (from pylint->pocketlint)
+  Downloading https://files.pythonhosted.org/packages/97/f3/854971049de901f90c27ee92315f2fb93549233c45b9933fe0bdde332f61/astroid-2.2.4-py3-none-any.whl (193kB)
+Collecting isort<5,>=4.2.5 (from pylint->pocketlint)
+  Downloading https://files.pythonhosted.org/packages/21/9b/a01c74be7d28f30b83dd1db50f36faeaef717c5eaacc1bdab3887c806f03/isort-4.3.13-py2.py3-none-any.whl (41kB)
+Collecting typed-ast>=1.3.0; implementation_name == "cpython" (from astroid<3,>=2.2.0->pylint->pocketlint)
+  Downloading https://files.pythonhosted.org/packages/eb/6a/d6877019d38f5557e286253fc31a5f53a72be9f740ca9617028f4528930a/typed_ast-1.3.1-cp37-cp37m-manylinux1_x86_64.whl (734kB)
+Requirement already satisfied: six in /usr/lib/python3.7/site-packages (from astroid<3,>=2.2.0->pylint->pocketlint) (1.12.0)
+Collecting lazy-object-proxy (from astroid<3,>=2.2.0->pylint->pocketlint)
+  Downloading https://files.pythonhosted.org/packages/55/08/23c0753599bdec1aec273e322f277c4e875150325f565017f6280549f554/lazy-object-proxy-1.3.1.tar.gz
+Collecting wrapt (from astroid<3,>=2.2.0->pylint->pocketlint)
+  Downloading https://files.pythonhosted.org/packages/67/b2/0f71ca90b0ade7fad27e3d20327c996c6252a2ffe88f50a95bba7434eda9/wrapt-1.11.1.tar.gz
+Installing collected packages: rpmfluff, dogtail, polib, mccabe, typed-ast, lazy-object-proxy, wrapt, astroid, isort, pylint, pocketlint
+  Running setup.py install for rpmfluff: started
+    Running setup.py install for rpmfluff: finished with status 'done'
+  Running setup.py install for dogtail: started
+    Running setup.py install for dogtail: finished with status 'done'
+  Running setup.py install for lazy-object-proxy: started
+    Running setup.py install for lazy-object-proxy: finished with status 'done'
+  Running setup.py install for wrapt: started
+    Running setup.py install for wrapt: finished with status 'done'
+  The script isort is installed in '/usr/local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  The scripts epylint, pylint, pyreverse and symilar are installed in '/usr/local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+Successfully installed astroid-2.2.4 dogtail-0.9.10 isort-4.3.13 lazy-object-proxy-1.3.1 mccabe-0.6.1 pocketlint-0.19 polib-1.1.0 pylint-2.3.1 rpmfluff-0.5.6 typed-ast-1.3.1 wrapt-1.11.1
+Finish: chroot ['pip3 install rpmfluff dogtail pocketlint']
+Finish: run
+INFO: mock.py version 1.4.14 starting (python version = 3.7.2)...
+Start: init plugins
+INFO: tmpfs initialized
+INFO: selinux disabled
+Finish: init plugins
+Start: run
+Start: chroot init
+INFO: mounting tmpfs at /var/lib/mock/anaconda-fedora-devel-x86_64/root.
+INFO: reusing tmpfs at /var/lib/mock/anaconda-fedora-devel-x86_64/root.
+WARNING: For multilib systems, both architectures of nosync library need to be installed
+INFO: calling preinit hooks
+INFO: enabled root cache
+INFO: enabled dnf cache
+Start: cleaning dnf metadata
+Finish: cleaning dnf metadata
+INFO: enabled HW Info plugin
+Mock Version: 1.4.14
+INFO: Mock Version: 1.4.14
+Finish: chroot init
+INFO: Running in chroot: ['cd /anaconda && ./autogen.sh && ./configure']
+Start: chroot ['cd /anaconda && ./autogen.sh && ./configure']
+/bin/sh: line 0: cd: /anaconda: No such file or directory
+Finish: chroot ['cd /anaconda && ./autogen.sh && ./configure']
+ERROR: Command failed: 
+ # /usr/bin/systemd-nspawn -q -M 14b4896371fe4e5288ff15726adcdb6c -D /var/lib/mock/anaconda-fedora-devel-x86_64/root -a --capability=cap_ipc_lock --setenv=TERM=vt100 --setenv=SHELL=/bin/bash --setenv=HOME=/builddir --setenv=HOSTNAME=mock --setenv=PATH=/usr/bin:/bin:/usr/sbin:/sbin --setenv=PROMPT_COMMAND=printf "\033]0;<mock-chroot>\007" --setenv=PS1=<mock-chroot> \s-\v\$  --setenv=LANG=cs_CZ.UTF-8 /bin/sh -c cd /anaconda && ./autogen.sh && ./configure
+
+Running command ['mock', '-r', '/etc/mock/anaconda-fedora-devel-x86_64.cfg', '--init']
+Running command ['/home/mkolman/devel/anaconda/scripts/testing/dependency_solver.py']
+Running command ['mock', '-r', '/etc/mock/anaconda-fedora-devel-x86_64.cfg', '--install', 'bzip2', 'python3-productmd', 'usermode', 'desktop-file-utils', 'gdb', 'python3-pid', 'pykickstart', 'realmd', 'udisks2-iscsi', 'python3-dbus', 'python3-blivet', 'kexec-tools', 'libtimezonemap-devel', 'python3-meh-gui', 'libxklavier', 'python3-simpleline', 'blivet-gui-runtime', 'tigervnc-server-minimal', 'python3-lxml', 'python3-requests', 'zenity', 'pango-devel', 'dbus-daemon', 'python3-dnf', 'rsync', 'NetworkManager-libnm', 'dhclient', 'libtool', 'adwaita-icon-theme', 'libarchive-devel', 'fcoe-utils', 'python3-pydbus', 'langtable-data', 'python3-ntplib', 'util-linux', 'python3-mock', 'python3-requests-file', 'hfsplus-tools', 'python3-coverage', 'keybinder3', 'glib2-doc', 'cracklib-dicts', 'python3-pwquality', 'isomd5sum', 'python3-pytz', 'python3', 'rpm-ostree', 'dracut-network', 'python3-nose-testconfig', 'policycoreutils', 'libblockdev-plugins-all', 'dracut-live', 'gdk-pixbuf2-devel', 'glade-devel', 'python3-blockdev', 'libxml2', 'nm-connection-editor', 'langtable-python3', 'e2fsprogs', 'python3-systemd', 'gtk-doc', 'yelp', 'kbd', 'python3-pyparted', 'python3-sphinx_rtd_theme', 'rpm-python3', 'libxklavier-devel', 'metacity', 'python3-kickstart', 'libgnomekbd', 'rpm-devel', 'python3-ordered-set', 'teamd', 'chrony', 'system-logos', 'python3-requests-ftp', 'tmux', 'gobject-introspection-devel', 'openssh', 'python3-nose', 'systemd', 'gsettings-desktop-schemas', 'libtimezonemap', 'libselinux-python3', 'gettext-devel', 'glade', 'createrepo_c', 'gtk3-devel', 'python3-gobject-base', 'python3-libs', 'NetworkManager-wifi', 'gtk3-devel-docs', 'NetworkManager-team', 'python3-meh', 'dracut', 'libgnomekbd-devel', 'NetworkManager', 'python3-pip', 'cppcheck', 'git', 'glibc-langpack-en', 'xz', 'python3-devel', 'audit-libs-devel']
+Running command ['/home/mkolman/devel/anaconda/scripts/testing/dependency_solver.py', '--pip']
+Running command ['mock', '-r', '/etc/mock/anaconda-fedora-devel-x86_64.cfg', '--chroot', '--', 'pip3 install rpmfluff dogtail pocketlint']
+Running command ['mock', '-r', '/etc/mock/anaconda-fedora-devel-x86_64.cfg', '--chroot', '--', 'cd /anaconda && ./autogen.sh && ./configure']
+Traceback (most recent call last):
+  File "./scripts/testing/setup-mock-test-env.py", line 444, in <module>
+    success = run_tests(mock_cmd)
+  File "./scripts/testing/setup-mock-test-env.py", line 353, in run_tests
+    prepare_anaconda(mock_command)
+  File "./scripts/testing/setup-mock-test-env.py", line 349, in prepare_anaconda
+    _check_subprocess(cmd, "Can't prepare anaconda in a mock.")
+  File "./scripts/testing/setup-mock-test-env.py", line 101, in _check_subprocess
+    raise MockException(error_msg, cmd)
+__main__.MockException: When running command '['mock', '-r', '/etc/mock/anaconda-fedora-devel-x86_64.cfg', '--chroot', '--', 'cd /anaconda && ./autogen.sh && ./configure']' exception raised.
+        Can't prepare anaconda in a mock.
+        

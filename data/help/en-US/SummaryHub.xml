@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Installation_Guide.ent">
+<!ENTITY PRODUCT "Fedora">
+<!ENTITY NEXTVER "21">
+<!ENTITY PRODVER "20">
+<!ENTITY PREVVER "19">
+<!ENTITY BOOKID "install-guide">
+<!ENTITY YEAR "2014">
+<!ENTITY HOLDER "Red Hat, Inc. and others">
+<!ENTITY BZURL "https://bugzilla.redhat.com/enter_bug.cgi?product=&PRODUCT;&amp;component=&BOOKID;">
+<!ENTITY IGURL '<ulink url="http://docs.fedoraproject.org/" />'>
+]>
+<section id="sect-installation-gui-installation-summary">
+	<title>Installation Summary</title>
+	<para>
+		 The <guilabel>Installation Summary</guilabel> screen is the central location for setting up an installation. Most of the options which can be configured during the installation can be accessed from here.
+	</para>
+	<para>
+		</para>
+	<note>
+		<para>
+			If you used a Kickstart option or a boot option to specify an installation repository on a network, but no network is available at the start of the installation, the installer will display the <guilabel>Network Configuration</guilabel> screen for you to set up a network connection prior to displaying the <guilabel>Installation Summary</guilabel> screen.
+		</para>
+	</note> 
+	<para>
+		The summary screen consists of several links to other screens, separated into categories. These links can be in several different states, which are graphically indicated:
+	</para>
+	<itemizedlist>
+		<listitem>
+			<para>
+				A <emphasis>warning symbol</emphasis> (yellow triangle with an exclamation mark) next to an icon means that a screen requires your attention before you start the installation. This typically happens with the <guilabel>Installation Destination</guilabel> screen, because even though there is a default automatic partitioning variant, you always have to at least confirm this selection, even if you do not want to make any changes.
+			</para>
+		</listitem>
+		<listitem>
+			<para>
+				If a link is <emphasis>greyed out</emphasis>, it means that the installer is currently configuring this section, and you must wait for the configuration to finish before accessing that screen. This typically happens when you change the installation source in the <guilabel>Installation Source</guilabel> screen and the installer is probing the new source location and gathering a list of available packages.
+			</para>
+		</listitem>
+		<listitem>
+			<para>
+				Screens with <emphasis>black text and no warning symbol</emphasis> mean that this screen does not require your attention. You can still change your settings in these screens, but it is not necessary to do so to complete the installation. This typically happens with localization settings, as these are either detected automatically, or set up on the previous screen where you select your language and locale.
+			</para>
+		</listitem>
+	</itemizedlist>
+	<para>
+		A warning message is displayed at the bottom of the summary screen, and the <guilabel>Begin Installation</guilabel> button is greyed out, as long as at least one item has not been configured yet.
+	</para>
+	<para>
+		</para>
+	<para>
+		Each screen also has an explanatory text below its title, showing settings currently configured in that screen. This text may be concatenated; in that case, move your mouse cursor over it and wait until a tooltip with the full text appears.
+	</para>
+	<para>
+		</para>
+	<para>
+		Once you configure everything required for the installation, you can press the <guilabel>Begin Installation</guilabel> button to start installing Fedora. This will take you to <ulink url="ProgressHub.xml">Configuration and Installation Progress</ulink>. Note that as the text below this button says, nothing will be written to your hard drive before you press this button. You can press <guilabel>Quit</guilabel> at any point; this will discard all changes you made in the installer so far and reboot the system.
+	</para>
+</section>

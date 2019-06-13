@@ -1,0 +1,3306 @@
+RefactoringTool: Skipping implicit fixer: buffer
+RefactoringTool: Skipping implicit fixer: idioms
+RefactoringTool: Skipping implicit fixer: set_literal
+RefactoringTool: Skipping implicit fixer: ws_comma
+RefactoringTool: Refactored anaconda
+RefactoringTool: Refactored ./old_tests/mock/__init__.py
+RefactoringTool: Refactored ./old_tests/mock/disk.py
+RefactoringTool: Refactored ./old_tests/mock/mock.py
+RefactoringTool: No changes to ./old_tests/pyanaconda_test/backend_test.py
+RefactoringTool: No changes to ./old_tests/pyanaconda_test/flags_test.py
+RefactoringTool: No changes to ./old_tests/pyanaconda_test/image_test.py
+RefactoringTool: No changes to ./old_tests/pyanaconda_test/indexed_dict_test.py
+RefactoringTool: Refactored ./old_tests/pyanaconda_test/iutil_test.py
+RefactoringTool: No changes to ./old_tests/pyanaconda_test/network_test.py
+RefactoringTool: No changes to ./old_tests/pyanaconda_test/partintfhelpers_test.py
+RefactoringTool: Refactored ./old_tests/pyanaconda_test/product_test.py
+--- anaconda	(original)
++++ anaconda	(refactored)
+@@ -849,9 +849,9 @@
+     verdesc = "%s for %s %s" % (getAnacondaVersionString(),
+                                 product.productName, product.productVersion)
+     if product.isFinal:
+-        print("anaconda %s started." % verdesc)
++        print(("anaconda %s started." % verdesc))
+     else:
+-        print("anaconda %s (pre-release) started." % verdesc)
++        print(("anaconda %s (pre-release) started." % verdesc))
+ 
+     from pyanaconda.anaconda import Anaconda
+     anaconda = Anaconda()
+--- ./old_tests/mock/__init__.py	(original)
++++ ./old_tests/mock/__init__.py	(refactored)
+@@ -20,8 +20,8 @@
+ # Author(s): Martin Sivak <msivak@redhat.com>
+ 
+ 
+-from disk import *
+-from mock import *
++from .disk import *
++from .mock import *
+ import unittest
+ 
+ def slow(f):
+@@ -64,7 +64,7 @@
+ 
+         import sys
+ 
+-        for m in sys.modules.keys():
++        for m in list(sys.modules.keys()):
+             if m in self.preexistingModules and not m in self.injectedModules:
+                 continue
+ 
+--- ./old_tests/mock/disk.py	(original)
++++ ./old_tests/mock/disk.py	(refactored)
+@@ -16,7 +16,7 @@
+ #
+ # Author(s): Martin Sivak <msivak@redhat.com>
+ 
+-from StringIO import StringIO
++from io import StringIO
+ import fnmatch
+ import os
+ 
+@@ -101,21 +101,21 @@
+ 
+     #Emulate os calls
+     def glob_glob(self, pattern):
+-        return fnmatch.filter(self.fs.keys(), pattern)
++        return fnmatch.filter(list(self.fs.keys()), pattern)
+ 
+     def os_listdir(self, path):
+-        return [entry[len(path):].lstrip('/') for entry in self.fs.keys()\
++        return [entry[len(path):].lstrip('/') for entry in list(self.fs.keys())\
+                     if entry.startswith(path) and entry != path]
+ 
+     def os_path_exists(self, path):
+         path = os.path.join(self._pwd, path)
+-        return self.fs.has_key(path)
++        return path in self.fs
+ 
+     def os_path_isdir(self, path):
+         if not path.endswith("/"):
+             path += "/"
+         path += "*"
+-        return len(fnmatch.filter(self.fs.keys(), path)) > 0
++        return len(fnmatch.filter(list(self.fs.keys()), path)) > 0
+ 
+     def os_remove(self, path):
+         path = os.path.join(self._pwd, path)
+--- ./old_tests/mock/mock.py	(original)
++++ ./old_tests/mock/mock.py	(refactored)
+@@ -80,7 +80,7 @@
+         self.call_count = 0
+         self.call_args_list = []
+         self.method_calls = []
+-        for child in self._children.itervalues():
++        for child in self._children.values():
+             child.reset_mock()
+         if isinstance(self._return_value, Mock):
+             self._return_value.reset_mock()
+@@ -201,7 +201,7 @@
+         patched.patchings = [self]
+         patched.__name__ = func.__name__
+         patched.compat_co_firstlineno = getattr(func, "compat_co_firstlineno",
+-                                                func.func_code.co_firstlineno)
++                                                func.__code__.co_firstlineno)
+         return patched
+ 
+ 
+--- ./old_tests/pyanaconda_test/iutil_test.py	(original)
++++ ./old_tests/pyanaconda_test/iutil_test.py	(refactored)
+@@ -31,7 +31,7 @@
+         try:
+             argv = ["-c", "import sys; sys.exit(3);"]
+             iutil.execWithCapture(sys.executable, argv, root=None, fatal=True)
+-        except RuntimeError, ex:
++        except RuntimeError as ex:
+             self.assertIn("return code: 3", str(ex))
+         else:
+             self.fail("RuntimeError not raised")
+--- ./old_tests/pyanaconda_test/product_test.py	(original)
++++ ./old_tests/pyanaconda_test/product_test.py	(refactored)
+@@ -2,9 +2,9 @@
+ 
+ import mock
+ import sys
+-import __builtin__
++import builtins
+ 
+-import ConfigParser
++import configparser
+ 
+ class ProductTest(mock.TestCase):
+ 
+@@ -40,14 +40,14 @@
+         self.fs.open(self.FILENAME, 'w').write(self.FILE)
+ 
+         # mock builtin open function
+-        self.open = __builtin__.open
+-        __builtin__.open = self.fs.open
++        self.open = builtins.open
++        builtins.open = self.fs.open
+ 
+         if 'pyanaconda.product' in sys.modules:RefactoringTool: No changes to ./old_tests/pyanaconda_test/rescue_test.py
+RefactoringTool: No changes to ./old_tests/pyanaconda_test/users_test.py
+RefactoringTool: No changes to ./old_tests/pyanaconda_test/vnc_test.py
+RefactoringTool: Refactored ./pyanaconda/addons.py
+RefactoringTool: Refactored ./pyanaconda/anaconda.py
+RefactoringTool: Refactored ./pyanaconda/anaconda_argparse.py
+RefactoringTool: Refactored ./pyanaconda/anaconda_log.py
+
+             del(sys.modules["pyanaconda.product"])
+ 
+     def tearDown(self):
+-        __builtin__.open = self.open
++        builtins.open = self.open
+         self.tearDownModules()
+ 
+     def bug_url_test(self):
+--- ./pyanaconda/addons.py	(original)
++++ ./pyanaconda/addons.py	(refactored)
+@@ -77,17 +77,17 @@
+ 
+     def __str__(self):
+         return functools.reduce(lambda acc, (id, addon): acc + str(addon),
+-                                self.__dict__.iteritems(), "")
++                                iter(self.__dict__.items()), "")
+ 
+     def execute(self, storage, ksdata, instClass, users):
+         """This method calls execute on all the registered addons."""
+-        for v in self.__dict__.itervalues():
++        for v in self.__dict__.values():
+             if hasattr(v, "execute"):
+                 v.execute(storage, ksdata, instClass, users)
+ 
+     def setup(self, storage, ksdata, instClass):
+         """This method calls setup on all the registered addons."""
+-        for v in self.__dict__.itervalues():
++        for v in self.__dict__.values():
+             if hasattr(v, "setup"):
+                 v.setup(storage, ksdata, instClass)
+ 
+--- ./pyanaconda/anaconda.py	(original)
++++ ./pyanaconda/anaconda.py	(refactored)
+@@ -179,7 +179,7 @@
+ 
+         # gather up info on the running threads
+         threads = "\nThreads\n-------\n"
+-        for thread_id, frame in sys._current_frames().iteritems():
++        for thread_id, frame in sys._current_frames().items():
+             threads += "\nThread %s\n" % (thread_id,)
+             threads += "".join(format_stack(frame))
+ 
+@@ -230,7 +230,7 @@
+         if root is None:
+             root = iutil.getSysroot()
+         if not os.path.isdir("%s/etc/X11" %(root,)):
+-            os.makedirs("%s/etc/X11" %(root,), mode=0755)
++            os.makedirs("%s/etc/X11" %(root,), mode=0o755)
+         f = open("%s/etc/X11/xorg.conf" %(root,), 'w')
+         f.write('Section "Device"\n\tIdentifier "Videocard0"\n\tDriver "%s"\nEndSection\n' % self.xdriver)
+         f.close()
+--- ./pyanaconda/anaconda_argparse.py	(original)
++++ ./pyanaconda/anaconda_argparse.py	(refactored)
+@@ -177,7 +177,7 @@
+         # go over all options corresponding to current boot cmdline
+         # and do any modifications necessary
+         # NOTE: program cmdline overrides boot cmdline
+-        for arg, val in bootargs.iteritems():
++        for arg, val in bootargs.items():
+             option = self._get_bootarg_option(arg)
+             if option is None:
+                 # this boot option is unknown to Anaconda, skip it
+@@ -281,7 +281,7 @@
+ 
+         if name in names_seen:
+             names = ("%s_%d" % (name, n) for n in itertools.count())
+-            name = itertools.dropwhile(lambda n: n in names_seen, names).next()
++            name = next(itertools.dropwhile(lambda n: n in names_seen, names))
+         names_seen.append(name)
+ 
+         yield name, path
+@@ -340,7 +340,7 @@
+                 with open(self._path) as lines:
+                     for parsed_option, parsed_text in self.read(lines):
+                         self._help_text[parsed_option] = parsed_text
+-            except StandardError:
++            except Exception:
+                 log.error("error reading help text file %s", self._path)
+ 
+         return self._help_text.get(option, "")
+--- ./pyanaconda/anaconda_log.py	(original)
++++ ./pyanaconda/anaconda_log.py	(refactored)
+@@ -63,8 +63,8 @@
+ 
+ # all handlers of given logger with autoSetLevel == True are set to level
+ def setHandlersLevel(logr, level):
+-    map(lambda hdlr: hdlr.setLevel(level),
+-        filter (lambda hdlr: hasattr(hdlr, "autoSetLevel") and hdlr.autoSetLevel, logr.handlers))
++    list(map(lambda hdlr: hdlr.setLevel(level),
++        [hdlr for hdlr in logr.handlers if hasattr(hdlr, "autoSetLevel") and hdlr.autoSetLevel]))
+ 
+ class AnacondaSyslogHandler(SysLogHandler):
+     def __init__(self,
+@@ -170,7 +170,7 @@
+                         fmtStr=ENTRY_FORMAT,
+                         autoLevel=False):
+         try:
+-            if isinstance(dest, types.StringTypes):
++         RefactoringTool: Refactored ./pyanaconda/bootloader.py
+RefactoringTool: No changes to ./pyanaconda/constants.py
+RefactoringTool: No changes to ./pyanaconda/constants_text.py
+RefactoringTool: Refactored ./pyanaconda/desktop.py
+RefactoringTool: No changes to ./pyanaconda/errors.py
+RefactoringTool: Refactored ./pyanaconda/exception.py
+   if isinstance(dest, str):
+                 logfileHandler = logging.FileHandler(dest)
+             else:
+                 logfileHandler = logging.StreamHandler(dest)
+--- ./pyanaconda/bootloader.py	(original)
++++ ./pyanaconda/bootloader.py	(refactored)
+@@ -138,11 +138,11 @@
+             # we are only interested in ip= parameters that use some kind of
+             # automatic network setup:
+             return arg.startswith("ip=") and arg.count(":") == 1
+-        ip_params = filter(partition_p, self)
+-        rest = set(filter(lambda p: not partition_p(p), self))
++        ip_params = list(filter(partition_p, self))
++        rest = set([p for p in self if not partition_p(p)])
+ 
+         # split at the colon:
+-        ip_params = map(lambda p: p.split(":"), ip_params)
++        ip_params = [p.split(":") for p in ip_params]
+         # create mapping from nics to their configurations
+         config = collections.defaultdict(list)
+         for (nic, cfg) in ip_params:
+@@ -226,7 +226,7 @@
+     name = "Generic Bootloader"
+     packages = []
+     config_file = None
+-    config_file_mode = 0600
++    config_file_mode = 0o600
+     can_dual_boot = False
+     can_update = False
+     image_label_attr = "label"
+@@ -533,7 +533,7 @@
+         return self._device_type_index(device, types) is not None
+ 
+     def device_description(self, device):
+-        device_types = self.device_descriptions.keys()
++        device_types = list(self.device_descriptions.keys())
+         idx = self._device_type_index(device, device_types)
+         if idx is None:
+             raise ValueError("No description available for %s" % device.type)
+@@ -845,7 +845,7 @@
+                     self.dracut_args.update(setup_args)
+ 
+         # passed-in objects
+-        for cfg_obj in list(args) + kwargs.values():
++        for cfg_obj in list(args) + list(kwargs.values()):
+             if hasattr(cfg_obj, "dracutSetupArgs"):
+                 setup_args = cfg_obj.dracutSetupArgs()
+                 self.boot_args.update(setup_args)
+@@ -1398,7 +1398,7 @@
+     packages = ["grub2"]
+     _config_file = "grub.cfg"
+     _config_dir = "grub2"
+-    config_file_mode = 0600
++    config_file_mode = 0o600
+     defaults_file = "/etc/default/grub"
+     can_dual_boot = True
+     can_update = True
+@@ -1542,7 +1542,7 @@
+         header.write("%s\n" % password_line)
+         header.write("EOF\n")
+         header.close()
+-        os.chmod(users_file, 0700)
++        os.chmod(users_file, 0o700)
+ 
+     def write_config(self):
+         self.add_crash_args()
+@@ -1972,7 +1972,7 @@
+ 
+         # Place the disk containing the PReP partition first.
+         # Remove all other occurances of it.
+-        boot_list = [boot_disk] + filter(lambda x: x != boot_disk, boot_list)
++        boot_list = [boot_disk] + [x for x in boot_list if x != boot_disk]
+ 
+         log.debug("updatePowerPCBootList: updated boot_list = %s", boot_list)
+ 
+@@ -2031,7 +2031,7 @@
+ 
+         # Place the disk containing the PReP partition first.
+         # Remove all other occurances of it.
+-        boot_list = [boot_disk] + filter(lambda x: x != boot_disk, boot_list)
++        boot_list = [boot_disk] + [x for x in boot_list if x != boot_disk]
+ 
+         update_value = "boot-device=%s" % " ".join(boot_list)
+ 
+@@ -2322,7 +2322,7 @@
+     ts = rpm.TransactionSet(iutil.getSysroot())
+     mi = ts.dbMatch('basenames', kernel_file)
+     try:
+-        h = mi.next()
++        h = next(mi)
+     except StopIteration:
+         log.error("failed to get package name for default kernel")
+         return
+--- ./pyanaconda/desktop.py	(original)
++++ ./pyanaconda/desktop.py	(refactored)
+@@ -39,7 +39,7 @@
+     @runlevel.setter
+     def runlevel(self, runlevel):
+         if int(runlevel) not in RUNLEVELS:
+-            raise RuntimeError("Desktop::setDefaultRunLevel() - Must specify runlevel as one of %s" % RUNLEVELS.keys())
++            raise RuntimeError("Desktop::setDefaultRunLevel() - Must specify runlevel as one of %s" % list(RUNLEVELS.keys()))
+ 
+         self._runlevel = runlevel
+ 
+--- ./pyanaconda/exception.py	(original)
++++ ./pyanaconda/exception.py	RefactoringTool: No changes to ./pyanaconda/flags.py
+RefactoringTool: Refactored ./pyanaconda/geoloc.py
+(refactored)
+@@ -326,7 +326,7 @@
+         eval(compile(code, "str_eval", "exec"))
+ 
+     # test non-ascii characters dumping
+-    non_ascii = u'\u0159'
++    non_ascii = '\u0159'
+ 
+     msg = "NOTABUG: testing exception handling"
+ 
+--- ./pyanaconda/geoloc.py	(original)
++++ ./pyanaconda/geoloc.py	(refactored)
+@@ -100,8 +100,8 @@
+ 
+ """
+ 
+-import urllib
+-import urllib2
++import urllib.request, urllib.parse, urllib.error
++import urllib.request, urllib.error, urllib.parse
+ import json
+ import dbus
+ import threading
+@@ -525,7 +525,7 @@
+ 
+     def _refresh(self):
+         try:
+-            reply = urllib2.urlopen(self.API_URL, timeout=
++            reply = urllib.request.urlopen(self.API_URL, timeout=
+                                     constants.NETWORK_CONNECTION_TIMEOUT)
+             if reply:
+                 json_reply = json.load(reply)
+@@ -549,9 +549,9 @@
+                         territory_code=territory,
+                         timezone=timezone_code,
+                         timezone_source=timezone_source))
+-        except urllib2.HTTPError as e:
++        except urllib.error.HTTPError as e:
+             log.debug("Geoloc: HTTPError for Fedora GeoIP API lookup:\n%s", e)
+-        except urllib2.URLError as e:
++        except urllib.error.URLError as e:
+             log.debug("Geoloc: URLError for Fedora GeoIP API lookup:\n%s", e)
+         except ValueError as e:
+             log.debug("Geoloc: Unable to decode GeoIP JSON:\n%s", e)
+@@ -570,7 +570,7 @@
+ 
+     def _refresh(self):
+         try:
+-            reply = urllib2.urlopen(self.API_URL, timeout=
++            reply = urllib.request.urlopen(self.API_URL, timeout=
+                                     constants.NETWORK_CONNECTION_TIMEOUT)
+             if reply:
+                 reply_dict = json.load(reply)
+@@ -584,7 +584,7 @@
+                         public_ip_address=reply_dict.get("ip", None),
+                         city=reply_dict.get("city", None)
+                     ))
+-        except urllib2.URLError as e:
++        except urllib.error.URLError as e:
+             log.debug("Geoloc: URLError during Hostip lookup:\n%s", e)
+ 
+ 
+@@ -607,7 +607,7 @@
+         if access_points:
+             try:
+                 url = self._get_url(access_points)
+-                reply = urllib2.urlopen(url, timeout=
++                reply = urllib.request.urlopen(url, timeout=
+                                         constants.NETWORK_CONNECTION_TIMEOUT)
+                 result_dict = json.load(reply)
+                 status = result_dict.get('status', 'NOT OK')
+@@ -624,7 +624,7 @@
+                     self._set_result(LocationResult(territory_code=t_code))
+                 else:
+                     log.info("Service couldn't find current location.")
+-            except urllib2.URLError as e:
++            except urllib.error.URLError as e:
+                 log.debug("Geoloc: URLError during Google"
+                           "  Wifi lookup:\n%s", e)
+         else:
+@@ -649,7 +649,7 @@
+         :return: API compatible AP description
+         :rtype: string
+         """
+-        quoted_ssid = urllib.quote_plus(access_point.ssid)
++        quoted_ssid = urllib.parse.quote_plus(access_point.ssid)
+         return "&wifi=mac:%s|ssid:%s|ss:%d" % (access_point.bssid,
+                                                quoted_ssid, access_point.rssi)
+ 
+@@ -697,7 +697,7 @@
+             coordinates.latitude,
+             coordinates.longitude)
+         try:
+-            reply = urllib2.urlopen(url, timeout=
++            reply = urllib.request.urlopen(url, timeout=
+                                     constants.NETWORK_CONNECTION_TIMEOUT)
+             if reply:
+                 reply_dict = json.load(reply)
+@@ -706,7 +706,7 @@
+                                        territory_code=territory_code)
+             else:
+                 return None
+-        except urllib2.URLError as e:
++        except urllib.error.URLError as e:
+             log.debug("Geoloc: URLError during Nominatim reverse geocoding"
+                       " :\n%s", e)
+ 
+@@ -868,25 +868,25 @@
+     print("trying the default backend")RefactoringTool: Refactored ./pyanaconda/image.py
+RefactoringTool: No changes to ./pyanaconda/indexed_dict.py
+RefactoringTool: Refactored ./pyanaconda/install.py
+RefactoringTool: Refactored ./pyanaconda/installclass.py
+RefactoringTool: No changes to ./pyanaconda/installinterfacebase.py
+RefactoringTool: Refactored ./pyanaconda/iutil.py
+
+     location_info = LocationInfo()
+     location_info.refresh()
+-    print("  provider used: %s" % location_info._provider)
+-    print("  territory code: %s" % location_info.get_territory_code())
++    print(("  provider used: %s" % location_info._provider))
++    print(("  territory code: %s" % location_info.get_territory_code()))
+ 
+     print("trying the Fedora GeoIP backend")
+     location_info = LocationInfo(provider_id=
+                                  constants.GEOLOC_PROVIDER_FEDORA_GEOIP)
+     location_info.refresh()
+-    print("  provider used: %s" % location_info._provider)
+-    print("  territory code: %s" % location_info.get_territory_code())
++    print(("  provider used: %s" % location_info._provider))
++    print(("  territory code: %s" % location_info.get_territory_code()))
+ 
+     print("trying the Google WiFi location backend")
+     location_info = LocationInfo(provider_id=
+                                  constants.GEOLOC_PROVIDER_GOOGLE_WIFI)
+     location_info.refresh()
+-    print("  provider used: %s" % location_info._provider)
+-    print("  territory code: %s" % location_info.get_territory_code())
++    print(("  provider used: %s" % location_info._provider))
++    print(("  territory code: %s" % location_info.get_territory_code()))
+ 
+     print("trying the Hostip backend")
+     location_info = LocationInfo(provider_id=constants.GEOLOC_PROVIDER_HOSTIP)
+     location_info.refresh()
+-    print("  provider used: %s" % location_info._provider)
+-    print("  territory code: %s" % location_info.get_territory_code())
++    print(("  provider used: %s" % location_info._provider))
++    print(("  territory code: %s" % location_info.get_territory_code()))
+--- ./pyanaconda/image.py	(original)
++++ ./pyanaconda/image.py	(refactored)
+@@ -224,7 +224,7 @@
+ # Return a list of Device instances that may have HDISO install media
+ # somewhere.  Candidate devices are simply any that we can mount.
+ def potentialHdisoSources(devicetree):
+-    return filter(lambda d: d.format.exists and d.format.mountable, devicetree.getDevicesByType("partition"))
++    return [d for d in devicetree.getDevicesByType("partition") if d.format.exists and d.format.mountable]
+ 
+ def umountImage(tree):
+     if os.path.ismount(tree):
+--- ./pyanaconda/install.py	(original)
++++ ./pyanaconda/install.py	(refactored)
+@@ -48,7 +48,7 @@
+         f.write(str(ksdata))
+ 
+     # Make it so only root can read - could have passwords
+-    os.chmod(path, 0600)
++    os.chmod(path, 0o600)
+ 
+ def doConfiguration(storage, payload, ksdata, instClass):
+     from pyanaconda.kickstart import runPostScripts
+@@ -162,7 +162,7 @@
+         progressQ.send_init(steps+1)
+ 
+         with progress_report(_("Waiting for %s threads to finish") % (threadMgr.running-1)):
+-            map(log.debug, ("Thread %s is running" % n for n in threadMgr.names))
++            list(map(log.debug, ("Thread %s is running" % n for n in threadMgr.names)))
+             threadMgr.wait_all()
+     else:
+         progressQ.send_init(steps)
+--- ./pyanaconda/installclass.py	(original)
++++ ./pyanaconda/installclass.py	(refactored)
+@@ -189,7 +189,7 @@
+         try:
+             found = imputil.imp.find_module(mainName)
+         except ImportError:
+-            log.warning ("module import of %s failed: %s", mainName, sys.exc_type)
++            log.warning ("module import of %s failed: %s", mainName, sys.exc_info()[0])
+             continue
+ 
+         try:
+@@ -205,7 +205,7 @@
+             if obj.hidden == 0 or showHidden == 1:
+                 lst.append(((obj.name, obj), sortOrder))
+         except (ImportError, AttributeError):
+-            log.warning ("module import of %s failed: %s", mainName, sys.exc_type)
++            log.warning ("module import of %s failed: %s", mainName, sys.exc_info()[0])
+ 
+     lst.sort(_ordering)
+     for (item, _) in lst:
+--- ./pyanaconda/iutil.py	(original)
++++ ./pyanaconda/iutil.py	(refactored)
+@@ -30,8 +30,8 @@
+ import string
+ import types
+ from threading import Thread
+-from Queue import Queue, Empty
+-from urllib import quote, unquote
++from queue import Queue, Empty
++from urllib.paRefactoringTool: Refactored ./pyanaconda/keyboard.py
+RefactoringTool: Refactored ./pyanaconda/kickstart.py
+rse import quote, unquote
+ 
+ from pyanaconda.flags import flags
+ from pyanaconda.constants import DRACUT_SHUTDOWN_EJECT, TRANSLATIONS_UPDATE_DIR, UNSUPPORTED_HW
+@@ -326,7 +326,7 @@
+     """
+ 
+     try:
+-        os.makedirs(directory, 0755)
++        os.makedirs(directory, 0o755)
+     except OSError as e:
+         try:
+             if e.errno == errno.EEXIST and stat.S_ISDIR(os.stat(directory).st_mode):
+@@ -474,7 +474,7 @@
+ 
+         f.write("eject %s\n" % (device,))
+         f.close()
+-        os.chmod(DRACUT_SHUTDOWN_EJECT, 0755)
++        os.chmod(DRACUT_SHUTDOWN_EJECT, 0o755)
+         log.info("Wrote dracut shutdown eject hook for %s", device)
+     except (IOError, OSError) as e:
+         log.error("Error writing dracut shutdown eject hook for %s: %s", device, e)
+@@ -753,9 +753,9 @@
+         :rtype:     bool
+     """
+     try:
+-        tainted = long(open("/proc/sys/kernel/tainted").read())
++        tainted = int(open("/proc/sys/kernel/tainted").read())
+     except (IOError, ValueError):
+-        tainted = 0L
++        tainted = 0
+ 
+     status = bool(tainted & UNSUPPORTED_HW)
+     if status:
+@@ -772,14 +772,14 @@
+ 
+ def _toASCII(s):
+     """Convert a unicode string to ASCII"""
+-    if type(s) == types.UnicodeType:
++    if type(s) == str:
+         # Decompose the string using the NFK decomposition, which in addition
+         # to the canonical decomposition replaces characters based on
+         # compatibility equivalence (e.g., ROMAN NUMERAL ONE has its own code
+         # point but it's really just a capital I), so that we can keep as much
+         # of the ASCII part of the string as possible.
+         s = unicodedata.normalize('NKFD', s).encode('ascii', 'ignore')
+-    elif type(s) != types.StringType:
++    elif type(s) != bytes:
+         s = ''
+     return s
+ 
+@@ -853,7 +853,7 @@
+         """ kwargs are set as keys for the dict. """
+         dict.__init__(self)
+ 
+-        for attr, value in kwargs.items():
++        for attr, value in list(kwargs.items()):
+             self[attr] = value
+ 
+     def __getattr__(self, attr):
+--- ./pyanaconda/keyboard.py	(original)
++++ ./pyanaconda/keyboard.py	(refactored)
+@@ -496,12 +496,12 @@
+     def get_available_layouts(self):
+         """A generator yielding layouts (no need to store them as a bunch)"""
+ 
+-        return self._layout_infos.iterkeys()
++        return iter(self._layout_infos.keys())
+ 
+     def get_switching_options(self):
+         """Method returning list of available layout switching options"""
+ 
+-        return self._switch_opt_infos.iterkeys()
++        return iter(self._switch_opt_infos.keys())
+ 
+     def get_layout_variant_description(self, layout_variant, with_lang=True, xlated=True):
+         """
+@@ -584,7 +584,7 @@
+             raise XklWrapperError("Failed to add layout: %s" % ilverr)
+ 
+         #do not add the same layout-variant combinanion multiple times
+-        if (layout, variant) in zip(self._rec.layouts, self._rec.variants):
++        if (layout, variant) in list(zip(self._rec.layouts, self._rec.variants)):
+             return
+ 
+         self._rec.set_layouts(self._rec.layouts + [layout])
+@@ -609,7 +609,7 @@
+         #we can get 'layout' or 'layout (variant)'
+         (layout, variant) = parse_layout_variant(layout)
+ 
+-        layouts_variants = zip(self._rec.layouts, self._rec.variants)
++        layouts_variants = list(zip(self._rec.layouts, self._rec.variants))
+ 
+         if not (layout, variant) in layouts_variants:
+             msg = "'%s (%s)' not in the list of added layouts" % (layout,
+@@ -746,7 +746,7 @@
+         variants = variants[:len(layouts)]
+ 
+         # map can be used with multiple lists and works like zipWith (Haskell)
+-        return map(_join_layout_variant, layouts, variants)
++        return list(map(_join_layout_variant, layouts, variants))
+ 
+     @property
+     def options(self):
+--- ./pyanaconda/kickstart.py	(original)
++++ ./pyanaconda/kickstart.py	(refactored)
+@@ -98,7 +98,7 @@
+ 
+         os.write(fd, self.script)
+         os.close(fd)
+-        os.chmod(path, 0700)
++        os.chmod(path, 0o700)
+ 
+         # Always log stdout/stRefactoringTool: Refactored ./pyanaconda/localization.py
+RefactoringTool: Refactored ./pyanaconda/network.py
+derr from scripts.  Using --log just lets you
+         # pick where it goes.  The script will also be logged to program.log
+@@ -996,7 +996,7 @@
+             pass
+ 
+         if self.onbiosdisk != "":
+-            for (disk, biosdisk) in storage.eddDict.iteritems():
++            for (disk, biosdisk) in storage.eddDict.items():
+                 if "%x" % biosdisk == self.onbiosdisk:
+                     self.disk = disk
+                     break
+@@ -1671,11 +1671,11 @@
+     def execute(self, storage, ksdata, instClass, users):
+         path = os.path.join(iutil.getSysroot(), "var", "lib", "inital-setup")
+         try:
+-            os.makedirs(path, 0755)
++            os.makedirs(path, 0o755)
+         except OSError:
+             pass
+         f = open(os.path.join(path, "configured.ini"), "a")
+-        for k,v in self.iteritems():
++        for k,v in self.items():
+             f.write("%s=%s\n" % (k, v))
+         f.close()
+ 
+@@ -1873,7 +1873,7 @@
+     ksparser.readKickstartFromString(scripts, reset=False)
+ 
+ def runPostScripts(scripts):
+-    postScripts = filter (lambda s: s.type == KS_SCRIPT_POST, scripts)
++    postScripts = [s for s in scripts if s.type == KS_SCRIPT_POST]
+ 
+     if len(postScripts) == 0:
+         return
+@@ -1884,11 +1884,11 @@
+             del(os.environ[var])
+ 
+     log.info("Running kickstart %%post script(s)")
+-    map (lambda s: s.run(iutil.getSysroot()), postScripts)
++    list(map (lambda s: s.run(iutil.getSysroot()), postScripts))
+     log.info("All kickstart %%post script(s) have been run")
+ 
+ def runPreScripts(scripts):
+-    preScripts = filter (lambda s: s.type == KS_SCRIPT_PRE, scripts)
++    preScripts = [s for s in scripts if s.type == KS_SCRIPT_PRE]
+ 
+     if len(preScripts) == 0:
+         return
+@@ -1896,13 +1896,13 @@
+     log.info("Running kickstart %%pre script(s)")
+     stdoutLog.info(_("Running pre-installation scripts"))
+ 
+-    map (lambda s: s.run("/"), preScripts)
++    list(map (lambda s: s.run("/"), preScripts))
+ 
+     log.info("All kickstart %%pre script(s) have been run")
+ 
+ def runTracebackScripts(scripts):
+     log.info("Running kickstart %%traceback script(s)")
+-    for script in filter (lambda s: s.type == KS_SCRIPT_TRACEBACK, scripts):
++    for script in [s for s in scripts if s.type == KS_SCRIPT_TRACEBACK]:
+         script.run("/")
+     log.info("All kickstart %%traceback script(s) have been run")
+ 
+--- ./pyanaconda/localization.py	(original)
++++ ./pyanaconda/localization.py	(refactored)
+@@ -151,7 +151,7 @@
+         if not locale_parts or not langcode_parts:
+             return score
+ 
+-        for part, part_score in score_map.iteritems():
++        for part, part_score in score_map.items():
+             if locale_parts[part] and langcode_parts[part]:
+                 if locale_parts[part] == langcode_parts[part]:
+                     # match
+--- ./pyanaconda/network.py	(original)
++++ ./pyanaconda/network.py	(refactored)
+@@ -49,6 +49,7 @@
+ from gi.repository import NetworkManager
+ 
+ import logging
++import collections
+ log = logging.getLogger("anaconda")
+ 
+ sysconfigDir = "/etc/sysconfig"
+@@ -369,7 +370,7 @@
+         znet = "rd.znet=%s,%s" % (nettype, subchannels)
+         options = ifcfg.get("OPTIONS").strip("'\"")
+         if options:
+-            options = filter(lambda x: x != '', options.split(' '))
++            options = [x for x in options.split(' ') if x != '']
+             znet += ",%s" % (','.join(options))
+         netargs.add(znet)
+ 
+@@ -660,7 +661,7 @@
+ 
+     # ipv4 and ipv6
+     dnsline = ''
+-    for key in ifcfg.info.keys():
++    for key in list(ifcfg.info.keys()):
+         if iutil.upperASCII(key).startswith('DNS'):
+             if dnsline == '':
+                 dnsline = ifcfg.get(key)
+@@ -762,7 +763,7 @@
+         ifcfg = IfcfgFile(filepath)
+         ifcfg.read()
+         for key, value in values:
+-            if callable(value):
++            if isinstance(value, collections.Callable):
+                 if not value(ifcfg.get(key)):
+                     break
+             else:
+@@ -1281,7 +1282,7 @@
+                 if nm.nm_device_type_is_wifi(devname):
+    RefactoringTool: Refactored ./pyanaconda/nm.py
+                 ssids[devname] = nm.nm_device_active_ssid(devname) or ""
+ 
+-            all_slaves = set(itertools.chain.from_iterable(slaves.values()))
++            all_slaves = set(itertools.chain.from_iterable(list(slaves.values())))
+             nonslaves = [dev for dev in active_devs if dev not in all_slaves]
+ 
+             if len(nonslaves) == 1:
+--- ./pyanaconda/nm.py	(original)
++++ ./pyanaconda/nm.py	(refactored)
+@@ -980,11 +980,11 @@
+     return socket.inet_ntop(socket.AF_INET, struct.pack('=L', address))
+ 
+ def test():
+-    print("NM state: %s:" % nm_state())
+-    print("NM is connected: %s" % nm_is_connected())
+-
+-    print("Devices: %s" % nm_devices())
+-    print("Activated devices: %s" % nm_activated_devices())
++    print(("NM state: %s:" % nm_state()))
++    print(("NM is connected: %s" % nm_is_connected()))
++
++    print(("Devices: %s" % nm_devices()))
++    print(("Activated devices: %s" % nm_activated_devices()))
+ 
+     wireless_device = ""
+ 
+@@ -997,103 +997,103 @@
+         try:
+             devtype = nm_device_type(devname)
+         except UnknownDeviceError as e:
+-            print("     %s" % e)
++            print(("     %s" % e))
+             devtype = None
+         if devtype == NetworkManager.DeviceType.ETHERNET:
+-            print("     type %s" % "ETHERNET")
++            print(("     type %s" % "ETHERNET"))
+         elif devtype == NetworkManager.DeviceType.WIFI:
+-            print("     type %s" % "WIFI")
++            print(("     type %s" % "WIFI"))
+             wireless_device = devname
+ 
+         try:
+-            print("     Wifi device: %s" % nm_device_type_is_wifi(devname))
++            print(("     Wifi device: %s" % nm_device_type_is_wifi(devname)))
+         except UnknownDeviceError as e:
+-            print("     %s" % e)
++            print(("     %s" % e))
+ 
+         try:
+             hwaddr = nm_device_hwaddress(devname)
+-            print("     HwAaddress: %s" % hwaddr)
++            print(("     HwAaddress: %s" % hwaddr))
+         except ValueError as e:
+-            print("     %s" % e)
++            print(("     %s" % e))
+             hwaddr = ""
+ 
+         try:
+-            print("     Carrier: %s" % nm_device_carrier(devname))
++            print(("     Carrier: %s" % nm_device_carrier(devname)))
+         except ValueError as e:
+-            print("     %s" % e)
+-
+-        try:
+-            print("     IP4 config: %s" % nm_device_ip_config(devname))
+-            print("     IP6 config: %s" % nm_device_ip_config(devname, version=6))
+-            print("     IP4 addrs: %s" % nm_device_ip_addresses(devname))
+-            print("     IP6 addrs: %s" % nm_device_ip_addresses(devname, version=6))
+-            print("     Udi: %s" % nm_device_property(devname, "Udi"))
++            print(("     %s" % e))
++
++        try:
++            print(("     IP4 config: %s" % nm_device_ip_config(devname)))
++            print(("     IP6 config: %s" % nm_device_ip_config(devname, version=6)))
++            print(("     IP4 addrs: %s" % nm_device_ip_addresses(devname)))
++            print(("     IP6 addrs: %s" % nm_device_ip_addresses(devname, version=6)))
++            print(("     Udi: %s" % nm_device_property(devname, "Udi")))
+         except UnknownDeviceError as e:
+-            print("     %s" % e)
++            print(("     %s" % e))
+ 
+         if devname in nm_devices():
+             try:
+-                print("     Nonexisting: %s" % nm_device_property(devname, "Nonexisting"))
++                print(("     Nonexisting: %s" % nm_device_property(devname, "Nonexisting")))
+             except PropertyNotFoundError as e:
+-                print("     %s" % e)
+-        try:
+-            print("     Nonexisting: %s" % nm_device_property(devname, "Nonexisting"))
++                print(("     %s" % e))
++        try:
++            print(("     Nonexisting: %s" % nm_device_property(devname, "Nonexisting")))
+         except ValueError as e:
+-            print("     %s" % e)
+-
+-        try:
+-            print("     Settings: %s" % _device_settings(devname))
++            print(("     %s" % e))
++
++        try:
++      RefactoringTool: No changes to ./pyanaconda/ntp.py
+RefactoringTool: Refactored ./pyanaconda/product.py
+      print(("     Settings: %s" % _device_settings(devname)))
+         except UnknownDeviceError as e:
+-            print("     %s" % e)
+-        try:
+-            print("     Settings for hwaddr %s: %s" % (hwaddr, _settings_for_hwaddr(hwaddr)))
++            print(("     %s" % e))
++        try:
++            print(("     Settings for hwaddr %s: %s" % (hwaddr, _settings_for_hwaddr(hwaddr))))
+         except UnknownDeviceError as e:
+-            print("     %s" % e)
+-        try:
+-            print("     Setting value %s %s: %s" % ("ipv6", "method", nm_device_setting_value(devname, "ipv6", "method")))
++            print(("     %s" % e))
++        try:
++            print(("     Setting value %s %s: %s" % ("ipv6", "method", nm_device_setting_value(devname, "ipv6", "method"))))
+         except ValueError as e:
+-            print("     %s" % e)
+-        try:
+-            print("     Setting value %s %s: %s" % ("ipv7", "method", nm_device_setting_value(devname, "ipv7", "method")))
++            print(("     %s" % e))
++        try:
++            print(("     Setting value %s %s: %s" % ("ipv7", "method", nm_device_setting_value(devname, "ipv7", "method"))))
+         except ValueError as e:
+-            print("     %s" % e)
++            print(("     %s" % e))
+ 
+     ssid = "Red Hat Guest"
+-    print("Settings for AP %s: %s" % (ssid, _settings_for_ap(ssid)))
++    print(("Settings for AP %s: %s" % (ssid, _settings_for_ap(ssid))))
+     ssid = "nonexisting"
+-    print("Settings for AP %s: %s" % (ssid, _settings_for_ap(ssid)))
++    print(("Settings for AP %s: %s" % (ssid, _settings_for_ap(ssid))))
+ 
+     devname = devs[0]
+     key1 = "connection"
+     key2 = "autoconnect"
+     original_value = nm_device_setting_value(devname, key1, key2)
+-    print("Value of setting %s %s: %s" % (key1, key2, original_value))
++    print(("Value of setting %s %s: %s" % (key1, key2, original_value)))
+     # None means default in this case, which is true
+     if original_value in (None, True):
+         new_value = False
+     else:
+         new_value = True
+ 
+-    print("Updating to %s" % new_value)
++    print(("Updating to %s" % new_value))
+     nm_update_settings_of_device(devname, [[key1, key2, new_value, None]])
+-    print("Value of setting %s %s: %s" % (key1, key2, nm_device_setting_value(devname, key1, key2)))
++    print(("Value of setting %s %s: %s" % (key1, key2, nm_device_setting_value(devname, key1, key2))))
+     nm_update_settings_of_device(devname, [[key1, key2, original_value, None]])
+-    print("Value of setting %s %s: %s" % (key1, key2, nm_device_setting_value(devname, key1, key2)))
++    print(("Value of setting %s %s: %s" % (key1, key2, nm_device_setting_value(devname, key1, key2))))
+     nm_update_settings_of_device(devname, [[key1, key2, original_value, "b"]])
+-    print("Value of setting %s %s: %s" % (key1, key2, nm_device_setting_value(devname, key1, key2)))
++    print(("Value of setting %s %s: %s" % (key1, key2, nm_device_setting_value(devname, key1, key2))))
+ 
+     nm_update_settings_of_device(devname, [[key1, "nonexisting", new_value, None]])
+     nm_update_settings_of_device(devname, [["nonexisting", "nonexisting", new_value, None]])
+     try:
+         nm_update_settings_of_device("nonexixting", [[key1, key2, new_value, None]])
+     except UnknownDeviceError as e:
+-        print("%s" % e)
++        print(("%s" % e))
+ 
+     if wireless_device:
+         try:
+             nm_update_settings_of_device(wireless_device, [[key1, key2, new_value, None]])
+         except SettingsNotFoundError as e:
+-            print("%s" % e)
++            print(("%s" % e))
+ 
+     #nm_update_settings_of_device(devname, [["connection", "id", "test", None]])
+     #nm_update_settings_of_device(devname, [["connection", "timestamp", 11111111, None]])
+--- ./pyanaconda/product.py	(original)
++++ ./pyanaconda/product.py	(refactored)
+@@ -17,14 +17,14 @@
+ # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ #
+ 
+-import ConfigParser
++import configparser
+ import os
+ 
+ from pyanaconda.i18n import _
+ 
+ # First, load in the defaults.  In order of precedence: RefactoringTool: No changes to ./pyanaconda/progress.py
+RefactoringTool: Refactored ./pyanaconda/queue.py
+RefactoringTool: Refactored ./pyanaconda/rescue.py
+RefactoringTool: No changes to ./pyanaconda/safe_dbus.py
+RefactoringTool: No changes to ./pyanaconda/screensaver.py
+RefactoringTool: No changes to ./pyanaconda/simpleconfig.py
+RefactoringTool: No changes to ./pyanaconda/startup_utils.py
+RefactoringTool: No changes to ./pyanaconda/storage_utils.py
+RefactoringTool: No changes to ./pyanaconda/text.py
+RefactoringTool: Refactored ./pyanaconda/threads.py
+ contents of
+ # .buildstamp, environment, stupid last ditch hardcoded defaults.
+-config = ConfigParser.ConfigParser()
++config = configparser.ConfigParser()
+ config.add_section("Main")
+ config.set("Main", "Arch", os.environ.get("ANACONDA_PRODUCTARCH", os.uname()[4]))
+ config.set("Main", "BugURL", os.environ.get("ANACONDA_BUGURL", "your distribution provided bug reporting tool"))
+--- ./pyanaconda/queue.py	(original)
++++ ./pyanaconda/queue.py	(refactored)
+@@ -18,7 +18,7 @@
+ #
+ # Author(s): Chris Lumens <clumens@redhat.com>
+ 
+-import Queue
++import queue
+ from pyanaconda.iutil import lowerASCII, upperASCII
+ 
+ class QueueFactory(object):
+@@ -48,7 +48,7 @@
+         self.__counter = 0
+         self.__names = []
+ 
+-        self.q = Queue.Queue()
++        self.q = queue.Queue()
+ 
+     def _makeMethod(self, constant, methodName, argc):
+         def __method(*args):
+--- ./pyanaconda/rescue.py	(original)
++++ ./pyanaconda/rescue.py	(refactored)
+@@ -175,17 +175,17 @@
+     if screen:
+         screen.suspend()
+ 
+-    print
++    print()
+     if msg:
+         print(msg)
+ 
+     if flags.imageInstall:
+-        print(_("Run %s to unmount the system when you are finished.")
+-              % ANACONDA_CLEANUP)
+-    else:
+-        print(_("When finished please exit from the shell and your "
+-                "system will reboot."))
+-    print
++        print((_("Run %s to unmount the system when you are finished.")
++              % ANACONDA_CLEANUP))
++    else:
++        print((_("When finished please exit from the shell and your "
++                "system will reboot.")))
++    print()
+ 
+     proc = None
+ 
+@@ -197,7 +197,7 @@
+         if os.path.exists("/bin/bash"):
+             iutil.execConsole()
+         else:
+-            print(_("Unable to find /bin/sh to execute!  Not starting shell"))
++            print((_("Unable to find /bin/sh to execute!  Not starting shell")))
+             time.sleep(5)
+ 
+     if screen:
+@@ -397,7 +397,7 @@
+ 
+                 # set a library path to use mounted fs
+                 libdirs = os.environ.get("LD_LIBRARY_PATH", "").split(":")
+-                mounted = map(lambda dir: "/mnt/sysimage%s" % dir, libdirs)
++                mounted = ["/mnt/sysimage%s" % dir for dir in libdirs]
+                 os.environ["LD_LIBRARY_PATH"] = ":".join(libdirs + mounted)
+ 
+                 # find groff data dir
+@@ -448,7 +448,7 @@
+         if flags.automatedInstall and ksdata.reboot.action in [KS_REBOOT, KS_SHUTDOWN]:
+             log.info("No Linux partitions found")
+             intf.screen.finish()
+-            print(_("You don't have any Linux partitions.  Rebooting.\n"))
++            print((_("You don't have any Linux partitions.  Rebooting.\n")))
+             sys.exit(0)
+         else:
+             if not flags.imageInstall:
+--- ./pyanaconda/threads.py	(original)
++++ ./pyanaconda/threads.py	(refactored)
+@@ -114,14 +114,14 @@
+     def wait_all(self):
+         """Wait for all threads to exit and if there was an error re-raise it.
+         """
+-        for name in self._objs.keys():
++        for name in list(self._objs.keys()):
+             if self.get(name) == threading.current_thread():
+                 continue
+             log.debug("Waiting for thread %s to exit", name)
+             self.wait(name)
+ 
+         if self.any_errors:
+-            thread_names = ", ".join(thread_name for thread_name in self._errors.iterkeys()
++            thread_names = ", ".join(thread_name for thread_name in self._errors.keys()
+                                      if self._errors[thread_name])
+             msg = "Unhandled errors from the following threads detected: %s" % thread_names
+             raise RuntimeError(msg)
+@@ -154,7 +154,7 @@
+ 
+         exc_info = self._errors.pop(name)
+         if exc_info:
+-            raise exc_info[0], exc_info[1], exc_info[2]
++            raise exc_info[0](exc_info[1]).with_traceback(exc_info[2])
+ 
+     def in_main_thread(self):
+         """Return True if it is run in the main thread."""
+@@ -180,7 +180,7 @@
+             :rtype:   list of strings
+         """
+         with self._objs_lock:
+-            returRefactoringTool: Refactored ./pyanaconda/timezone.py
+RefactoringTool: Refactored ./pyanaconda/users.py
+RefactoringTool: No changes to ./pyanaconda/vnc.py
+RefactoringTool: No changes to ./pyanaconda/installclasses/fedora.py
+RefactoringTool: No changes to ./pyanaconda/isys/__init__.py
+RefactoringTool: Refactored ./pyanaconda/packaging/__init__.py
+RefactoringTool: Refactored ./pyanaconda/packaging/dnfpayload.py
+n self._objs.keys()
++            return list(self._objs.keys())
+ 
+ class AnacondaThread(threading.Thread):
+     """A threading.Thread subclass that exists only for a couple purposes:
+--- ./pyanaconda/timezone.py	(original)
++++ ./pyanaconda/timezone.py	(refactored)
+@@ -73,8 +73,7 @@
+     if not timezone.isUtc and not flags.automatedInstall:
+         # if set in the kickstart, no magic needed here
+         threadMgr.wait(THREAD_STORAGE)
+-        ntfs_devs = filter(lambda dev: dev.format.name == "ntfs",
+-                           storage.devices)
++        ntfs_devs = [dev for dev in storage.devices if dev.format.name == "ntfs"]
+ 
+         timezone.isUtc = not bootloader.has_windows(ntfs_devs)
+ 
+--- ./pyanaconda/users.py	(original)
++++ ./pyanaconda/users.py	(refactored)
+@@ -179,7 +179,7 @@
+     if len(fullname) > 0:
+         username = fullname[-1].decode("utf-8").lower()
+     else:
+-        username = u""
++        username = ""
+ 
+     # and prefix it with the first name inital
+     if len(fullname) > 1:
+@@ -293,10 +293,9 @@
+             if kwargs.get("gid", -1) >= 0:
+                 groupEnt.set(libuser.GIDNUMBER, kwargs["gid"])
+ 
+-            grpLst = filter(lambda grp: grp,
+-                            map(self.admin.lookupGroupByName, kwargs.get("groups", [])))
++            grpLst = [grp for grp in map(self.admin.lookupGroupByName, kwargs.get("groups", [])) if grp]
+             userEnt.set(libuser.GIDNUMBER, [groupEnt.get(libuser.GIDNUMBER)[0]] +
+-                        map(lambda grp: grp.get(libuser.GIDNUMBER)[0], grpLst))
++                        [grp.get(libuser.GIDNUMBER)[0] for grp in grpLst])
+ 
+             if kwargs.get("homedir", False):
+                 userEnt.set(libuser.HOMEDIRECTORY, kwargs["homedir"])
+--- ./pyanaconda/packaging/__init__.py	(original)
++++ ./pyanaconda/packaging/__init__.py	(refactored)
+@@ -27,11 +27,11 @@
+         - document all methods
+ 
+ """
+-from __future__ import print_function
++
+ import os, sys
+ from urlgrabber.grabber import URLGrabber
+ from urlgrabber.grabber import URLGrabError
+-import ConfigParser
++import configparser
+ import shutil
+ import time
+ 
+@@ -440,12 +440,12 @@
+             proxy = None
+         treeinfo = self._getTreeInfo(url, proxy, not flags.noverifyssl)
+         if treeinfo:
+-            c = ConfigParser.ConfigParser()
++            c = configparser.ConfigParser()
+             c.read(treeinfo)
+             try:
+                 # Trim off any -Alpha or -Beta
+                 version = c.get("general", "version").split("-")[0]
+-            except ConfigParser.Error:
++            except configparser.Error:
+                 pass
+ 
+         if version.startswith(time.strftime("%Y")):
+--- ./pyanaconda/packaging/dnfpayload.py	(original)
++++ ./pyanaconda/packaging/dnfpayload.py	(refactored)
+@@ -102,7 +102,7 @@
+ 
+     # reserve extra
+     requested = requested + Size("150 MB")
+-    sufficients = {key : val for (key,val) in df.items() if val > requested
++    sufficients = {key : val for (key,val) in list(df.items()) if val > requested
+                    and reasonable_mpoint(key)}
+     log.info('Sufficient mountpoints found: %s', sufficients)
+ 
+@@ -112,7 +112,7 @@
+     if not len(sufficients):
+         return None
+     # default to the biggest one:
+-    return sorted(sufficients.iteritems(), key=operator.itemgetter(1),
++    return sorted(iter(sufficients.items()), key=operator.itemgetter(1),
+                   reverse=True)[0][0]
+ 
+ class PayloadRPMDisplay(dnf.callback.LoggingTransactionDisplay):
+@@ -372,7 +372,7 @@
+     @property
+     def repos(self):
+         # known repo ids
+-        return [r.id for r in self._base.repos.values()]
++        return [r.id for r in list(self._base.repos.values())]
+ 
+     @property
+     def spaceRequired(self):
+@@ -464,7 +464,7 @@
+         return (grp.ui_name, grp.ui_description)
+ 
+     def gatherRepoMetadata(self):
+-        map(self._sync_metadata, self._base.repos.iter_enabled())
++        list(map(self._sync_metadata, self._base.repos.iter_enabled()))
+         self._base.fill_sack(load_system_repo=False)
+         self._base.read_comps()
+   RefactoringTool: Refactored ./pyanaconda/packaging/livepayload.py
+RefactoringTool: No changes to ./pyanaconda/packaging/rpmostreepayload.py
+RefactoringTool: No changes to ./pyanaconda/packaging/tarpayload.py
+RefactoringTool: Refactored ./pyanaconda/packaging/yumpayload.py
+      self._refreshEnvironmentAddons()
+@@ -554,7 +554,7 @@
+ 
+     def selectEnvironment(self, environmentid):
+         env = self._base.comps.environment_by_pattern(environmentid)
+-        map(self.selectGroup, (id_.name for id_ in env.group_ids))
++        list(map(self.selectGroup, (id_.name for id_ in env.group_ids)))
+ 
+     def setup(self, storage, instClass):
+         # must end up with the base repo (and its metadata) ready
+--- ./pyanaconda/packaging/livepayload.py	(original)
++++ ./pyanaconda/packaging/livepayload.py	(refactored)
+@@ -36,7 +36,7 @@
+ from urlgrabber.grabber import URLGrabber
+ from urlgrabber.grabber import URLGrabError
+ from pyanaconda.iutil import ProxyString, ProxyStringError, lowerASCII
+-import urllib
++import urllib.request, urllib.parse, urllib.error
+ import hashlib
+ import glob
+ 
+@@ -245,7 +245,7 @@
+ 
+         error = None
+         try:
+-            req = urllib.urlopen(self.data.method.url, proxies=self._proxies)
++            req = urllib.request.urlopen(self.data.method.url, proxies=self._proxies)
+         except IOError as e:
+             log.error("Error opening liveimg: %s", e)
+             error = e
+@@ -334,7 +334,7 @@
+                     img_file = os.path.basename(sorted(img_files)[0])
+ 
+                     # move the mount to IMAGE_DIR
+-                    os.makedirs(IMAGE_DIR, 0755)
++                    os.makedirs(IMAGE_DIR, 0o755)
+                     # work around inability to move shared filesystems
+                     iutil.execWithRedirect("mount",
+                                            ["--make-rprivate", "/"])
+--- ./pyanaconda/packaging/yumpayload.py	(original)
++++ ./pyanaconda/packaging/yumpayload.py	(refactored)
+@@ -35,7 +35,7 @@
+ 
+ """
+ 
+-import ConfigParser
++import configparser
+ import os
+ import shutil
+ import sys
+@@ -391,7 +391,7 @@
+ 
+             self._yum.repos.pkgSack = MetaSack()
+ 
+-            for repo in self._yum.repos.repos.values():
++            for repo in list(self._yum.repos.repos.values()):
+                 repo._sack = None
+ 
+     def deleteYumTS(self):
+@@ -416,7 +416,7 @@
+ 
+         _repos = []
+         with _yum_lock:
+-            _repos = self._yum.repos.repos.keys()
++            _repos = list(self._yum.repos.repos.keys())
+ 
+         return _repos
+ 
+@@ -488,7 +488,7 @@
+             try:
+                 releasever = self._getReleaseVersion(url)
+                 log.debug("releasever from %s is %s", url, releasever)
+-            except ConfigParser.MissingSectionHeaderError as e:
++            except configparser.MissingSectionHeaderError as e:
+                 log.error("couldn't set releasever from base repo (%s): %s",
+                           method.method, e)
+ 
+@@ -506,7 +506,7 @@
+         if (not method.method and flags.automatedInstall) or \
+            flags.askmethod:
+             with _yum_lock:
+-                for repo in self._yum.repos.repos.values():
++                for repo in list(self._yum.repos.repos.values()):
+                     self.disableRepo(repo.id)
+             return
+ 
+@@ -529,7 +529,7 @@
+                 self._removeYumRepo(BASE_REPO_NAME)
+                 if not fallback:
+                     with _yum_lock:
+-                        for repo in self._yum.repos.repos.values():
++                        for repo in list(self._yum.repos.repos.values()):
+                             if repo.enabled:
+                                 self.disableRepo(repo.id)
+                     return
+@@ -539,7 +539,7 @@
+                 self.install_device = None
+ 
+         with _yum_lock:
+-            if BASE_REPO_NAME not in self._yum.repos.repos.keys():
++            if BASE_REPO_NAME not in list(self._yum.repos.repos.keys()):
+                 log.info("using default repos from local yum configuration")
+                 if self._yum.conf.yumvar['releasever'] == "rawhide" and \
+                    "rawhide" in self.repos:
+@@ -561,7 +561,7 @@
+ 
+         # now disable and/or remove any repos that don't make sense
+         with _yum_lock:
+-            for repo in self._yum.repos.repos.values():
++            for repo in list(self._yum.reposRefactoringTool: Refactored ./pyanaconda/ui/__init__.py
+RefactoringTool: Refactored ./pyanaconda/ui/common.py
+RefactoringTool: Refactored ./pyanaconda/ui/helpers.py
+.repos.values()):
+                 # Rules for which repos to enable/disable/remove
+                 #
+                 # - always remove
+@@ -701,10 +701,10 @@
+         # We need to know which variant is being installed so we know what addons
+         # are valid options.
+         try:
+-            c = ConfigParser.ConfigParser()
+-            ConfigParser.ConfigParser.read(c, treeinfo)
++            c = configparser.ConfigParser()
++            configparser.ConfigParser.read(c, treeinfo)
+             variant = c.get("general", "variant")
+-        except ConfigParser.Error:
++        except configparser.Error:
+             return retval
+ 
+         section = "variant-%s" % variant
+@@ -1078,7 +1078,7 @@
+                 return False
+ 
+             group = groups.return_group(groupid)
+-            pkgs = group.mandatory_packages.keys() + group.default_packages.keys()
++            pkgs = list(group.mandatory_packages.keys()) + list(group.default_packages.keys())
+             if pkgs:
+                 return True
+             return False
+--- ./pyanaconda/ui/__init__.py	(original)
++++ ./pyanaconda/ui/__init__.py	(refactored)
+@@ -29,7 +29,7 @@
+     """Dictionary class supporting + operator"""
+     def __add__(self, ext):
+         new_dict = copy.copy(self)
+-        for key, value in ext.iteritems():
++        for key, value in ext.items():
+             try:
+                 new_dict[key].extend(value)
+             except KeyError:
+@@ -86,7 +86,7 @@
+     def update_paths(cls, pathdict):
+         """Receives pathdict and appends it's contents to the current
+            class defined search path dictionary."""
+-        for k,v in pathdict.iteritems():
++        for k,v in pathdict.items():
+             cls.paths.setdefault(k, [])
+             cls.paths[k].extend(v)
+ 
+@@ -176,10 +176,10 @@
+ 
+         actionClasses = []
+         for hub in hubs:
+-            actionClasses.extend(sorted(filter(lambda obj: getattr(obj, "preForHub", None) == hub, spokes),
++            actionClasses.extend(sorted([obj for obj in spokes if getattr(obj, "preForHub", None) == hub],
+                                         key=lambda obj: obj.priority))
+             actionClasses.append(hub)
+-            actionClasses.extend(sorted(filter(lambda obj: getattr(obj, "postForHub", None) == hub, spokes),
++            actionClasses.extend(sorted([obj for obj in spokes if getattr(obj, "postForHub", None) == hub],
+                                         key=lambda obj: obj.priority))
+ 
+         return actionClasses
+--- ./pyanaconda/ui/common.py	(original)
++++ ./pyanaconda/ui/common.py	(refactored)
+@@ -724,10 +724,10 @@
+     # Collect all the categories this hub displays, then collect all the
+     # spokes belonging to all those categories.
+     if displaymode == DISPLAY_MODE_TEXT:
+-        categories = sorted(filter(lambda c: c.displayOnHubTUI == klass.__name__, collect_categories(paths["categories"], displaymode)),
++        categories = sorted([c for c in collect_categories(paths["categories"], displaymode) if c.displayOnHubTUI == klass.__name__],
+                             key=lambda c: c.sortOrder)
+     else:
+-        categories = sorted(filter(lambda c: c.displayOnHubGUI == klass.__name__, collect_categories(paths["categories"], displaymode)),
++        categories = sorted([c for c in collect_categories(paths["categories"], displaymode) if c.displayOnHubGUI == klass.__name__],
+                             key=lambda c: c.sortOrder)
+     for c in categories:
+         ret[c] = collect_spokes(paths["spokes"], c.__name__)
+--- ./pyanaconda/ui/helpers.py	(original)
++++ ./pyanaconda/ui/helpers.py	(refactored)
+@@ -65,9 +65,7 @@
+ import logging
+ import copy
+ 
+-class StorageChecker(object):
+-    __metaclass__ = ABCMeta
+-
++class StorageChecker(object, metaclass=ABCMeta):
+     log = logging.getLogger("anaconda")
+     errors = []
+     warnings = []
+@@ -101,14 +99,12 @@
+         for w in StorageChecker.warnings:
+             self.log.warning(w)
+ 
+-class SourceSwitchHandler(object):
++class SourceSwitchHandler(object, metaclass=ABCMeta):
+     """ A class that can be used as a mixRefactoringTool: No changes to ./pyanaconda/ui/gui/__init__.py
+RefactoringTool: Refactored ./pyanaconda/ui/gui/helpers.py
+RefactoringTool: Refactored ./pyanaconda/ui/gui/utils.py
+in handling
+     installation source switching.
+     It will correctly switch to the new method
+     and cleanup any previous method set.
+     """
+-
+-    __metaclass__ = ABCMeta
+ 
+     @abstractproperty
+     def data(self):
+@@ -268,7 +264,7 @@
+     def enabled(self, value):
+         self._enabled = value
+ 
+-class InputCheckHandler(object):
++class InputCheckHandler(object, metaclass=ABCMeta):
+     """Provide a framework for adding input validation checks to a screen.
+ 
+        This helper class provides a mean of defining and associating input
+@@ -283,8 +279,6 @@
+        functionality.
+     """
+ 
+-    __metaclass__ = ABCMeta
+-
+     def __init__(self):
+         self._check_list = []
+ 
+--- ./pyanaconda/ui/gui/helpers.py	(original)
++++ ./pyanaconda/ui/gui/helpers.py	(refactored)
+@@ -29,14 +29,12 @@
+ 
+ # Inherit abstract methods from InputCheckHandler
+ # pylint: disable=abstract-method
+-class GUIInputCheckHandler(InputCheckHandler):
++class GUIInputCheckHandler(InputCheckHandler, metaclass=ABCMeta):
+     """Provide InputCheckHandler functionality for Gtk input screens.
+ 
+        This class assumes that all input objects are of type GtkEditable and
+        attaches InputCheck.update_check_status to the changed signal.
+     """
+-
+-    __metaclass__ = ABCMeta
+ 
+     def _update_check_status(self, editable, inputcheck):
+         inputcheck.update_check_status()
+@@ -49,7 +47,7 @@
+         input_obj.connect_after("changed", self._update_check_status, checkRef)
+         return checkRef
+ 
+-class GUIDialogInputCheckHandler(GUIInputCheckHandler):
++class GUIDialogInputCheckHandler(GUIInputCheckHandler, metaclass=ABCMeta):
+     """Provide InputCheckHandler functionality for Gtk dialogs.
+ 
+        This class provides a helper method for setting an error message
+@@ -57,8 +55,6 @@
+        a set_status method in order to control the sensitivty of widgets or
+        ignore activated signals.
+     """
+-
+-    __metaclass__ = ABCMeta
+ 
+     @abstractmethod
+     def set_status(self, inputcheck):
+@@ -71,15 +67,13 @@
+             inputcheck.input_obj.set_icon_tooltip_text(Gtk.EntryIconPosition.SECONDARY,
+                 inputcheck.check_status)
+ 
+-class GUISpokeInputCheckHandler(GUIInputCheckHandler):
++class GUISpokeInputCheckHandler(GUIInputCheckHandler, metaclass=ABCMeta):
+     """Provide InputCheckHandler functionality for graphical spokes.
+ 
+        This class implements set_status to set a message in the warning area of
+        the spoke window and provides an implementation of on_back_clicked to
+        prevent the user from exiting a spoke with bad input.
+     """
+-
+-    __metaclass__ = ABCMeta
+ 
+     def set_status(self, inputcheck):
+         """Update the warning with the input validation error from the first
+--- ./pyanaconda/ui/gui/utils.py	(original)
++++ ./pyanaconda/ui/gui/utils.py	(refactored)
+@@ -26,7 +26,7 @@
+ from pyanaconda.constants import NOTICEABLE_FREEZE
+ from contextlib import contextmanager
+ from gi.repository import Gdk, Gtk, GLib, AnacondaWidgets
+-import Queue
++import queue
+ import time
+ import threading
+ 
+@@ -53,7 +53,7 @@
+        thread and returns the ret value after the decorated method finishes.
+     """
+ 
+-    queue = Queue.Queue()
++    queue = queue.Queue()
+ 
+     def _idle_method(q_args):
+         """This method contains the code for the main loop to execute.
+@@ -169,13 +169,14 @@
+ 
+         queue.put(TERMINATOR)
+ 
+-    def process_one_batch((queue, action, done_event)):
++    def process_one_batch(xxx_todo_changeme1):
++        (queue, action, done_event) = xxx_todo_changeme1
+         tstamp_start = time.time()
+         tstamp = time.time()
+ 
+         # process as many batches as user shouldn't notice
+         while tstamp - tstamp_start < NOTICEABLE_FREEZE:
+-            for _i in xrange(batch_size):
++            for _i in range(batch_size):
+                 try:
+                     action_item = queue.get_nowait()
+                     if action_item is TERMINATOR:
+@@ -185,7 +186,7 @@
+                     else:
+                         # run action on the item
+                         action(action_item, *args)
+-   RefactoringTool: Refactored ./pyanaconda/ui/gui/hubs/__init__.py
+RefactoringTool: Refactored ./pyanaconda/ui/gui/hubs/progress.py
+RefactoringTool: No changes to ./pyanaconda/ui/gui/spokes/__init__.py
+RefactoringTool: Refactored ./pyanaconda/ui/gui/spokes/custom.py
+             except Queue.Empty:
++                except queue.Empty:
+                     # empty queue, reschedule to run later
+                     return True
+ 
+@@ -194,7 +195,7 @@
+         # out of time but something left, reschedule to run again later
+         return True
+ 
+-    item_queue = Queue.Queue()
++    item_queue = queue.Queue()
+     done_event = threading.Event()
+ 
+     # we don't want to log the whole list, type and address is enough
+@@ -236,8 +237,9 @@
+             self._last_start = None
+             self._timer_id = None
+ 
+-        def _run_once_one_arg(self, (args, kwargs)):
++        def _run_once_one_arg(self, xxx_todo_changeme):
+             # run the function and clear stored values
++            (args, kwargs) = xxx_todo_changeme
+             self._func(*args, **kwargs)
+             self._last_start = None
+             self._timer_id = None
+@@ -417,7 +419,7 @@
+     This function converts the value to a string before passing markup_escape_text().
+     """
+ 
+-    if isinstance(value, unicode):
++    if isinstance(value, str):
+         value = value.encode("utf-8")
+ 
+     return GLib.markup_escape_text(str(value))
+--- ./pyanaconda/ui/gui/hubs/__init__.py	(original)
++++ ./pyanaconda/ui/gui/hubs/__init__.py	(refactored)
+@@ -134,7 +134,7 @@
+         from pyanaconda.ui.gui.utils import setViewportBackground
+ 
+         cats_and_spokes = self._collectCategoriesAndSpokes()
+-        categories = cats_and_spokes.keys()
++        categories = list(cats_and_spokes.keys())
+ 
+         grid = Gtk.Grid(row_spacing=6, column_spacing=6, column_homogeneous=True,
+                         margin_bottom=12)
+@@ -280,7 +280,7 @@
+ 
+     def _update_spokes(self):
+         from pyanaconda.ui.communication import hubQ
+-        import Queue
++        import queue
+ 
+         q = hubQ.q
+ 
+@@ -294,7 +294,7 @@
+         while True:
+             try:
+                 (code, args) = q.get(False)
+-            except Queue.Empty:
++            except queue.Empty:
+                 break
+ 
+             # The first argument to all codes is the name of the spoke we are
+@@ -405,7 +405,7 @@
+         self._inSpoke = False
+ 
+         # Now update the selector with the current status and completeness.
+-        for sp in self._spokes.itervalues():
++        for sp in self._spokes.values():
+             if not sp.indirect:
+                 self._updateCompleteness(sp, update_continue=False)
+ 
+--- ./pyanaconda/ui/gui/hubs/progress.py	(original)
++++ ./pyanaconda/ui/gui/hubs/progress.py	(refactored)
+@@ -19,7 +19,7 @@
+ # Red Hat Author(s): Chris Lumens <clumens@redhat.com>
+ #
+ 
+-from __future__ import division
++
+ 
+ from gi.repository import GLib, Gtk
+ 
+@@ -82,7 +82,7 @@
+ 
+     def _update_progress(self, callback = None):
+         from pyanaconda.progress import progressQ
+-        import Queue
++        import queue
+ 
+         q = progressQ.q
+ 
+@@ -92,7 +92,7 @@
+             # the progress bar.  If there's no message, don't error out.
+             try:
+                 (code, args) = q.get(False)
+-            except Queue.Empty:
++            except queue.Empty:
+                 break
+ 
+             if code == progressQ.PROGRESS_CODE_INIT:
+@@ -191,7 +191,7 @@
+         # image's filename.  Note that self._rnotesPages is an infinite list,
+         # so this will cycle through the images indefinitely.
+         try:
+-            nxt = self._rnotesPages.next()
++            nxt = next(self._rnotesPages)
+         except StopIteration:
+             # there are no rnotes
+             pass
+@@ -235,8 +235,8 @@
+                 self._progressNotebook.append_page(img, None)
+ 
+             # An infinite list of the page numbers containing ransom notes images.
+-            self._rnotesPages = itertools.cycle(range(rnotes_start,
+-                self._progressNotebook.get_n_pages()))
++            self._rnotesPages = itertools.cycle(list(range(rnotes_start,
++                self._progressNotebook.get_n_pages())))
+         else:
+             # Add a blank page to the notebook and we'll just cycle to that
+             # over and over again.
+--- ./pyanaconda/ui/gui/spokes/custom.py	(original)
++++ ./pyanaconda/ui/gui/spokes/custom.py	(refactored)
+@@ -267,7 +267,7 @@
+     def _initialize(self):
+         self._fs_types = []
+         actions = GtkActionList()
+-        for cls in device_formats.itervalues():
++        for cls in device_formats.values():
+             obj = cls()
+ 
+             # btrfs is always handled by on_device_type_changed
+@@ -317,7 +317,7 @@
+ 
+     def _setCurrentFreeSpace(self):
+         """Add up all the free space on selected disks and return it as a Size."""
+-        self._free_space = sum(f[0] for f in self._currentFreeInfo.values())
++        self._free_space = sum(f[0] for f in list(self._currentFreeInfo.values()))
+ 
+     def _currentTotalSpace(self):
+         """Add up the sizes of all selected disks and return it as a Size."""
+@@ -428,9 +428,9 @@
+         # If mountpoints have been assigned to any existing devices, go ahead
+         # and pull those in along with any existing swap devices. It doesn't
+         # matter if the formats being mounted exist or not.
+-        new_mounts = [d for d in self._storage_playground.mountpoints.values() if d.exists]
++        new_mounts = [d for d in list(self._storage_playground.mountpoints.values()) if d.exists]
+         if new_mounts or new_devices:
+-            new_devices.extend(self._storage_playground.mountpoints.values())
++            new_devices.extend(list(self._storage_playground.mountpoints.values()))
+             new_devices.extend(self.bootLoaderDevices)
+ 
+         new_devices = list(set(new_devices))
+@@ -480,14 +480,14 @@
+         for root in ui_roots:
+             # Don't make a page if none of the root's devices are left.
+             # Also, only include devices in an old page if the format is intact.
+-            if not any(d for d in root.swaps + root.mounts.values()
++            if not any(d for d in root.swaps + list(root.mounts.values())
+                         if d in self._devices and d.disks and
+                            (root.name == translated_new_install_name() or d.format.exists)):
+                 continue
+ 
+             page = Page(root.name)
+ 
+-            for (mountpoint, device) in root.mounts.iteritems():
++            for (mountpoint, device) in root.mounts.items():
+                 if device not in self._devices or \
+                    not device.disks or \
+                    (root.name != translated_new_install_name() and not device.format.exists):
+@@ -953,7 +953,7 @@
+             if old_mountpoint:
+                 del mountpoints[old_mountpoint]
+ 
+-            error = validate_mountpoint(mountpoint, mountpoints.keys())
++            error = validate_mountpoint(mountpoint, list(mountpoints.keys()))
+             if error:
+                 self._error = error
+                 self.set_warning(self._error)
+@@ -1069,7 +1069,7 @@
+         already_logged = {"disks", "device"}
+         # log the other changes (old_device_info doesn't have the 'device' key)
+         for key in (to_log for to_log in
+-                    old_device_info.keys() if to_log not in already_logged):
++                    list(old_device_info.keys()) if to_log not in already_logged):
+             log.debug("old %s: %s", key, old_device_info[key])
+             log.debug("new %s: %s", key, new_device_info[key])
+ 
+@@ -1195,7 +1195,7 @@
+         log.debug("populate_raid: %s, %s", device_type, raid_level)
+ 
+         if not raidLevelsSupported(device_type):
+-            map(really_hide, [self._raidLevelLabel, self._raidLevelCombo])
++            list(map(really_hide, [self._raidLevelLabel, self._raidLevelCombo]))
+             return
+ 
+         raid_level = raid_level or defaultRaidLevel(device_type)
+@@ -1207,7 +1207,7 @@
+                 self._raidLevelCombo.set_active(i)
+                 break
+ 
+-        map(really_show, [self._raidLevelLabel, self._raidLevelCombo])
++        list(map(really_show, [self._raidLevelLabel, self._raidLevelCombo]))
+ 
+     def _get_current_device_type(self):
+         itr = self._typeCombo.get_active_iter()
+@@ -1252,7 +1252,7 @@
+ 
+         # remove items from the combobox in reversed order so that item 3
+     RefactoringTool: Refactored ./pyanaconda/ui/gui/spokes/datetime_spoke.py
+RefactoringTool: Refactored ./pyanaconda/ui/gui/spokes/filter.py
+    # doesn't become item 2 by removing item 1 etc.
+-        map(self._fsCombo.remove, reversed(remove_indices))
++        list(map(self._fsCombo.remove, reversed(remove_indices)))
+ 
+         # if the current device has unsupported formatting, add an entry for it
+         if device.format.name not in self._fs_types:
+@@ -1301,7 +1301,7 @@
+ 
+         device_type = devicefactory.get_device_type(device)
+ 
+-        for _type in self._device_name_dict.iterkeys():
++        for _type in self._device_name_dict.keys():
+             if _type == device_type:
+                 self._device_name_dict[_type] = device_name
+                 continue
+@@ -1602,7 +1602,7 @@
+ 
+         ## initialize and run the AddDialog
+         dialog = AddDialog(self.data,
+-                           mountpoints=self._storage_playground.mountpoints.keys())
++                           mountpoints=list(self._storage_playground.mountpoints.keys()))
+         dialog.refresh()
+         with enlightbox(self.window, dialog.window):
+             rc = dialog.run()
+@@ -2286,7 +2286,7 @@
+         container_size_policy = SIZE_POLICY_AUTO
+         if device_type not in CONTAINER_DEVICE_TYPES:
+             # just hide the buttons with no meaning for non-container devices
+-            map(really_hide, [self._containerLabel, self._containerCombo, self._modifyContainerButton])
++            list(map(really_hide, [self._containerLabel, self._containerCombo, self._modifyContainerButton]))
+             return
+ 
+         # else really populate the container
+@@ -2337,7 +2337,7 @@
+         if default_container_name is None:
+             self._containerCombo.set_active(len(self._containerStore) - 1)
+ 
+-        map(really_show, [self._containerLabel, self._containerCombo, self._modifyContainerButton])
++        list(map(really_show, [self._containerLabel, self._containerCombo, self._modifyContainerButton]))
+ 
+         # make the combo and button insensitive for existing LVs
+         can_change_container = (device is not None and not device.exists and
+--- ./pyanaconda/ui/gui/spokes/datetime_spoke.py	(original)
++++ ./pyanaconda/ui/gui/spokes/datetime_spoke.py	(refactored)
+@@ -433,22 +433,22 @@
+                                      target=self._initialize))
+ 
+     def _initialize(self):
+-        for day in xrange(1, 32):
++        for day in range(1, 32):
+             self.add_to_store(self._daysStore, day)
+ 
+-        for i in xrange(1, 13):
++        for i in range(1, 13):
+             #a bit hacky way, but should return the translated string
+             #TODO: how to handle language change? Clear and populate again?
+             month = datetime.date(2000, i, 1).strftime('%B')
+             self.add_to_store(self._monthsStore, month)
+             self._months_nums[month] = i
+ 
+-        for year in xrange(1990, 2051):
++        for year in range(1990, 2051):
+             self.add_to_store(self._yearsStore, year)
+ 
+         cities = set()
+         xlated_regions = ((region, get_xlated_timezone(region))
+-                          for region in self._regions_zones.iterkeys())
++                          for region in self._regions_zones.keys())
+         for region, xlated in sorted(xlated_regions, cmp=_compare_regions):
+             self.add_to_store_xlated(self._regionsStore, region, xlated)
+             for city in self._regions_zones[region]:
+--- ./pyanaconda/ui/gui/spokes/filter.py	(original)
++++ ./pyanaconda/ui/gui/spokes/filter.py	(refactored)
+@@ -447,8 +447,8 @@
+         self.disks = getDisks(self.storage.devicetree)
+         self.selected_disks = self.data.ignoredisk.onlyuse[:]
+ 
+-        self.ancestors = itertools.chain(*map(self._real_ancestors, self.disks))
+-        self.ancestors = map(lambda d: d.name, self.ancestors)
++        self.ancestors = itertools.chain(*list(map(self._real_ancestors, self.disks)))
++        self.ancestors = [d.name for d in self.ancestors]
+ 
+         self._store.clear()
+ 
+@@ -462,7 +462,7 @@
+         # these lists of disks, then call setup on each individual page.  This is
+         # because there could be page-specific setup to do that requires a complete
+ RefactoringTool: Refactored ./pyanaconda/ui/gui/spokes/keyboard.py
+RefactoringTool: No changes to ./pyanaconda/ui/gui/spokes/langsupport.py
+RefactoringTool: Refactored ./pyanaconda/ui/gui/spokes/network.py
+RefactoringTool: No changes to ./pyanaconda/ui/gui/spokes/password.py
+RefactoringTool: No changes to ./pyanaconda/ui/gui/spokes/software.py
+RefactoringTool: Refactored ./pyanaconda/ui/gui/spokes/source.py
+RefactoringTool: Refactored ./pyanaconda/ui/gui/spokes/storage.py
+        # view of all the disks on that page.
+-        for disk in itertools.ifilterfalse(isLocalDisk, self.disks):
++        for disk in itertools.filterfalse(isLocalDisk, self.disks):
+             if self.pages[1].ismember(disk):
+                 multipathDisks.append(disk)
+             elif self.pages[2].ismember(disk):
+--- ./pyanaconda/ui/gui/spokes/keyboard.py	(original)
++++ ./pyanaconda/ui/gui/spokes/keyboard.py	(refactored)
+@@ -78,7 +78,7 @@
+         eng_value = self._xkl_wrapper.get_layout_variant_description(value, xlated=False)
+         xlated_value = self._xkl_wrapper.get_layout_variant_description(value)
+         translit_value = strip_accents(xlated_value).lower()
+-        translit_text = strip_accents(unicode(entry_text, "utf-8")).lower()
++        translit_text = strip_accents(str(entry_text, "utf-8")).lower()
+ 
+         return have_word_match(entry_text, eng_value) or have_word_match(entry_text, xlated_value) \
+             or have_word_match(translit_text, translit_value)
+--- ./pyanaconda/ui/gui/spokes/network.py	(original)
++++ ./pyanaconda/ui/gui/spokes/network.py	(refactored)
+@@ -1006,7 +1006,7 @@
+             else:
+                 strongest_aps[ssid] = ap
+ 
+-        return strongest_aps.values()
++        return list(strongest_aps.values())
+ 
+     # TODO NM_GI_BUGS fix as _ap_security_string
+     def _ap_security_dbus(self, ap):
+--- ./pyanaconda/ui/gui/spokes/source.py	(original)
++++ ./pyanaconda/ui/gui/spokes/source.py	(refactored)
+@@ -1012,15 +1012,15 @@
+             return
+         # If the failed check is on one of the repo fields, select the repo in the
+         # TreeView and focus the field
+-        elif failed_check in self._repoNameChecks.values():
++        elif failed_check in list(self._repoNameChecks.values()):
+             self._repoSelection.select_path(failed_check.data.get_path())
+             self._repoNameEntry.grab_focus()
+             return
+-        elif failed_check in self._repoURLChecks.values():
++        elif failed_check in list(self._repoURLChecks.values()):
+             self._repoSelection.select_path(failed_check.data.get_path())
+             self._repoUrlEntry.grab_focus()
+             return
+-        elif failed_check in self._repoProxyChecks.values():
++        elif failed_check in list(self._repoProxyChecks.values()):
+             self._repoSelection.select_path(failed_check.data.get_path())
+             self._repoProxyUrlEntry.grab_focus()
+             return
+@@ -1148,7 +1148,7 @@
+         """
+ 
+         # Remove the repo checks
+-        for check in self._repoNameChecks.values() + self._repoURLChecks.values() + self._repoProxyChecks.values():
++        for check in list(self._repoNameChecks.values()) + list(self._repoURLChecks.values()) + list(self._repoProxyChecks.values()):
+             self.remove_check(check)
+         self._repoNameChecks = {}
+         self._repoURLChecks = {}
+@@ -1227,7 +1227,7 @@
+         self._repoMirrorlistCheckbox.handler_unblock_by_func(self.on_repoMirrorlistCheckbox_toggled)
+ 
+         if url:
+-            for idx, proto in REPO_PROTO.iteritems():
++            for idx, proto in REPO_PROTO.items():
+                 if url.startswith(proto):
+                     self._repoProtocolComboBox.set_active_id(idx)
+                     self._repoUrlEntry.set_text(url[len(proto):])
+--- ./pyanaconda/ui/gui/spokes/storage.py	(original)
++++ ./pyanaconda/ui/gui/spokes/storage.py	(refactored)
+@@ -390,8 +390,7 @@
+ 
+     @property
+     def advancedOverviews(self):
+-        return filter(lambda child: isinstance(child, AnacondaWidgets.DiskOverview),
+-                      self.specialized_disks_box.get_children())
++        return [child for child in self.specialized_disks_box.get_children() if isinstance(child, AnacondaWidgets.DiskOverview)]
+ 
+     def _on_disk_clicked(self, overview, event):
+         # This handler only runs for these two kinds of events, and only for
+@@ -778,8 +777,8 @@
+         else:
+             free_space = self.storage.getFreeSpace(disks=disks,
+                                                    clearPartType=CLEARPART_TYPE_NONE)
+-        RefactoringTool: No changes to ./pyanaconda/ui/gui/spokes/user.py
+RefactoringTool: No changes to ./pyanaconda/ui/gui/spokes/welcome.py
+RefactoringTool: No changes to ./pyanaconda/ui/gui/spokes/advstorage/fcoe.py
+RefactoringTool: No changes to ./pyanaconda/ui/gui/spokes/advstorage/iscsi.py
+RefactoringTool: No changes to ./pyanaconda/ui/gui/spokes/lib/accordion.py
+RefactoringTool: No changes to ./pyanaconda/ui/gui/spokes/lib/cart.py
+RefactoringTool: Refactored ./pyanaconda/ui/gui/spokes/lib/custom_storage_helpers.py
+RefactoringTool: No changes to ./pyanaconda/ui/gui/spokes/lib/dasdfmt.py
+RefactoringTool: No changes to ./pyanaconda/ui/gui/spokes/lib/detailederror.py
+RefactoringTool: Refactored ./pyanaconda/ui/gui/spokes/lib/lang_locale_handler.py
+RefactoringTool: No changes to ./pyanaconda/ui/gui/spokes/lib/passphrase.py
+RefactoringTool: No changes to ./pyanaconda/ui/gui/spokes/lib/refresh.py
+RefactoringTool: Refactored ./pyanaconda/ui/gui/spokes/lib/resize.py
+RefactoringTool: Refactored ./pyanaconda/ui/gui/tools/run-hub.py
+    disk_free = sum(f[0] for f in free_space.itervalues())
+-            fs_free = sum(f[1] for f in free_space.itervalues())
++            disk_free = sum(f[0] for f in free_space.values())
++            fs_free = sum(f[1] for f in free_space.values())
+ 
+         required_space = self.payload.spaceRequired
+         auto_swap = sum((r.size for r in self.storage.autoPartitionRequests
+--- ./pyanaconda/ui/gui/spokes/lib/custom_storage_helpers.py	(original)
++++ ./pyanaconda/ui/gui/spokes/lib/custom_storage_helpers.py	(refactored)
+@@ -621,7 +621,7 @@
+             Choose a default RAID level.
+         """
+         if not containerRaidLevelsSupported(self.device_type):
+-            map(really_hide, [self._raidLevelLabel, self._raidLevelCombo])
++            list(map(really_hide, [self._raidLevelLabel, self._raidLevelCombo]))
+             return
+ 
+         raid_level = self.raid_level or defaultContainerRaidLevel(self.device_type)
+@@ -634,7 +634,7 @@
+                 self._raidLevelCombo.set_active(i)
+                 break
+ 
+-        map(really_show, [self._raidLevelLabel, self._raidLevelCombo])
++        list(map(really_show, [self._raidLevelLabel, self._raidLevelCombo]))
+         fancy_set_sensitive(self._raidLevelCombo, not self.exists)
+ 
+     def _checkNameEntry(self, inputcheck):
+--- ./pyanaconda/ui/gui/spokes/lib/lang_locale_handler.py	(original)
++++ ./pyanaconda/ui/gui/spokes/lib/lang_locale_handler.py	(refactored)
+@@ -88,7 +88,7 @@
+         # Otherwise, filter the list showing only what is matched by the
+         # text entry.  Either the English or native names can match.
+         lowered = entry.lower()
+-        translit = strip_accents(unicode(native, "utf-8")).lower()
++        translit = strip_accents(str(native, "utf-8")).lower()
+         if lowered in native.lower() or lowered in english.lower() or lowered in translit:
+             return True
+         else:
+--- ./pyanaconda/ui/gui/spokes/lib/resize.py	(original)
++++ ./pyanaconda/ui/gui/spokes/lib/resize.py	(refactored)
+@@ -19,7 +19,7 @@
+ # Red Hat Author(s): Chris Lumens <clumens@redhat.com>
+ #
+ 
+-from __future__ import division
++
+ from collections import namedtuple
+ 
+ from gi.repository import Gdk, Gtk
+@@ -95,7 +95,7 @@
+         # First, try to find the partition in some known Root.  If we find
+         # it, return the mountpoint as the description.
+         for root in self.storage.roots:
+-            for (mount, device) in root.mounts.iteritems():
++            for (mount, device) in root.mounts.items():
+                 if device == part:
+                     return "%s (%s)" % (mount, root.name)
+ 
+--- ./pyanaconda/ui/gui/tools/run-hub.py	(original)
++++ ./pyanaconda/ui/gui/tools/run-hub.py	(refactored)
+@@ -70,7 +70,7 @@
+ except IndexError:
+     __import__(spokeModuleName)
+     spokeModule = sys.modules[spokeModuleName]
+-    for k,v in vars(spokeModule).iteritems():
++    for k,v in vars(spokeModule).items():
+         try:
+             if issubclass(v, spokeBaseClass) and v != spokeBaseClass:
+                 spokeClassName = k
+@@ -82,11 +82,11 @@
+     try:
+         spokeClass = getattr(spokeModule, spokeClassName)
+     except KeyError:
+-        print("%s %s could not be found in %s" % (SpokeText, spokeClassName, spokeModuleName))
++        print(("%s %s could not be found in %s" % (SpokeText, spokeClassName, spokeModuleName)))
+         sys.exit(1)
+ 
+ 
+-print("Running %s %s from %s" % (spokeText, spokeClass, spokeModule))
++print(("Running %s %s from %s" % (spokeText, spokeClass, spokeModule)))
+ 
+ ksdata = makeVersion()
+ storage = Blivet(ksdata=ksdata)
+@@ -114,7 +114,7 @@
+ spoke.initialize()
+     
+ if not spoke.showable:
+-    print("This %s is not showable, but I'll continue anyway." % spokeText)
++    print(("This %s is not showable, but I'll continue anyway." % spokeText))
+ 
+ spoke.refresh()
+ spoke.window.set_beta(True)
+@@ -124,7 +124,7 @@
+ Gtk.main()
+ 
+ if hasattr(spoke, "status"):
+-    print("%s status:\n%s\n" % (SpokeText, spoke.status))
++    print(("%s status:\n%s\n" % (SpokeText, spoke.status)))
+ if hasattr(spoke, "completed"):
+-    print("%s completed:\n%s\n" %RefactoringTool: Refactored ./pyanaconda/ui/gui/tools/run-spoke.py
+RefactoringTool: No changes to ./pyanaconda/ui/lib/disks.py
+RefactoringTool: No changes to ./pyanaconda/ui/lib/space.py
+RefactoringTool: Refactored ./pyanaconda/ui/tui/__init__.py
+RefactoringTool: Refactored ./pyanaconda/ui/tui/tuiobject.py
+RefactoringTool: Refactored ./pyanaconda/ui/tui/hubs/__init__.py
+ (SpokeText, spoke.completed))
+-print("%s kickstart fragment:\n%s" % (SpokeText, ksdata))
++    print(("%s completed:\n%s\n" % (SpokeText, spoke.completed)))
++print(("%s kickstart fragment:\n%s" % (SpokeText, ksdata)))
+--- ./pyanaconda/ui/gui/tools/run-spoke.py	(original)
++++ ./pyanaconda/ui/gui/tools/run-spoke.py	(refactored)
+@@ -70,7 +70,7 @@
+ except IndexError:
+     __import__(spokeModuleName)
+     spokeModule = sys.modules[spokeModuleName]
+-    for k,v in vars(spokeModule).iteritems():
++    for k,v in vars(spokeModule).items():
+         try:
+             if issubclass(v, spokeBaseClass) and v != spokeBaseClass:
+                 spokeClassName = k
+@@ -82,11 +82,11 @@
+     try:
+         spokeClass = getattr(spokeModule, spokeClassName)
+     except KeyError:
+-        print("%s %s could not be found in %s" % (SpokeText, spokeClassName, spokeModuleName))
++        print(("%s %s could not be found in %s" % (SpokeText, spokeClassName, spokeModuleName)))
+         sys.exit(1)
+ 
+ 
+-print("Running %s %s from %s" % (spokeText, spokeClass, spokeModule))
++print(("Running %s %s from %s" % (spokeText, spokeClass, spokeModule)))
+ 
+ ksdata = makeVersion()
+ storage = Blivet(ksdata=ksdata)
+@@ -114,7 +114,7 @@
+ spoke.initialize()
+     
+ if not spoke.showable:
+-    print("This %s is not showable, but I'll continue anyway." % spokeText)
++    print(("This %s is not showable, but I'll continue anyway." % spokeText))
+ 
+ spoke.refresh()
+ spoke.window.set_beta(True)
+@@ -124,7 +124,7 @@
+ Gtk.main()
+ 
+ if hasattr(spoke, "status"):
+-    print("%s status:\n%s\n" % (SpokeText, spoke.status))
++    print(("%s status:\n%s\n" % (SpokeText, spoke.status)))
+ if hasattr(spoke, "completed"):
+-    print("%s completed:\n%s\n" % (SpokeText, spoke.completed))
+-print("%s kickstart fragment:\n%s" % (SpokeText, ksdata))
++    print(("%s completed:\n%s\n" % (SpokeText, spoke.completed)))
++print(("%s kickstart fragment:\n%s" % (SpokeText, ksdata)))
+--- ./pyanaconda/ui/tui/__init__.py	(original)
++++ ./pyanaconda/ui/tui/__init__.py	(refactored)
+@@ -31,7 +31,7 @@
+ import os
+ import sys
+ import site
+-import Queue
++import queue
+ import meh.ui.text
+ 
+ def exception_msg_handler(event, data):
+@@ -57,7 +57,7 @@
+     ENVIRONMENT = "anaconda"
+ 
+     def __init__(self, storage, payload, instclass,
+-                 productTitle = u"Anaconda", isFinal = True,
++                 productTitle = "Anaconda", isFinal = True,
+                  quitMessage = None):
+         """
+         For detailed description of the arguments see
+@@ -237,7 +237,7 @@
+             return msg_fn(*args)
+         else:
+             # create a queue for the result returned by the function
+-            ret_queue = Queue.Queue()
++            ret_queue = queue.Queue()
+ 
+             # request the function to be called in the main thread
+             self._send_show_message(msg_fn, args, ret_queue)
+--- ./pyanaconda/ui/tui/tuiobject.py	(original)
++++ ./pyanaconda/ui/tui/tuiobject.py	(refactored)
+@@ -77,7 +77,7 @@
+         tui.UIScreen.refresh(self, args)
+         text = tui.TextWidget(self._message)
+         self._window.append(tui.CenterWidget(text))
+-        self._window.append(u"")
++        self._window.append("")
+         return True
+ 
+     def prompt(self, args = None):
+@@ -106,7 +106,7 @@
+     """Base class for Anaconda specific TUI screens. Implements the
+     common pyanaconda.ui.common.UIObject interface"""
+ 
+-    title = u"Default title"
++    title = "Default title"
+ 
+     def __init__(self, app, data):
+         tui.UIScreen.__init__(self, app)
+--- ./pyanaconda/ui/tui/hubs/__init__.py	(original)
++++ ./pyanaconda/ui/tui/hubs/__init__.py	(refactored)
+@@ -50,7 +50,7 @@
+ 
+     def setup(self, environment="anaconda"):
+         cats_and_spokes = self._collectCategoriesAndSpokes()
+-        categories = cats_and_spokes.keys()
++        categories = list(cats_and_spokes.keys())
+ 
+         for c in sorted(categories, key=lambda c: c.title):
+ 
+@@ -87,8 +87,8 @@
+             return tui.ColumnWidget([(3, [number]), (None, [w])], 1)
+ 
+         # split spokes to two columns
+-        left = [_prep(i, w) for i,w in self._kRefactoringTool: Refactored ./pyanaconda/ui/tui/hubs/summary.py
+RefactoringTool: Refactored ./pyanaconda/ui/tui/simpleline/base.py
+eys.iteritems() if i % 2 == 1]
+-        right = [_prep(i, w) for i,w in self._keys.iteritems() if i % 2 == 0]
++        left = [_prep(i, w) for i,w in self._keys.items() if i % 2 == 1]
++        right = [_prep(i, w) for i,w in self._keys.items() if i % 2 == 0]
+ 
+         c = tui.ColumnWidget([(39, left), (39, right)], 2)
+         self._window.append(c)
+@@ -109,8 +109,8 @@
+             # don't continue
+             # TRANSLATORS: 'c' to continue
+             if key == C_('TUI|Spoke Navigation', 'c'):
+-                for spoke in self._spokes.values():
++                for spoke in list(self._spokes.values()):
+                     if not spoke.completed and spoke.mandatory:
+-                        print(_("Please complete all spokes before continuing"))
++                        print((_("Please complete all spokes before continuing")))
+                         return False
+             return key
+--- ./pyanaconda/ui/tui/hubs/summary.py	(original)
++++ ./pyanaconda/ui/tui/hubs/summary.py	(refactored)
+@@ -41,7 +41,7 @@
+         if flags.automatedInstall:
+             sys.stdout.write(_("Starting automated install"))
+             sys.stdout.flush()
+-            spokes = self._keys.values()
++            spokes = list(self._keys.values())
+             while not all(spoke.ready for spoke in spokes):
+                 sys.stdout.write('.')
+                 sys.stdout.flush()
+@@ -57,7 +57,7 @@
+     # override the prompt so that we can skip user input on kickstarts
+     # where all the data is in hand.  If not in hand, do the actual prompt.
+     def prompt(self, args=None):
+-        incompleteSpokes = [spoke for spoke in self._keys.values()
++        incompleteSpokes = [spoke for spoke in list(self._keys.values())
+                                       if spoke.mandatory and not spoke.completed]
+ 
+         if flags.automatedInstall and not incompleteSpokes:
+@@ -88,9 +88,9 @@
+             # don't continue
+             # TRANSLATORS: 'b' to begin installation
+             if key == _('b'):
+-                for spoke in self._spokes.values():
++                for spoke in list(self._spokes.values()):
+                     if not spoke.completed and spoke.mandatory:
+-                        print(_("Please complete all spokes before continuing"))
++                        print((_("Please complete all spokes before continuing")))
+                         return False
+                 if self.app._screens:
+                     self.app.close_screen()
+--- ./pyanaconda/ui/tui/simpleline/base.py	(original)
++++ ./pyanaconda/ui/tui/simpleline/base.py	(refactored)
+@@ -22,7 +22,7 @@
+ __all__ = ["App", "UIScreen", "Widget"]
+ 
+ import sys
+-import Queue
++import queue
+ import getpass
+ import threading
+ import functools
+@@ -84,13 +84,13 @@
+         self._spacer = "\n".join(2*[width*"="])
+         self._width = width
+         self.quit_question = yes_or_no_question
+-        self.quit_message = quit_message or N_(u"Do you really want to quit?")
++        self.quit_message = quit_message or N_("Do you really want to quit?")
+ 
+         # async control queue
+         if queue:
+             self.queue = queue
+         else:
+-            self.queue = Queue.Queue()
++            self.queue = queue.Queue()
+ 
+         # event handlers
+         # key: event id
+@@ -156,7 +156,7 @@
+                 return
+             else:
+                 # lock acquired, we can run raw_input
+-                data = raw_input()
++                data = input()
+                 RAW_INPUT_LOCK.release()
+ 
+         queue.put((hubQ.HUB_CODE_INPUT, [data]))
+@@ -323,7 +323,7 @@
+             # if redraw is needed, separate the content on the screen from the
+             # stuff we are about to display now
+             if self._redraw:
+-                print(self._spacer)
++                print((self._spacer))
+ 
+             try:
+                 # draw the screen if redraw is needed or the screen changed
+@@ -483,7 +483,7 @@
+     to make it easy for devs to create similar UI with the familiar API."""
+ 
+     # title line of the screen
+-    title = u"Screen.."
++    title = "Screen.."
+ 
+     deRefactoringTool: Refactored ./pyanaconda/ui/tui/simpleline/widgets.py
+WARNING: couldn't encode ./pyanaconda/ui/tui/simpleline/widgets.py's diff for your terminal
+RefactoringTool: Refactored ./pyanaconda/ui/tui/spokes/__init__.py
+f __init__(self, app, screen_height = 25):
+         """
+@@ -528,7 +528,7 @@
+         :rtype: True|False
+         """
+ 
+-        self._window = [_(self.title), u""]
++        self._window = [_(self.title), ""]
+         return True
+ 
+     @property
+@@ -551,7 +551,7 @@
+ 
+         if num_lines < self._screen_height - 2:
+             # widget plus prompt are shorter than screen height, just print the widget
+-            print(u"\n".join(lines))
++            print(("\n".join(lines)))
+             return
+ 
+         # long widget, print it in steps and prompt user to continue
+@@ -580,10 +580,10 @@
+             if isinstance(w, Widget):
+                 self._print_long_widget(w)
+             elif type(w) == str:
+-                print(w.decode("utf-8"))
++                print((w.decode("utf-8")))
+             else:
+                 # not a widget, just print its unicode representation
+-                print(unicode(w))
++                print((str(w)))
+     show = show_all
+ 
+     def hide(self):
+@@ -617,7 +617,7 @@
+                  to skip further input processing
+         :rtype: unicode|None
+         """
+-        return _(u"  Please make your choice from above ['q' to quit | 'c' to continue |\n  'r' to refresh]: ")
++        return _("  Please make your choice from above ['q' to quit | 'c' to continue |\n  'r' to refresh]: ")
+ 
+     @property
+     def app(self):
+@@ -684,7 +684,7 @@
+            :rtype: list(unicode)
+            """
+ 
+-        return [unicode(u"".join(line)) for line in self._buffer]
++        return [str("".join(line)) for line in self._buffer]
+ 
+     def setxy(self, row, col):
+         """Sets cursor position.
+@@ -739,7 +739,7 @@
+             l_len = len(self._buffer[l])
+             w_len = len(w.content[l - row])
+             if l_len < col + w_len:
+-                self._buffer[l] += ((col + w_len - l_len) * list(u" "))
++                self._buffer[l] += ((col + w_len - l_len) * list(" "))
+             self._buffer[l][col:col + w_len] = w.content[l - row][:]
+ 
+         # move the cursor to new spot
+@@ -806,7 +806,7 @@
+ 
+             # if the line's length is not enough, fill it with spaces
+             if y >= len(self._buffer[x]):
+-                self._buffer[x] += ((y - len(self._buffer[x]) + 1) * list(u" "))
++                self._buffer[x] += ((y - len(self._buffer[x]) + 1) * list(" "))
+ 
+ 
+             # "type" character
+--- ./pyanaconda/ui/tui/simpleline/widgets.py	(original)
++++ ./pyanaconda/ui/tui/simpleline/widgets.py	(refactored)
+@@ -197,18 +197,18 @@
+         return self._text
+ 
+ if __name__ == "__main__":
+--- ./pyanaconda/ui/tui/spokes/__init__.py	(original)
++++ ./pyanaconda/ui/tui/spokes/__init__.py	(refactored)
+@@ -27,6 +27,7 @@
+ from pyanaconda.iutil import setdeepattr, getdeepattr
+ from pyanaconda.i18n import N_, _
+ from pyanaconda.constants import PASSWORD_CONFIRM_ERROR_TUI, PW_ASCII_CHARS
++import collections
+ 
+ __all__ = ["TUISpoke", "EditTUISpoke", "EditTUIDialog", "EditTUISpokeEntry",
+            "StandaloneSpoke", "NormalTUISpoke"]
+@@ -123,11 +124,11 @@
+             confirm = self._app.raw_input(_("%s (confirm): ") % entry.title, hidden=True)
+ 
+             if (pw and not confirm) or (confirm and not pw):
+-                print(_("You must enter your root password and confirm it by typing"
+-                        " it a second time to continue."))
++                print((_("You must enter your root password and confirm it by typing"
++                        " it a second time to continue.")))
+                 return None
+             if (pw != confirm):
+-                print(_(PASSWORD_CONFIRM_ERROR_TUI))
++                print((_(PASSWORD_CONFIRM_ERROR_TUI)))
+                 return None
+ 
+             valid, strength, message = validatePassword(pw, user=None)
+@@ -149,8 +150,8 @@
+                     return None
+ 
+             if any(char not in PW_ASCII_CHARS for char in pw):
+-                print(_("You have provided a password containing non-ASCII characters.\n"
+-                        "You may not be able to switch between keyboard layouts to login.\n"))
++                print((RefactoringTool: Refactored ./pyanaconda/ui/tui/spokes/askvnc.py
+RefactoringTool: No changes to ./pyanaconda/ui/tui/spokes/network.py
+RefactoringTool: Refactored ./pyanaconda/ui/tui/spokes/progress.py
+RefactoringTool: Refactored ./pyanaconda/ui/tui/spokes/software.py
+RefactoringTool: No changes to ./pyanaconda/ui/tui/spokes/source.py
+RefactoringTool: Refactored ./pyanaconda/ui/tui/spokes/storage.py
+_("You have provided a password containing non-ASCII characters.\n"
++                        "You may not be able to switch between keyboard layouts to login.\n")))
+ 
+             self.value = cryptPassword(pw)
+             return None
+@@ -163,8 +164,8 @@
+             self.close()
+             return True
+         else:
+-            print(_("You have provided an invalid username: %s\n"
+-                    "Do not use spaces or capital letters.\n") % key)
++            print((_("You have provided an invalid username: %s\n"
++                    "Do not use spaces or capital letters.\n") % key))
+             return NormalTUISpoke.input(self, entry, key)
+ 
+ class OneShotEditTUIDialog(EditTUIDialog):
+@@ -237,9 +238,9 @@
+         # changes dynamically
+         ret = []
+         for entry in self.edit_fields:
+-            if callable(entry.visible) and entry.visible(self, self.args):
++            if isinstance(entry.visible, collections.Callable) and entry.visible(self, self.args):
+                 ret.append(entry)
+-            elif not callable(entry.visible) and entry.visible:
++            elif not isinstance(entry.visible, collections.Callable) and entry.visible:
+                 ret.append(entry)
+ 
+         return ret
+--- ./pyanaconda/ui/tui/spokes/askvnc.py	(original)
++++ ./pyanaconda/ui/tui/spokes/askvnc.py	(refactored)
+@@ -138,15 +138,15 @@
+         p2 = getpass.getpass(_("Password (confirm): "))
+ 
+         if p1 != p2:
+-            print(_("Passwords do not match!"))
++            print((_("Passwords do not match!")))
+             return None
+         elif 0 < len(p1) < 6:
+-            print(_("The password must be at least "
+-                    "six characters long."))
++            print((_("The password must be at least "
++                    "six characters long.")))
+             return None
+         elif len(p1) > 8:
+-            print(_("The password cannot be more than "
+-                    "eight characters long."))
++            print((_("The password cannot be more than "
++                    "eight characters long.")))
+             return None
+         else:
+             self._password = p1
+--- ./pyanaconda/ui/tui/spokes/progress.py	(original)
++++ ./pyanaconda/ui/tui/spokes/progress.py	(refactored)
+@@ -51,7 +51,7 @@
+         """Handle progress updates from install thread."""
+ 
+         from pyanaconda.progress import progressQ
+-        import Queue
++        import queue
+ 
+         q = progressQ.q
+ 
+@@ -66,7 +66,7 @@
+                 try:
+                     (code, args) = q.get(timeout = 1)
+                     break
+-                except Queue.Empty:
++                except queue.Empty:
+                     pass
+                 finally:
+                     self.app.process_events()
+@@ -88,7 +88,7 @@
+                     # Get a new line in case we've done a step before
+                     self._stepped = False
+                     print('')
+-                print(args[0])
++                print((args[0]))
+             elif code == progressQ.PROGRESS_CODE_COMPLETE:
+                 # There shouldn't be any more progress updates, so return
+                 q.task_done()
+@@ -108,7 +108,7 @@
+         from pyanaconda.threads import threadMgr, AnacondaThread
+ 
+         # We print this here because we don't really use the window object
+-        print(_(self.title))
++        print((_(self.title)))
+ 
+         threadMgr.add(AnacondaThread(name=THREAD_INSTALL, target=doInstall,
+                                      args=(self.storage, self.payload, self.data,
+--- ./pyanaconda/ui/tui/spokes/software.py	(original)
++++ ./pyanaconda/ui/tui/spokes/software.py	(refactored)
+@@ -149,7 +149,7 @@
+             name = self.payload.environmentDescription(env)[0]
+ 
+             displayed.append(CheckboxWidget(title="%s" % name, completed=(environments.index(env) == self._selection)))
+-        print(_("Base environment"))
++        print((_("Base environment")))
+ 
+         def _prep(i, w):
+             """ Do some format magic for display. """
+--- ./pyanaconda/ui/tui/spokes/storage.py	(original)
++++ ./pyanaconda/ui/tui/spokes/stRefactoringTool: Refactored ./pyanaconda/ui/tui/spokes/time_spoke.py
+RefactoringTool: No changes to ./pyanaconda/ui/tui/spokes/user.py
+RefactoringTool: No changes to ./pyanaconda/ui/tui/spokes/warnings.py
+RefactoringTool: Refactored ./pyanaconda/ui/tui/tools/run-text-hub.py
+orage.py	(refactored)
+@@ -190,7 +190,7 @@
+ 
+         # Join the initialization thread to block on it
+         # This print is foul.  Need a better message display
+-        print(_("Probing storage..."))
++        print((_("Probing storage...")))
+         threadMgr.wait(THREAD_STORAGE_WATCHER)
+ 
+         # synchronize our local data store with the global ksdata
+@@ -321,7 +321,7 @@
+ 
+         for disk in to_format:
+             try:
+-                print(_("Formatting /dev/%s. This may take a moment.") % disk)
++                print((_("Formatting /dev/%s. This may take a moment.") % disk))
+                 format_dasd(disk)
+             except DasdFormatError as err:
+                 # Log errors if formatting fails, but don't halt the installer
+@@ -369,12 +369,12 @@
+         self.storage.config.clearNonExistent = self.data.autopart.autopart
+ 
+     def execute(self):
+-        print(_("Generating updated storage configuration"))
++        print((_("Generating updated storage configuration")))
+         try:
+             doKickstartStorage(self.storage, self.data, self.instclass)
+         except (StorageError, KickstartValueError) as e:
+             log.error("storage configuration failed: %s", e)
+-            print(_("storage configuration failed: %s") % e)
++            print((_("storage configuration failed: %s") % e))
+             self.errors = [str(e)]
+             self.data.bootloader.bootDrive = ""
+             self.data.clearpart.type = CLEARPART_TYPE_ALL
+@@ -387,12 +387,12 @@
+             self._ready = True
+         except BootLoaderError as e:
+             log.error("BootLoader setup failed: %s", e)
+-            print(_("storage configuration failed: %s") % e)
++            print((_("storage configuration failed: %s") % e))
+             self.errors = [str(e)]
+             self.data.bootloader.bootDrive = ""
+             self._ready = True
+         else:
+-            print(_("Checking storage configuration..."))
++            print((_("Checking storage configuration...")))
+             exns = self.storage.sanityCheck()
+             errors = [exn.message for exn in exns if isinstance(exn, SanityError)]
+             warnings = [exn.message for exn in exns if isinstance(exn, SanityWarning)]
+@@ -517,7 +517,7 @@
+     def refresh(self, args=None):
+         NormalTUISpoke.refresh(self, args)
+ 
+-        schemelist = self.partschemes.keys()
++        schemelist = list(self.partschemes.keys())
+         for i, sch in enumerate(schemelist):
+             box = CheckboxWidget(title="%i) %s" %(i + 1, _(sch)), completed=(i == self._selection))
+             self._window += [box, ""]
+@@ -546,5 +546,5 @@
+     def apply(self):
+         """ Apply our selections. """
+ 
+-        schemelist = self.partschemes.values()
++        schemelist = list(self.partschemes.values())
+         self.data.autopart.type = schemelist[self._selection]
+--- ./pyanaconda/ui/tui/spokes/time_spoke.py	(original)
++++ ./pyanaconda/ui/tui/spokes/time_spoke.py	(refactored)
+@@ -35,7 +35,7 @@
+         NormalTUISpoke.__init__(self, app, data, storage, payload, instclass)
+ 
+     def initialize(self):
+-        self._timezones = dict((k, sorted(v)) for k,v in timezone.get_all_regions_and_timezones().iteritems())
++        self._timezones = dict((k, sorted(v)) for k,v in timezone.get_all_regions_and_timezones().items())
+         self._regions = [r for r in self._timezones]
+         self._lower_regions = [r.lower() for r in self._timezones]
+ 
+--- ./pyanaconda/ui/tui/tools/run-text-hub.py	(original)
++++ ./pyanaconda/ui/tui/tools/run-text-hub.py	(refactored)
+@@ -59,9 +59,9 @@
+ except IndexError:
+     __import__(spokeModuleName)
+     spokeModule = sys.modules[spokeModuleName]
+-    for k,v in vars(spokeModule).iteritems():
++    for k,v in vars(spokeModule).items():
+         try:
+-            print(k,v)
++            print((k,v))
+             if issubclass(v, spokeBaseClass) and v != spokeBaseClass:
+                 spokeClassName = k
+                 spokeClass = v
+@@ -72,11 +72,11 @@
+     try:
+         spokeClass = getattr(spokeModule, spokeClassName)
+     except KeyError:
+-        priRefactoringTool: Refactored ./pyanaconda/ui/tui/tools/run-text-spoke.py
+RefactoringTool: No changes to ./tests/gettext/gettext_potfiles.py
+RefactoringTool: Refactored ./tests/glade/accelerators/check_accelerators.py
+nt("%s %s could not be found in %s" % (SpokeText, spokeClassName, spokeModuleName))
++        print(("%s %s could not be found in %s" % (SpokeText, spokeClassName, spokeModuleName)))
+         sys.exit(1)
+ 
+ 
+-print("Running %s %s from %s" % (spokeText, spokeClass, spokeModule))
++print(("Running %s %s from %s" % (spokeText, spokeClass, spokeModule)))
+ 
+ ksdata = makeVersion()
+ storage = Blivet(ksdata=ksdata)
+@@ -91,13 +91,13 @@
+ spoke = spokeClass(app, ksdata, storage, payload, instclass)
+ 
+ if not spoke.showable:
+-    print("This %s is not showable, but I'll continue anyway." % spokeText)
++    print(("This %s is not showable, but I'll continue anyway." % spokeText))
+ 
+ app.schedule_screen(spoke)
+ app.run()
+ 
+ if hasattr(spoke, "status"):
+-    print("%s status:\n%s\n" % (SpokeText, spoke.status))
++    print(("%s status:\n%s\n" % (SpokeText, spoke.status)))
+ if hasattr(spoke, "completed"):
+-    print("%s completed:\n%s\n" % (SpokeText, spoke.completed))
+-print("%s kickstart fragment:\n%s" % (SpokeText, ksdata))
++    print(("%s completed:\n%s\n" % (SpokeText, spoke.completed)))
++print(("%s kickstart fragment:\n%s" % (SpokeText, ksdata)))
+--- ./pyanaconda/ui/tui/tools/run-text-spoke.py	(original)
++++ ./pyanaconda/ui/tui/tools/run-text-spoke.py	(refactored)
+@@ -59,9 +59,9 @@
+ except IndexError:
+     __import__(spokeModuleName)
+     spokeModule = sys.modules[spokeModuleName]
+-    for k,v in vars(spokeModule).iteritems():
++    for k,v in vars(spokeModule).items():
+         try:
+-            print(k,v)
++            print((k,v))
+             if issubclass(v, spokeBaseClass) and v != spokeBaseClass:
+                 spokeClassName = k
+                 spokeClass = v
+@@ -72,11 +72,11 @@
+     try:
+         spokeClass = getattr(spokeModule, spokeClassName)
+     except KeyError:
+-        print("%s %s could not be found in %s" % (SpokeText, spokeClassName, spokeModuleName))
++        print(("%s %s could not be found in %s" % (SpokeText, spokeClassName, spokeModuleName)))
+         sys.exit(1)
+ 
+ 
+-print("Running %s %s from %s" % (spokeText, spokeClass, spokeModule))
++print(("Running %s %s from %s" % (spokeText, spokeClass, spokeModule)))
+ 
+ ksdata = makeVersion()
+ storage = Blivet(ksdata=ksdata)
+@@ -91,13 +91,13 @@
+ spoke = spokeClass(app, ksdata, storage, payload, instclass)
+ 
+ if not spoke.showable:
+-    print("This %s is not showable, but I'll continue anyway." % spokeText)
++    print(("This %s is not showable, but I'll continue anyway." % spokeText))
+ 
+ app.schedule_screen(spoke)
+ app.run()
+ 
+ if hasattr(spoke, "status"):
+-    print("%s status:\n%s\n" % (SpokeText, spoke.status))
++    print(("%s status:\n%s\n" % (SpokeText, spoke.status)))
+ if hasattr(spoke, "completed"):
+-    print("%s completed:\n%s\n" % (SpokeText, spoke.completed))
+-print("%s kickstart fragment:\n%s" % (SpokeText, ksdata))
++    print(("%s completed:\n%s\n" % (SpokeText, spoke.completed)))
++print(("%s kickstart fragment:\n%s" % (SpokeText, ksdata)))
+--- ./tests/glade/accelerators/check_accelerators.py	(original)
++++ ./tests/glade/accelerators/check_accelerators.py	(refactored)
+@@ -81,8 +81,8 @@
+                     accel = None
+ 
+                 if accel != accel0:
+-                    print("Mismatched accelerator in translations for %s in language %s" % \
+-                            (label.text, po_map.metadata['Language']))
++                    print(("Mismatched accelerator in translations for %s in language %s" % \
++                            (label.text, po_map.metadata['Language'])))
+                     success = False
+ 
+         label.text = label_texts[0]
+@@ -98,17 +98,17 @@
+             if is_exception(label, accels[accel]):
+                 return
+ 
+-            print(("Accelerator collision for key %s in %s%s\n    line %d: %s\n    line %d: %s" %\
++            print((("Accelerator collision for key %s in %s%s\n    line %d: %s\n    line %d: %s" %\
+                     (accel, os.path.normpath(glade_filename), lang_str,
+                         accels[accel].sourceline, accels[accel].text,
+-                        label.sourceline, label.text)).encode(RefactoringTool: Refactored ./tests/glade/format_string/check_format_string.py
+RefactoringTool: Refactored ./tests/glade/markup/check_markup.py
+"utf-8"))
++                        label.sourceline, label.text)).encode("utf-8")))
+             success = False
+         else:
+             accels[accel] = label
+     else:
+-        print(("No accelerator defined for %s in %s%s: line %d" %\
++        print((("No accelerator defined for %s in %s%s: line %d" %\
+                 (label.text, os.path.normpath(glade_filename), lang_str,
+-                    label.sourceline)).encode("utf-8"))
++                    label.sourceline)).encode("utf-8")))
+         success = False
+ 
+ def combine_accels(glade_filename, list_a, list_b, po_map):
+@@ -121,7 +121,7 @@
+     for accels_a in list_a:
+         for accels_b in list_b:
+             new_accels = copy.copy(accels_a)
+-            for accel in accels_b.keys():
++            for accel in list(accels_b.keys()):
+                 add_check_accel(glade_filename, new_accels, accels_b[accel], po_map)
+             newlist.append(new_accels)
+     return newlist
+@@ -223,7 +223,7 @@
+ 
+         podicts = translate_all(args.podir)
+ 
+-        for (lang, po_map) in ((key, podicts[key]) for key in podicts.keys()):
++        for (lang, po_map) in ((key, podicts[key]) for key in list(podicts.keys())):
+             # Set the locale so that we can use lower() on accelerator keys.
+             # If the language is of the form xx_XX, use that as the
+             # locale name. Otherwise use the first locale that
+@@ -237,7 +237,7 @@
+                     try:
+                         locale.setlocale(locale.LC_ALL, locale_list[0])
+                     except locale.Error:
+-                        print("No such locale %s, using C" % locale_list[0])
++                        print(("No such locale %s, using C" % locale_list[0]))
+                         locale.setlocale(locale.LC_ALL, 'C')
+                 else:
+                     locale.setlocale(locale.LC_ALL, 'C')
+--- ./tests/glade/format_string/check_format_string.py	(original)
++++ ./tests/glade/format_string/check_format_string.py	(refactored)
+@@ -53,8 +53,8 @@
+             # (#0- +hlL), or one of the python conversion types 
+             # (diouxXeEfFgGcrs)
+             if re.search(r'%[-(#0 +hlLdiouxXeEfFgGcrs]', translatable.text):
+-                print("Translatable format string found in glade at %s:%d" % \
+-                        (glade_file_path, translatable.sourceline))
++                print(("Translatable format string found in glade at %s:%d" % \
++                        (glade_file_path, translatable.sourceline)))
+                 success = False
+ 
+ if __name__ == "__main__":
+--- ./tests/glade/markup/check_markup.py	(original)
++++ ./tests/glade/markup/check_markup.py	(refactored)
+@@ -89,23 +89,23 @@
+ 
+                     # Check if the markup is necessary
+                     if not markup_necessary(pango_tree):
+-                        print("Markup could be expressed as attributes at %s%s:%d" % \
+-                                (glade_file_path, lang_str, label.sourceline))
++                        print(("Markup could be expressed as attributes at %s%s:%d" % \
++                                (glade_file_path, lang_str, label.sourceline)))
+                         glade_success = False
+                 except etree.XMLSyntaxError:
+-                    print("Unable to parse pango markup at %s%s:%d" % \
+-                            (glade_file_path, lang_str, label.sourceline))
++                    print(("Unable to parse pango markup at %s%s:%d" % \
++                            (glade_file_path, lang_str, label.sourceline)))
+                     glade_success = False
+                 except PangoElementException as px:
+-                    print("Invalid pango element %s at %s%s:%d" % \
+-                            (px.element, glade_file_path, lang_str, label.sourceline))
++                    print(("Invalid pango element %s at %s%s:%d" % \
++                            (px.element, glade_file_path, lang_str, label.sourceline)))
+                     glade_success = False
+                 else:
+                     if po_map:
+                         # Check that translated markup hasRefactoringTool: Refactored ./tests/glade/pw_visibility/check_pw_visibility.py
+RefactoringTool: Refactored ./tests/glade/validity/check_glade_validity.py
+ the same elements and attributes
+                         if not markup_match(label.text, label_text):
+-                            print("Translated markup does not contain the same elements and attributes at %s%s:%d" % \
+-                                    (glade_file_path, lang_str, label.sourceline))
++                            print(("Translated markup does not contain the same elements and attributes at %s%s:%d" % \
++                                    (glade_file_path, lang_str, label.sourceline)))
+                             glade_success = False
+     return glade_success
+ 
+@@ -127,7 +127,7 @@
+     # Now loop over all of the translations
+     if args.translate:
+         podicts = translate_all(args.podir)
+-        for po_dict in podicts.values():
++        for po_dict in list(podicts.values()):
+             for file_path in args.glade_files:
+                 if not check_glade_file(file_path, po_dict):
+                     success = False
+--- ./tests/glade/pw_visibility/check_pw_visibility.py	(original)
++++ ./tests/glade/pw_visibility/check_pw_visibility.py	(refactored)
+@@ -44,20 +44,20 @@
+ 
+         # no entry should have visibility specified multiple times
+         if len(visibility_props) > 1:
+-            print("Visibility specified multiple times for the entry %s (%s)" % (entry_id, fpath))
++            print(("Visibility specified multiple times for the entry %s (%s)" % (entry_id, fpath)))
+             succ = False
+ 
+         # password entry should have visibility set to False
+         if any(ind in entry_id.lower() for ind in PW_ID_INDICATORS):
+             if not visibility_props:
+-                print("Visibility not specified for the password entry %s (%s)" % (entry_id, fpath))
++                print(("Visibility not specified for the password entry %s (%s)" % (entry_id, fpath)))
+                 succ = False
+             elif visibility_props[0].text.strip() != "False":
+-                print("Visibility not set properly for the password entry %s (%s)" % (entry_id, fpath))
++                print(("Visibility not set properly for the password entry %s (%s)" % (entry_id, fpath)))
+                 succ = False
+         # only password entries should have the visibility set to False
+         elif visibility_props and visibility_props[0].text.strip() == "False":
+-            print("Non-password entry %s (%s) has the visibility set to False (bad id?)" % (entry_id, fpath))
++            print(("Non-password entry %s (%s) has the visibility set to False (bad id?)" % (entry_id, fpath)))
+             succ = False
+ 
+         return succ
+--- ./tests/glade/validity/check_glade_validity.py	(original)
++++ ./tests/glade/validity/check_glade_validity.py	(refactored)
+@@ -38,7 +38,7 @@
+         try:
+             glade_tree = etree.parse(glade_file)
+         except etree.XMLSyntaxError:
+-            print("%s is not a valid XML file" % glade_file)
++            print(("%s is not a valid XML file" % glade_file))
+             success = False
+             continue
+ 
+@@ -49,7 +49,7 @@
+         # isn't as simple as document.getElementById. Only check the IDs on objects.
+         for glade_id in [c for c in Counter(glade_tree.xpath(".//object/@id")).most_common() \
+                 if c[1] > 1]:
+-            print("%s: ID %s appears %d times" % (glade_file, glade_id[0], glade_id[1]))
++            print(("%s: ID %s appears %d times" % (glade_file, glade_id[0], glade_id[1])))
+             success = False
+ 
+         # Check for ID references
+@@ -57,14 +57,14 @@
+         # valid object ids.
+         for mnemonic_widget in glade_tree.xpath(".//property[@name='mnemonic_widget']"):
+             if not glade_tree.xpath(".//object[@id='%s']" % mnemonic_widget.text):
+-                print("mnemonic_widget reference to invalid ID %s at line %d of %s" % \
+-                        (mnemonic_widget.text, mnemonic_widget.sourceline, glade_file))
++                print(("mnemonic_widget reference to invalid ID %s at line %d of %s" % \
++                        (mnemonic_widget.text, mnemonic_widget.sourceline, glade_file)))
+                 RefactoringTool: Refactored ./tests/glade/viewport/check_viewport.py
+RefactoringTool: No changes to ./tests/gui/inside/__init__.py
+RefactoringTool: No changes to ./tests/gui/inside/progress.py
+RefactoringTool: No changes to ./tests/gui/inside/storage.py
+RefactoringTool: Refactored ./tests/gui/outside/__init__.py
+RefactoringTool: Can't parse ./tests/gui/outside/template.py: ParseError: bad input: type=24, value=u'%', context=('', (43, 0))
+RefactoringTool: Refactored ./tests/kickstart_tests/version_test.py
+RefactoringTool: No changes to ./tests/lib/pangocheck.py
+RefactoringTool: Refactored ./tests/lib/translatepo.py
+success = False
+ 
+         for action_widget in glade_tree.xpath(".//action-widget"):
+             if not glade_tree.xpath(".//object[@id='%s']" % action_widget.text):
+-                print("action-widget reference to invalid ID %s at line %d of %s" % \
+-                        (action_widget.text, action_widget.sourceline, glade_file))
++                print(("action-widget reference to invalid ID %s at line %d of %s" % \
++                        (action_widget.text, action_widget.sourceline, glade_file)))
+                 success = False
+ 
+ if __name__ == "__main__":
+--- ./tests/glade/viewport/check_viewport.py	(original)
++++ ./tests/glade/viewport/check_viewport.py	(refactored)
+@@ -51,8 +51,8 @@
+         for scrollable in SCROLLABLES:
+             for element in glade_tree.xpath(".//object[@class='GtkViewport']/child/object[@class='%s']" % scrollable):
+                 glade_success = False
+-                print("%s contained in GtkViewport at %s:%d" % (scrollable, glade_file_path,
+-                                                                element.sourceline))
++                print(("%s contained in GtkViewport at %s:%d" % (scrollable, glade_file_path,
++                                                                element.sourceline)))
+     return glade_success
+ 
+ if __name__ == "__main__":
+--- ./tests/gui/outside/__init__.py	(original)
++++ ./tests/gui/outside/__init__.py	(refactored)
+@@ -162,8 +162,8 @@
+             # Create the suite file, which contains all the test cases to run and is how
+             # the VM will figure out what to run.
+             with open(self.mountpoint + "/suite.py", "w") as f:
+-                imports = map(lambda (path, cls): "    from inside.%s import %s" % (path, cls), self.tests)
+-                addtests = map(lambda (path, cls): "    s.addTest(%s())" % cls, self.tests)
++                imports = ["    from inside.%s import %s" % (path_cls[0], path_cls[1]) for path_cls in self.tests]
++                addtests = ["    s.addTest(%s())" % path_cls1[1] for path_cls1 in self.tests]
+ 
+                 f.write(self.template % {"environ": "    os.environ.update(%s)" % self.environ,
+                                          "imports": "\n".join(imports),
+@@ -214,7 +214,7 @@
+                 "-boot", "d",
+                 "-drive", "file=%s,media=cdrom" % config["liveImage"]]
+ 
+-        for drive in self._drivePaths.values():
++        for drive in list(self._drivePaths.values()):
+             args += ["-drive", "file=%s,media=disk" % drive]
+ 
+         # Save a reference to the running qemu process so we can later kill
+--- ./tests/kickstart_tests/version_test.py	(original)
++++ ./tests/kickstart_tests/version_test.py	(refactored)
+@@ -40,7 +40,7 @@
+ class CommandVersionTestCase(BaseTestCase):
+     def commands_test(self):
+         """Test that anaconda uses the right versions of kickstart commands"""
+-        for (commandName, commandObj) in self._commandMap.iteritems():
++        for (commandName, commandObj) in self._commandMap.items():
+             pykickstartClass = self.handler.commands[commandName].__class__
+             self.assertIsInstance(commandObj(), pykickstartClass)
+ 
+@@ -48,7 +48,7 @@
+ class DataVersionTestCase(BaseTestCase):
+     def data_test(self):
+         """Test that anaconda uses the right versions of kickstart data"""
+-        for (dataName, dataObj) in self._dataMap.iteritems():
++        for (dataName, dataObj) in self._dataMap.items():
+             # pykickstart does not expose data objects as a mapping the way
+             # it does command objects.
+             pykickstartClass = eval("self.handler.%s" % dataName)
+--- ./tests/lib/translatepo.py	(original)
++++ ./tests/lib/translatepo.py	(refactored)
+@@ -52,7 +52,7 @@
+             # If this is a plural entry, add entries for both the singular and
+             # plural forms so that either can be used for a lookup
+             if entry.msgstr_plural:
+-                xlist = [entry.msgstr_plural[key] for key in entry.msgstr_plural.keys()]
++                xlist = [entry.msgstr_plural[key] for key in list(entry.msRefactoringTool: Refactored ./tests/pyanaconda_tests/iutil_test.py
+WARNING: couldn't encode ./tests/pyanaconda_tests/iutil_test.py's diff for your terminal
+RefactoringTool: No changes to ./tests/pyanaconda_tests/network_test.py
+RefactoringTool: No changes to ./tests/pyanaconda_tests/nm_test.py
+RefactoringTool: Refactored ./tests/pyanaconda_tests/timezone_test.py
+RefactoringTool: No changes to ./tests/pylint/intl.py
+RefactoringTool: Refactored ./tests/pylint/markup.py
+RefactoringTool: Refactored ./tests/regex_tests/groupparse_test.py
+RefactoringTool: Refactored ./tests/regex_tests/hostname_test.py
+RefactoringTool: Refactored ./tests/regex_tests/repo_name_test.py
+gstr_plural.keys())]
+                 self._dict[entry.msgctxt][entry.msgid] = xlist
+                 self._dict[entry.msgctxt][entry.msgid_plural] = xlist
+             else:
+--- ./tests/pyanaconda_tests/iutil_test.py	(original)
++++ ./tests/pyanaconda_tests/iutil_test.py	(refactored)
+@@ -135,10 +135,10 @@
+         test_paths = [
+             "foo",
+             "foo/bar/baz",
+-            u"foo/bar/baz",
++            "foo/bar/baz",
+             "",
+--- ./tests/pyanaconda_tests/timezone_test.py	(original)
++++ ./tests/pyanaconda_tests/timezone_test.py	(refactored)
+@@ -25,7 +25,7 @@
+ class TimezonesListings(unittest.TestCase):
+     def string_timezones_test(self):
+         """Check if returned timezones are plain strings, not unicode objects."""
+-        for (region, zones) in timezone.get_all_regions_and_timezones().iteritems():
++        for (region, zones) in timezone.get_all_regions_and_timezones().items():
+             self.assertIsInstance(region, str)
+ 
+             for zone in zones:
+@@ -34,7 +34,7 @@
+     def all_timezones_valid_test(self):
+         """Check if all returned timezones are considered valid timezones."""
+ 
+-        for (region, zones) in timezone.get_all_regions_and_timezones().iteritems():
++        for (region, zones) in timezone.get_all_regions_and_timezones().items():
+             for zone in zones:
+                 self.assertTrue(timezone.is_valid_timezone(region + "/" + zone))
+ 
+@@ -57,9 +57,9 @@
+         self.iutil_mock = mock.Mock()
+ 
+         # pylint: disable=no-member
+-        timezone.save_hw_clock.func_globals["arch"] = self.arch_mock
++        timezone.save_hw_clock.__globals__["arch"] = self.arch_mock
+         # pylint: disable=no-member
+-        timezone.save_hw_clock.func_globals["iutil"] = self.iutil_mock
++        timezone.save_hw_clock.__globals__["iutil"] = self.iutil_mock
+ 
+     def s390_save_hw_clock_test(self):
+         """Check that save_hw_clock does nothing on s390."""
+--- ./tests/pylint/markup.py	(original)
++++ ./tests/pylint/markup.py	(refactored)
+@@ -112,7 +112,7 @@
+ 
+     @check_messages("invalid-markup", "invalid-markup-element", "unescaped-markup", "invalid-translated-markup", "invalid-translated-markup-element", "invalid-pango-translation", "unnecessary-markup")
+     def visit_const(self, node):
+-        if type(node.value) not in (types.StringType, types.UnicodeType):
++        if type(node.value) not in (bytes, str):
+             return
+ 
+         if not is_markup(node.value):
+@@ -151,7 +151,7 @@
+                     msgctxt = None
+ 
+                 # Loop over all translations for the string
+-                for podict in podicts.values():
++                for podict in list(podicts.values()):
+                     try:
+                         node_values = podict.get(node.value, msgctxt)
+                     except KeyError:
+--- ./tests/regex_tests/groupparse_test.py	(original)
++++ ./tests/regex_tests/groupparse_test.py	(refactored)
+@@ -55,7 +55,7 @@
+                 self.assertEqual(GROUPLIST_FANCY_PARSE.match(group).groups(), result)
+             except AssertionError:
+                 got_error = True
+-                print("Group parse error: `%s' did not not parse as `%s'" % (group, result))
++                print(("Group parse error: `%s' did not not parse as `%s'" % (group, result)))
+ 
+         if got_error:
+             self.fail()
+--- ./tests/regex_tests/hostname_test.py	(original)
++++ ./tests/regex_tests/hostname_test.py	(refactored)
+@@ -32,14 +32,14 @@
+             testcase.assertIsNotNone(expression.match(good))
+         except AssertionError:
+             got_error = True
+-            print("Good string %s did not match expression" % good)
++            print(("Good string %s did not match expression" % good))
+ 
+     for bad in badlist:
+         try:
+             testcase.assertIsNone(expression.match(bad))
+         except AssertionError:
+             got_error = True
+-            print("Bad string %s matched expression" % bad)
++            print(("Bad string %s matched expression" % bad))
+ 
+     if got_error:
+         testcase.fail()
+--- ./tests/regex_teRefactoringTool: Refactored ./tests/regex_tests/url_test.py
+RefactoringTool: Refactored ./tests/regex_tests/username_test.py
+RefactoringTool: No changes to ./tests/storage/run_storage_tests.py
+RefactoringTool: Refactored ./tests/storage/cases/__init__.py
+RefactoringTool: Files that need to be modified:
+RefactoringTool: anaconda
+RefactoringTool: ./old_tests/mock/__init__.py
+RefactoringTool: ./old_tests/mock/disk.py
+RefactoringTool: ./old_tests/mock/mock.py
+RefactoringTool: ./old_tests/pyanaconda_test/backend_test.py
+RefactoringTool: ./old_tests/pyanaconda_test/flags_test.py
+RefactoringTool: ./old_tests/pyanaconda_test/image_test.py
+RefactoringTool: ./old_tests/pyanaconda_test/indexed_dict_test.py
+RefactoringTool: ./old_tests/pyanaconda_test/iutil_test.py
+RefactoringTool: ./old_tests/pyanaconda_test/network_test.py
+RefactoringTool: ./old_tests/pyanaconda_test/partintfhelpers_test.py
+RefactoringTool: ./old_tests/pyanaconda_test/product_test.py
+RefactoringTool: ./old_tests/pyanaconda_test/rescue_test.py
+RefactoringTool: ./old_tests/pyanaconda_test/users_test.py
+RefactoringTool: ./old_tests/pyanaconda_test/vnc_test.py
+RefactoringTool: ./pyanaconda/addons.py
+RefactoringTool: ./pyanaconda/anaconda.py
+RefactoringTool: ./pyanaconda/anaconda_argparse.py
+RefactoringTool: ./pyanaconda/anaconda_log.py
+RefactoringTool: ./pyanaconda/bootloader.py
+RefactoringTool: ./pyanaconda/constants.py
+RefactoringTool: ./pyanaconda/constants_text.py
+RefactoringTool: ./pyanaconda/desktop.py
+RefactoringTool: ./pyanaconda/errors.py
+RefactoringTool: ./pyanaconda/exception.py
+RefactoringTool: ./pyanaconda/flags.py
+RefactoringTool: ./pyanaconda/geoloc.py
+RefactoringTool: ./pyanaconda/image.py
+RefactoringTool: ./pyanaconda/indexed_dict.py
+RefactoringTool: ./pyanaconda/install.py
+RefactoringTool: ./pyanaconda/installclass.py
+RefactoringTool: ./pyanaconda/installinterfacebase.py
+RefactoringTool: ./pyanaconda/iutil.py
+RefactoringTool: ./pyanaconda/keyboard.py
+RefactoringTool: ./pyanaconda/kickstart.py
+RefactoringTool: ./pyanaconda/localization.py
+RefactoringTool: ./pyanaconda/network.py
+RefactoringTool: ./pyanaconda/nm.py
+RefactoringTool: ./pyanaconda/ntp.py
+RefactoringTool: ./pyanaconda/product.py
+RefactoringTool: ./pyanaconda/progress.py
+RefactoringTool: ./pyanaconda/queue.py
+RefactoringTool: ./pyanaconda/rescue.py
+RefactoringTool: ./pyanaconda/safe_dbus.py
+RefactoringTool: ./pyanaconda/screensaver.py
+RefactoringTool: ./pyanaconda/simpleconfig.py
+RefactoringTool: ./pyanaconda/startup_utils.py
+RefactoringTool: ./pyanaconda/storage_utils.py
+RefactoringTool: ./pyanaconda/text.py
+RefactoringTool: ./pyanaconda/threads.py
+RefactoringTool: ./pyanaconda/timezone.py
+RefactoringTool: ./pyanaconda/users.py
+RefactoringTool: ./pyanaconda/vnc.py
+RefactoringTool: ./pyanaconda/installclasses/fedora.py
+RefactoringTool: ./pyanaconda/isys/__init__.py
+RefactoringTool: ./pyanaconda/packaging/__init__.py
+RefactoringTool: ./pyanaconda/packaging/dnfpayload.py
+RefactoringTool: ./pyanaconda/packaging/livepayload.py
+RefactoringTool: ./pyanaconda/packaging/rpmostreepayload.py
+RefactoringTool: ./pyanaconda/packaging/tarpayload.py
+RefactoringTool: ./pyanaconda/packaging/yumpayload.py
+RefactoringTool: ./pyanaconda/ui/__init__.py
+RefactoringTool: ./pyanaconda/ui/common.py
+RefactoringTool: ./pyanaconda/ui/helpers.py
+RefactoringTool: ./pyanaconda/ui/gui/__init__.py
+RefactoringTool: ./pyanaconda/ui/gui/helpers.py
+RefactoringTool: ./pyanaconda/ui/gui/utils.py
+RefactoringTool: ./pyanaconda/ui/gui/hubs/__init__.py
+RefactoringTool: ./pyanaconda/ui/gui/hubs/progress.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/__init__.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/custom.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/datetime_spoke.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/filter.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/keyboard.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/langsupport.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/network.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/password.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/software.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/source.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/storage.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/user.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/welcome.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/advstorage/fcoe.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/advstorage/iscsi.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/lib/accordion.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/lib/cart.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/lib/custom_storage_helpers.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/lib/dasdfmt.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/lib/detailederror.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/lib/lang_locale_handler.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/lib/passphrase.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/lib/refresh.py
+RefactoringTool: ./pyanaconda/ui/gui/spokes/lib/resize.py
+RefactoringTool: ./pyanaconda/ui/gui/tools/run-hub.py
+RefactoringTool: ./pyanaconda/ui/gui/tools/run-spoke.py
+RefactoringTool: ./pyanaconda/ui/lib/disks.py
+RefactoringTool: ./pyanaconda/ui/lib/space.py
+RefactoringTool: ./pyanaconda/ui/tui/__init__.py
+RefactoringTool: ./pyanaconda/ui/tui/tuiobject.py
+RefactoringTool: ./pyanaconda/ui/tui/hubs/__init__.py
+RefactoringTool: ./pyanaconda/ui/tui/hubs/summary.py
+RefactoringTool: ./pyanaconda/ui/tui/simpleline/base.py
+RefactoringTool: ./pyanaconda/ui/tui/simpleline/widgets.py
+RefactoringTool: ./pyanaconda/ui/tui/spokes/__init__.py
+RefactoringTool: ./pyanaconda/ui/tui/spokes/askvnc.py
+RefactoringTool: ./pyanaconda/ui/tui/spokes/network.py
+RefactoringTool: ./pyanaconda/ui/tui/spokes/progress.py
+RefactoringTool: ./pyanaconda/ui/tui/spokes/software.py
+RefactoringTool: ./pyanaconda/ui/tui/spokes/source.py
+RefactoringTool: ./pyanaconda/ui/tui/spokes/storage.py
+RefactoringTool: ./pyanaconda/ui/tui/spokes/time_spoke.py
+RefactoringTool: ./pyanaconda/ui/tui/spokes/user.py
+RefactoringTool: ./pyanaconda/ui/tui/spokes/warnings.py
+RefactoringTool: ./pyanaconda/ui/tui/tools/run-text-hub.py
+RefactoringTool: ./pyanaconda/ui/tui/tools/run-text-spoke.py
+RefactoringTool: ./tests/gettext/gettext_potfiles.py
+RefactoringTool: ./tests/glade/accelerators/check_accelerators.py
+RefactoringTool: ./tests/glade/format_string/check_format_string.py
+RefactoringTool: ./tests/glade/markup/check_markup.py
+RefactoringTool: ./tests/glade/pw_visibility/check_pw_visibility.py
+RefactoringTool: ./tests/glade/validity/check_glade_validity.py
+RefactoringTool: ./tests/glade/viewport/check_viewport.py
+RefactoringTool: ./tests/gui/inside/__init__.py
+RefactoringTool: ./tests/gui/inside/progress.py
+RefactoringTool: ./tests/gui/inside/storage.py
+RefactoringTool: ./tests/gui/outside/__init__.py
+RefactoringTool: ./tests/kickstart_tests/version_test.py
+RefactoringTool: ./tests/lib/pangocheck.py
+RefactoringTool: ./tests/lib/translatepo.py
+RefactoringTool: ./tests/pyanaconda_tests/iutil_test.py
+RefactoringTool: ./tests/pyanaconda_tests/network_test.py
+RefactoringTool: ./tests/pyanaconda_tests/nm_test.py
+RefactoringTool: ./tests/pyanaconda_tests/timezone_test.py
+RefactoringTool: ./tests/pylint/intl.py
+RefactoringTool: ./tests/pylint/markup.py
+RefactoringTool: ./tests/regex_tests/groupparse_test.py
+RefactoringTool: ./tests/regex_tests/hostname_test.py
+RefactoringTool: ./tests/regex_tests/repo_name_test.py
+RefactoringTool: ./tests/regex_tests/url_test.py
+RefactoringTool: ./tests/regex_tests/username_test.py
+RefactoringTool: ./tests/storage/run_storage_tests.py
+RefactoringTool: ./tests/storage/cases/__init__.py
+RefactoringTool: Warnings/messages while refactoring:
+RefactoringTool: ### In file ./pyanaconda/anaconda_log.py ###
+RefactoringTool: Line 66: You should use a for loop here
+RefactoringTool: ### In file ./pyanaconda/install.py ###
+RefactoringTool: Line 165: You should use a for loop here
+RefactoringTool: ### In file ./pyanaconda/kickstart.py ###
+RefactoringTool: Line 1887: You should use a for loop here
+RefactoringTool: Line 1899: You should use a for loop here
+RefactoringTool: ### In file ./pyanaconda/packaging/dnfpayload.py ###
+RefactoringTool: Line 467: You should use a for loop here
+RefactoringTool: Line 557: You should use a for loop here
+RefactoringTool: ### In file ./pyanaconda/ui/gui/spokes/custom.py ###
+RefactoringTool: Line 1198: You should use a for loop here
+RefactoringTool: Line 2289: You should use a for loop here
+RefactoringTool: Line 1210: You should use a for loop here
+RefactoringTool: Line 1255: You should use a for loop here
+RefactoringTool: Line 2340: You should use a for loop here
+RefactoringTool: ### In file ./pyanaconda/ui/gui/spokes/lib/custom_storage_helpers.py ###
+RefactoringTool: Line 624: You should use a for loop here
+RefactoringTool: Line 637: You should use a for loop here
+RefactoringTool: There was 1 error:
+RefactoringTool: Can't parse ./tests/gui/outside/template.py: ParseError: bad input: type=24, value=u'%', context=('', (43, 0))
+sts/repo_name_test.py	(original)
++++ ./tests/regex_tests/repo_name_test.py	(refactored)
+@@ -30,14 +30,14 @@
+             testcase.assertIsNotNone(expression.match(good))
+         except AssertionError:
+             got_error = True
+-            print("Good string %s did not match expression" % good)
++            print(("Good string %s did not match expression" % good))
+ 
+     for bad in badlist:
+         try:
+             testcase.assertIsNone(expression.match(bad))
+         except AssertionError:
+             got_error = True
+-            print("Bad string %s matched expression" % bad)
++            print(("Bad string %s matched expression" % bad))
+ 
+     if got_error:
+         testcase.fail()
+--- ./tests/regex_tests/url_test.py	(original)
++++ ./tests/regex_tests/url_test.py	(refactored)
+@@ -177,7 +177,7 @@
+                 self.assertEqual(match, result)
+             except AssertionError:
+                 got_error = True
+-                print("Proxy parse error: `%s' did not parse as `%s': %s" % (proxy, result, match))
++                print(("Proxy parse error: `%s' did not parse as `%s': %s" % (proxy, result, match)))
+ 
+         if got_error:
+             self.fail()
+--- ./tests/regex_tests/username_test.py	(original)
++++ ./tests/regex_tests/username_test.py	(refactored)
+@@ -31,14 +31,14 @@
+                 self.assertIsNotNone(expression.match(good))
+             except AssertionError:
+                 got_error = True
+-                print("Good string %s did not match expression" % good)
++                print(("Good string %s did not match expression" % good))
+ 
+         for bad in badlist:
+             try:
+                 self.assertIsNone(expression.match(bad))
+             except AssertionError:
+                 got_error = True
+-                print("Bad string %s matched expression" % bad)
++                print(("Bad string %s matched expression" % bad))
+ 
+         if got_error:
+             self.fail()
+--- ./tests/storage/cases/__init__.py	(original)
++++ ./tests/storage/cases/__init__.py	(refactored)
+@@ -70,7 +70,7 @@
+         failures = 0
+ 
+         if self.platforms and blivet.platform.getPlatform().__class__.__name__ not in self.platforms:
+-            print("Test %s skipped:  not valid for this platform" % self.name)
++            print(("Test %s skipped:  not valid for this platform" % self.name))
+             return
+ 
+         for c in self.components:
+@@ -79,16 +79,16 @@
+             try:
+                 obj._run()
+             except FailedTest as e:
+-                print("Test %s-%s failed:\n\tExpected: %s\n\tGot:      %s" % (self.name, obj.name, e.expected, e.got))
++                print(("Test %s-%s failed:\n\tExpected: %s\n\tGot:      %s" % (self.name, obj.name, e.expected, e.got)))
+                 failures += 1
+                 continue
+ 
+-            print("Test %s-%s succeeded" % (self.name, obj.name))
++            print(("Test %s-%s succeeded" % (self.name, obj.name)))
+             successes += 1
+ 
+-        print("Test %s summary:" % self.name)
+-        print("\tSuccesses: %s" % successes)
+-        print("\tFailures:  %s" % failures)
++        print(("Test %s summary:" % self.name))
++        print(("\tSuccesses: %s" % successes))
++        print(("\tFailures:  %s" % failures))
+         return failures
+ 
+ class TestCaseComponent(object):
+@@ -161,7 +161,7 @@
+         # pylint: disable=undefined-variable
+         self._blivet.devicetree.teardownDiskImages()
+ 
+-        for d in self._disks.values():
++        for d in list(self._disks.values()):
+             os.unlink(d)
+ 
+     @property

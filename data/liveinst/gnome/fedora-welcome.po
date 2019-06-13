@@ -1,0 +1,24 @@
+#: data/liveinst/gnome/fedora-welcome:65
+msgid "Welcome to Fedora"
+msgstr ""
+
+#: data/liveinst/gnome/fedora-welcome:94
+msgid "Try Fedora"
+msgstr ""
+
+#: data/liveinst/gnome/fedora-welcome:110
+msgid ""
+"You are currently running Fedora from live media.\n"
+"You can install Fedora now, or choose \"Install to Hard Drive\" in the "
+"Activities Overview at any later time."
+msgstr ""
+
+#: data/liveinst/gnome/fedora-welcome:128
+msgid ""
+"You can choose \"Install to Hard Drive\"\n"
+"in the Activities Overview at any later time."
+msgstr ""
+
+#: data/liveinst/gnome/fedora-welcome:131
+msgid "Close"
+msgstr ""

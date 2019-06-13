@@ -1,0 +1,76 @@
+diff --git a/pyanaconda/anaconda.py b/pyanaconda/anaconda.py
+index c207640..824d36b 100644
+--- a/pyanaconda/anaconda.py
++++ b/pyanaconda/anaconda.py
+@@ -212,7 +212,7 @@ class Anaconda(object):
+         if self.displayMode == 'g':
+             from pyanaconda.ui.gui import GraphicalUserInterface
+             self._intf = GraphicalUserInterface(self.storage, self.payload,
+-                                                self.instClass, self.gui_initialized)
++                                                self.instClass, gui_lock=self.gui_initialized)
+ 
+             # needs to be refreshed now we know if gui or tui will take place
+             addon_paths = addons.collect_addon_paths(constants.ADDON_PATHS,
+@@ -220,7 +220,7 @@ class Anaconda(object):
+         elif self.displayMode in ['t', 'c']: # text and command line are the same
+             from pyanaconda.ui.tui import TextUserInterface
+             self._intf = TextUserInterface(self.storage, self.payload,
+-                                           self.instClass, self.gui_initialized)
++                                           self.instClass, gui_lock=self.gui_initialized)
+ 
+             # needs to be refreshed now we know if gui or tui will take place
+             addon_paths = addons.collect_addon_paths(constants.ADDON_PATHS,
+diff --git a/pyanaconda/ui/__init__.py b/pyanaconda/ui/__init__.py
+index 28b24bb..7547563 100644
+--- a/pyanaconda/ui/__init__.py
++++ b/pyanaconda/ui/__init__.py
+@@ -23,6 +23,7 @@ __all__ = ["UserInterface"]
+ 
+ import copy
+ import os
++import threading
+ from pyanaconda.ui.common import collect
+ 
+ class PathDict(dict):
+@@ -69,6 +70,9 @@ class UserInterface(object):
+         self.storage = storage
+         self.payload = payload
+         self.instclass = instclass
++
++        if not gui_lock:
++            gui_lock = threading.Lock()
+         self.gui_lock = gui_lock
+ 
+         # Register this interface with the top-level ErrorHandler.
+diff --git a/pyanaconda/ui/gui/__init__.py b/pyanaconda/ui/gui/__init__.py
+index b86af55..d882523 100644
+--- a/pyanaconda/ui/gui/__init__.py
++++ b/pyanaconda/ui/gui/__init__.py
+@@ -435,9 +435,9 @@ class GraphicalUserInterface(UserInterface):
+     """This is the standard GTK+ interface we try to steer everything to using.
+        It is suitable for use both directly and via VNC.
+     """
+-    def __init__(self, storage, payload, instclass, gui_lock,
++    def __init__(self, storage, payload, instclass,
+                  distributionText = product.distributionText, isFinal = product.isFinal,
+-                 quitDialog = QuitDialog):
++                 quitDialog = QuitDialog, gui_lock = None):
+ 
+         UserInterface.__init__(self, storage, payload, instclass, gui_lock)
+ 
+diff --git a/pyanaconda/ui/tui/__init__.py b/pyanaconda/ui/tui/__init__.py
+index 731437a..8c17602 100644
+--- a/pyanaconda/ui/tui/__init__.py
++++ b/pyanaconda/ui/tui/__init__.py
+@@ -58,9 +58,9 @@ class TextUserInterface(ui.UserInterface):
+ 
+     ENVIRONMENT = "anaconda"
+ 
+-    def __init__(self, storage, payload, instclass, gui_lock,
++    def __init__(self, storage, payload, instclass,
+                  productTitle = u"Anaconda", isFinal = True,
+-                 quitMessage = None):
++                 quitMessage = None, gui_lock = None):
+         """
+         For detailed description of the arguments see
+         the parent class.

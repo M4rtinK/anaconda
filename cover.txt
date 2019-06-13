@@ -1,0 +1,29 @@
+From 56391b06d83974f20c38d3b254deef90429b1153 Mon Sep 17 00:00:00 2001
+From: Martin Kolman <mkolman@redhat.com>
+Date: Thu, 28 Nov 2013 19:54:39 +0100
+Subject: [master][PATCH 0/3] Makeupdates version handling improvements
+
+The first patches add support for fetching older packages for a newer
+Fedora release. This is 100% valid: while the package might have been built
+for an older release, provided there was no update since then it is still
+valid (and tagged in Koji) for newer Fedora releases.
+
+The second patch makes sure such packages are picked up from the package cache.
+They are stored in a separate folder per Fedora release, so that makeupdates
+can discern between packages that are really outdated and those that were just not
+updated in the latest Fedora release.
+
+The third patch fixes issues with long build ids in some packages,
+that were preventing those packages to be picked-up from the cache.
+
+Martin Kolman (3):
+  Fetch older valid releases
+  Store older valid packages in separate folder
+  Fix handling of long release ids
+
+ scripts/makeupdates | 103 ++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 83 insertions(+), 20 deletions(-)
+
+-- 
+1.8.4.2
+

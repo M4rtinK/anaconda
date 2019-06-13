@@ -1,0 +1,6 @@
+.//usr/libexec/anaconda/auditd
+.//usr/libexec/anaconda/dd_list
+.//usr/lib64/python3.7/site-packages/pyanaconda/_isys.so
+.//usr/libexec/anaconda/dd_extract
+.//usr/lib64/libAnacondaWidgets.so.4.0.0
+.//usr/lib64/glade/modules/libAnacondaWidgets.so

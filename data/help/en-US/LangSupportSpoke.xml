@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Installation_Guide.ent">
+<!ENTITY PRODUCT "Fedora">
+<!ENTITY NEXTVER "21">
+<!ENTITY PRODVER "20">
+<!ENTITY PREVVER "19">
+<!ENTITY BOOKID "install-guide">
+<!ENTITY YEAR "2014">
+<!ENTITY HOLDER "Red Hat, Inc. and others">
+<!ENTITY BZURL "https://bugzilla.redhat.com/enter_bug.cgi?product=&PRODUCT;&amp;component=&BOOKID;">
+<!ENTITY IGURL '<ulink url="http://docs.fedoraproject.org/" />'>
+]>
+<section id="sect-installation-gui-language-support">
+	<title>Language Support</title>
+	<para>
+		The <guilabel>Language Support</guilabel> screen allows you to configure language settings for your system. The default language is determined by your selection in <ulink url="WelcomeSpoke.xml">Welcome Screen and Language Selection</ulink> and support for this language can not be removed. You can only add additional languages, which will be available on the installed system - not during the installation.
+	</para>
+	<para>
+		If you want to change the default language, or the language used during the installation, you must reboot your system, start the installer again, and select a different language in <ulink url="WelcomeSpoke.xml">Welcome Screen and Language Selection</ulink>.
+	</para>
+	<note>
+		<para>
+			Adding support for another language does not automatically configure the corresponding keyboard layout. Layouts are a separate setting configured in <ulink url="KeyboardSpoke.xml">Keyboard Layout</ulink>.
+		</para>
+	</note>
+	<para>
+		</para>
+	<para>
+		The left panel contains a list of available language groups such as <guilabel>English</guilabel> or <guilabel>Bulgarian</guilabel>. If at least one language from a group is selected, a check mark will be displayed next to the group, and the list entry will be highlighted. This allows you to easily see which languages you have configured support for.
+	</para>
+	<para>
+		To add support for one or more additional languages, click a group in the left panel, and then select one or more regional variations in the right panel using check boxes next to list entries. Repeat this process for all languages you want to install support for.
+	</para>
+	<note>
+		<para>
+			Enabling support for some languages (typically languages which use non-Latin script) will install additional packages - for example, enabling support for one or more languages from the <guilabel>Arabic</guilabel> group will also install the <literal>arabic-support</literal> package group. For more information about packages, see <ulink url="LangSupportSpoke.xml">Language Support</ulink>.
+		</para>
+	</note>
+	<para>
+		Once you have made your selections, click <guilabel>Done</guilabel> in the top left corner to return to <ulink url="SummaryHub.xml">Installation Summary</ulink>.
+	</para>
+</section>

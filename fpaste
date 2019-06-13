@@ -1,0 +1,35 @@
+diff --git a/pyanaconda/ui/gui/__init__.py b/pyanaconda/ui/gui/__init__.py
+index 7188aa6..1c249b0 100644
+--- a/pyanaconda/ui/gui/__init__.py
++++ b/pyanaconda/ui/gui/__init__.py
+@@ -145,6 +145,9 @@ class GUIObject(common.UIObject):
+         Keybinder.init()
+         Keybinder.bind("<Shift>Print", self._handlePrntScreen, [])
+ 
++        # open the help viewer if the F1 key is pressed
++        self.window.connect("key-release-event", self._on_key_released)
++
+     def _findUIFile(self):
+         path = os.environ.get("UIPATH", "./:/tmp/updates/:/tmp/updates/ui/:/usr/share/anaconda/ui/")
+         dirs = path.split(":")
+@@ -182,6 +185,20 @@ class GUIObject(common.UIObject):
+             # start counting from the time the screenshot operation is done
+             _last_screenshot_timestamp = time.time()
+ 
++    def _on_key_released(self, window, event):
++        """Show help for the current screen when the F1 key is pressed"""
++        log.debug("KEY PRESSED")
++        log.debug(event.keyval)
++        if event.keyval != Gdk.KEY_F1:
++            return
++#        import pdb;pdb.set_trace()
++
++        # the help button has been clicked, start the yelp viewer with
++        # content for the current screen
++        ihelp.start_yelp(ihelp.get_help_path(self.helpFile))
++
++
++
+     @property
+     def window(self):
+         """Return the object out of the GtkBuilder representation
