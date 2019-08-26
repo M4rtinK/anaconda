@@ -31,6 +31,9 @@ log = get_module_logger(__name__)
 __all__ = ["ConfigureSELinuxTask", "RealmDiscoverTask", "RealmJoinTask"]
 
 REALM_TOOL_NAME = "realm"
+AUTHSELECT_TOOL_PATH = "/usr/bin/authselect"
+AUTHCONFIG_TOOL_PATH = "/usr/sbin/authconfig"
+
 
 
 class ConfigureSELinuxTask(Task):
@@ -211,3 +214,112 @@ class RealmJoinTask(Task):
             log.info("Joined realm %s", self._realm_data.name)
         else:
             log.info("Joining realm %s failed", self._realm_data.name)
+
+
+def run_auth_tool(self, cmd, args, root, required=True):
+    """Run an authentication related tool.
+
+    This generally means either authselect or the legacy authconfig tool.
+    """
+    if not os.path.lexists(root + cmd):
+        if required:
+            msg = _("%s is missing. Cannot setup authentication.") % cmd
+            # FIXME: is this correct replacement of KickstartError ?
+            raise RuntimeError(msg)
+        else:
+            return
+    try:
+        util.execWithRedirect(cmd, argv, root=root)
+    except RuntimeError as msg:
+        log.error("Error running %s %s: %s", cmd, args, msg)
+
+
+class ConfigureFingerprintAuthTask(Task):
+    """Installation task for fingerprint authentication setup."""
+
+    def __init__(self, sysroot, fingerprint_auth_enabled):
+        """Create a new Authselect configuration task.
+
+        :param str sysroot: a path to the root of the target system
+        :param bool fingerprint_auth_enabled: True if fingerprint authentication
+                                              should be enabled if possible,
+                                              False otherwise
+        """
+        super().__init__()
+        self._sysroot = sysroot
+        self._fingerprint_auth_enabled = fingerprint_auth_enabled
+
+    @property
+    def name(self):
+        return "Configure fingerptint authentication"
+
+    @property
+    def fingerprint_supported(self):
+        return (os.path.exists(conf.target.system_root + "/lib64/security/pam_fprintd.so") or
+                os.path.exists(conf.target.system_root + "/lib/security/pam_fprintd.so"))
+
+    def run(self):
+        # Enable fingerprint option by default (#481273).
+        if self._fingerprint_auth_enabled and self.configure_fingerprint_supported:
+            run_auth_tool(
+                "/usr/bin/authselect",
+                ["select", "sssd", "with-fingerprint", "with-silent-lastlog", "--force"],
+                required=False
+            )
+
+
+class ConfigureAuthselectTask(Task):
+    """Installation task for Authselect configuration."""
+
+    def __init__(self, sysroot, authselect_options, authconfig_options):
+        """Create a new Authselect configuration task.
+
+        :param str sysroot: a path to the root of the target system
+        :param list authselect_options: options for authselect
+        :param list authconfig_options: options for authconfig
+        """
+        super().__init__()
+        self._sysroot = sysroot
+        self._authselect_options = authselect_options
+
+    @property
+    def name(self):
+        return "Authselect configuration"
+
+    def run(self):
+        # Apply the authselect options from the kickstart file.
+        if self._authselect_options:
+            self._run_auth_tool(
+                AUTHSELECT_TOOL_PATH,
+                self._authselect_options + ["--force"]
+            )
+
+class ConfigureAuthconfigTask(Task):
+    """Installation task for Authconfig configuration.
+
+    NOTE: Authconfig is deprecated, this is present temporarily
+          as long as we want to provide backward compatibility
+          for the authconfig command in kickstart.
+    """
+
+    def __init__(self, sysroot, authconfig_options):
+        """Create a new Authconfig configuration task.
+
+        :param str sysroot: a path to the root of the target system
+        :param list authconfig_options: options for authconfig
+        """
+        super().__init__()
+        self._sysroot = sysroot
+        self._authconfig_options = authconfig_options
+
+    @property
+    def name(self):
+        return "Authconfig configuration"
+
+    def run(self):
+        # Apply the authconfig options from the kickstart file (deprecated).
+        if self._authconfig_options:
+            self._run_auth_tool(
+                AUTHCONFIG_TOOL_PATH,
+                ["--update", "--nostart"] + self._authconfig_options
+            )

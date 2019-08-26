@@ -211,70 +211,6 @@ class UselessCommand(RemovedCommand):
     def __str__(self):
         return ""
 
-
-class Authselect(RemovedCommand):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.packages = []
-
-    def __str__(self):
-        # The kickstart for this command is generated
-        # by Security module in the SELinux class.
-        return ""
-
-    @property
-    def fingerprint_supported(self):
-        return (os.path.exists(conf.target.system_root + "/lib64/security/pam_fprintd.so") or
-                os.path.exists(conf.target.system_root + "/lib/security/pam_fprintd.so"))
-
-    def setup(self):
-        security_proxy = SECURITY.get_proxy()
-
-        if security_proxy.Authselect or not flags.automatedInstall:
-            self.packages += ["authselect"]
-
-        if security_proxy.Authconfig:
-            self.packages += ["authselect-compat"]
-
-    def execute(self):
-        security_proxy = SECURITY.get_proxy()
-
-        # Enable fingerprint option by default (#481273).
-        if not flags.automatedInstall and self.fingerprint_supported:
-            self._run(
-                "/usr/bin/authselect",
-                ["select", "sssd", "with-fingerprint", "with-silent-lastlog", "--force"],
-                required=False
-            )
-
-        # Apply the authselect options from the kickstart file.
-        if security_proxy.Authselect:
-            self._run(
-                "/usr/bin/authselect",
-                security_proxy.Authselect + ["--force"]
-            )
-
-        # Apply the authconfig options from the kickstart file (deprecated).
-        if security_proxy.Authconfig:
-            self._run(
-                "/usr/sbin/authconfig",
-                ["--update", "--nostart"] + security_proxy.Authconfig
-            )
-
-    def _run(self, cmd, args, required=True):
-        if not os.path.lexists(conf.target.system_root + cmd):
-            if required:
-                msg = _("%s is missing. Cannot setup authentication.") % cmd
-                raise KickstartError(msg)
-            else:
-                return
-        try:
-            util.execInSysroot(cmd, args)
-        except RuntimeError as msg:
-            authselect_log.error("Error running %s %s: %s", cmd, args, msg)
-
-
 class AutoPart(RemovedCommand):
 
     def __str__(self):
@@ -649,7 +585,7 @@ class AnacondaSection(Section):
 commandMap = {
     "auth": UselessCommand,
     "authconfig": UselessCommand,
-    "authselect": Authselect,
+    "authselect": UselessCommand,
     "autopart": AutoPart,
     "btrfs": BTRFS,
     "bootloader": UselessCommand,
