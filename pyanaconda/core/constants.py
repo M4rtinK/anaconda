@@ -422,3 +422,6 @@ SUBSCRIPTION_REQUEST_VALID_TYPES = {
 # username password - this is basically to avoid the invalid
 # case of request not having a type set.
 DEFAULT_SUBSCRIPTION_REQUEST_TYPE = SUBSCRIPTION_REQUEST_TYPE_USERNAME_PASSWORD
+
+# Name of the systemd unit backing the RHSM DBus service
+RHSM_SERVICE_SYSTEMD_UNIT_NAME = "rhsm.service"
