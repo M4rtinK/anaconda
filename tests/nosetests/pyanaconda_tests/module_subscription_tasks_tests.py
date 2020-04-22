@@ -29,13 +29,15 @@ from pyanaconda.core import util
 from pyanaconda.core.constants import SUBSCRIPTION_REQUEST_TYPE_ORG_KEY
 
 from pyanaconda.modules.common.errors.installation import InsightsConnectError, \
-    InsightsClientMissingError
+    InsightsClientMissingError, SubscriptionTokenTransferError
 from pyanaconda.modules.common.structures.subscription import SystemPurposeData, \
     SubscriptionRequest
 
 from pyanaconda.modules.subscription.installation import ConnectToInsightsTask, \
-    SystemPurposeConfigurationTask, RestoreRHSMLogLevelTask
+    SystemPurposeConfigurationTask, RestoreRHSMLogLevelTask, \
+    TransferSubscriptionTokensTask
 from pyanaconda.modules.subscription.runtime import SetRHSMConfigurationTask
+
 
 class ConnectToInsightsTaskTestCase(unittest.TestCase):
     """Test the ConnectToInsights task."""
@@ -255,3 +257,338 @@ class RestoreRHSMLogLevelTaskTestCase(unittest.TestCase):
             mock_config_proxy.Set.assert_called_once_with("logging.default_log_level",
                                                           get_variant(Str, "INFO"),
                                                           "")
+
+
+class TransferSubscriptionTokensTaskTestCase(unittest.TestCase):
+    """Test the TransferSubscriptionTokensTask task."""
+
+    def copy_pem_files_test(self):
+        """Test PEM file transfer method of the subscription token transfer task."""
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+
+            # input path does not exist
+            with tempfile.TemporaryDirectory() as tempdir:
+                input_dir = os.path.join(tempdir, "input")
+                output_dir = os.path.join(tempdir, "output")
+                self.assertFalse(task._copy_pem_files(input_dir, output_dir))
+
+            # input path is file
+            with tempfile.TemporaryDirectory() as tempdir:
+                input_dir = os.path.join(tempdir, "input")
+                output_dir = os.path.join(tempdir, "output")
+                os.mknod(input_dir)
+                self.assertFalse(task._copy_pem_files(input_dir, output_dir))
+
+            # input path directory empty & not_empty=True
+            with tempfile.TemporaryDirectory() as tempdir:
+                input_dir = os.path.join(tempdir, "input")
+                output_dir = os.path.join(tempdir, "output")
+                os.mkdir(input_dir)
+                self.assertFalse(task._copy_pem_files(input_dir, output_dir, not_empty=True))
+
+            # input path directory empty & not_empty=False
+            with tempfile.TemporaryDirectory() as tempdir:
+                input_dir = os.path.join(tempdir, "input")
+                output_dir = os.path.join(tempdir, "output")
+                os.mkdir(input_dir)
+                self.assertTrue(task._copy_pem_files(input_dir, output_dir, not_empty=False))
+                # the output dir should have been created and should be empty
+                self.assertTrue(os.path.isdir(output_dir))
+                self.assertEqual(os.listdir(output_dir), [])
+
+            # test pem file transfer
+            with tempfile.TemporaryDirectory() as tempdir:
+                input_dir = os.path.join(tempdir, "input")
+                output_dir = os.path.join(tempdir, "output")
+                os.mkdir(input_dir)
+                # couple pem files
+                os.mknod(os.path.join(input_dir, "foo.pem"))
+                os.mknod(os.path.join(input_dir, "bar.pem"))
+                os.mknod(os.path.join(input_dir, "baz.pem"))
+                # some unrelated files
+                os.mknod(os.path.join(input_dir, "something.txt"))
+                os.mknod(os.path.join(input_dir, "stuff.conf"))
+                # unrelated subfolder
+                unrelated_subfolder = os.path.join(input_dir, "unrelated")
+                os.mkdir(unrelated_subfolder)
+                os.mknod(os.path.join(unrelated_subfolder, "subfolder.pem"))
+                os.mknod(os.path.join(unrelated_subfolder, "subfolder.txt"))
+                # the method should return True
+                self.assertTrue(task._copy_pem_files(input_dir, output_dir, not_empty=True))
+                # output folder should contain only the expected pem files
+                self.assertEqual(os.listdir(output_dir), ["foo.pem", "bar.pem", "baz.pem"])
+
+    def copy_file_to_path_test(self):
+        """Test copy file to path method of the subscription token transfer task."""
+
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+
+            # input path does not exist
+            with tempfile.TemporaryDirectory() as tempdir:
+                input_dir = os.path.join(tempdir, "input")
+                output_dir = os.path.join(tempdir, "output")
+                input_file_path = os.path.join(input_dir, "foo.bar")
+                output_file_path = os.path.join(output_dir, "foo.bar")
+                self.assertFalse(task._copy_file_to_path(input_file_path, output_file_path))
+
+            # input path is a directory
+            with tempfile.TemporaryDirectory() as tempdir:
+                input_dir = os.path.join(tempdir, "input")
+                output_dir = os.path.join(tempdir, "output")
+                os.mkdir(input_dir)
+                self.assertFalse(task._copy_file_to_path(input_file_path, output_file_path))
+
+            # test file transfer
+            with tempfile.TemporaryDirectory() as tempdir:
+                input_dir = os.path.join(tempdir, "input")
+                output_dir = os.path.join(tempdir, "output/nested/nested")
+                input_file_path = os.path.join(input_dir, "foo.bar")
+                output_file_path = os.path.join(output_dir, "foo.bar")
+                unrelated_file_path = os.path.join(input_dir, "baz.txt")
+                os.mkdir(input_dir)
+                os.mknod(input_file_path)
+                os.mknod(unrelated_file_path)
+                # transfer should succeed
+                self.assertTrue(task._copy_file_to_path(input_file_path, output_file_path))
+                # output file at expected nested path should exist
+                output_file_path = os.path.join(output_dir, "foo.bar")
+                self.assertTrue(os.path.isfile(output_file_path))
+                # otherwise the directory should be empty
+                self.assertTrue(os.listdir(output_dir), ["foo.bar"])
+
+    @patch("os.path.exists")
+    def transfer_system_purpose_test(self, path_exists):
+        """Test system purpose transfer method of the subscription token transfer task."""
+        # simulate syspurpose file existing
+        path_exists.return_value = True
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+            task._copy_file_to_path = Mock()
+            task._transfer_system_purpose()
+            sysroot_path = util.join_paths(
+                sysroot,
+                TransferSubscriptionTokensTask.RHSM_SYSPURPOSE_FILE_PATH
+            )
+            task._copy_file_to_path.assert_called_once_with(
+                TransferSubscriptionTokensTask.RHSM_SYSPURPOSE_FILE_PATH,
+                sysroot_path
+            )
+
+        # simulate syspurpose file not existing
+        # - this should result in just the copy operation not being attempted
+        path_exists.return_value = False
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+            task._copy_file_to_path = Mock()
+            task._transfer_system_purpose()
+            task._copy_file_to_path.assert_not_called()
+
+    def transfer_rhsm_config_test(self):
+        """Test RHSM config transfer method of the subscription token transfer task."""
+        # simulate RHSM config file existing
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+            task._copy_file_to_path = Mock()
+            task._copy_file_to_path.return_value = True
+            task._transfer_rhsm_config_file()
+            sysroot_path = util.join_paths(
+                sysroot,
+                TransferSubscriptionTokensTask.RHSM_CONFIG_FILE_PATH
+            )
+            task._copy_file_to_path.assert_called_once_with(
+                TransferSubscriptionTokensTask.RHSM_CONFIG_FILE_PATH,
+                sysroot_path
+            )
+
+        # simulate RHSM config file not existing
+        # - this is a critical error and should raise an exception
+        #   (without proper rhsm.conf the target system could miss
+        #    proper server hostname and rhsm baseurl values)
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+            task._copy_file_to_path = Mock()
+            task._copy_file_to_path.return_value = False
+            with self.assertRaises(SubscriptionTokenTransferError):
+                task._transfer_rhsm_config_file()
+
+    def transfer_consumer_key_test(self):
+        """Test the consumer key transfer method of the subscription token transfer task."""
+        # simulate consumer key file existing
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+            task._copy_file_to_path = Mock()
+            task._copy_file_to_path.return_value = True
+            task._transfer_consumer_key()
+            sysroot_path = util.join_paths(
+                sysroot,
+                TransferSubscriptionTokensTask.RHSM_CONSUMER_KEY_PATH
+            )
+            task._copy_file_to_path.assert_called_once_with(
+                TransferSubscriptionTokensTask.RHSM_CONSUMER_KEY_PATH,
+                sysroot_path
+            )
+
+        # simulate consumer key file not existing
+        # - this is a critical error and should raise an exception
+        #   (without proper certificates and keys the target system
+        #    would be unable to communicate with the Red Hat subscription
+        #    infrastructure)
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+            task._copy_file_to_path = Mock()
+            task._copy_file_to_path.return_value = False
+            with self.assertRaises(SubscriptionTokenTransferError):
+                task._transfer_consumer_key()
+
+    def transfer_consumer_cert_test(self):
+        """Test the consumer cert transfer method of the subscription token transfer task."""
+        # simulate consumer cert file existing
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+            task._copy_file_to_path = Mock()
+            task._copy_file_to_path.return_value = True
+            task._transfer_consumer_cert()
+            sysroot_path = util.join_paths(
+                sysroot,
+                TransferSubscriptionTokensTask.RHSM_CONSUMER_CERT_PATH
+            )
+            task._copy_file_to_path.assert_called_once_with(
+                TransferSubscriptionTokensTask.RHSM_CONSUMER_CERT_PATH,
+                sysroot_path
+            )
+
+        # simulate consumer cert file not existing
+        # - this is a critical error and should raise an exception
+        #   (without proper certificates and keys the target system
+        #    would be unable to communicate with the Red Hat subscription
+        #    infrastructure)
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+            task._copy_file_to_path = Mock()
+            task._copy_file_to_path.return_value = False
+            with self.assertRaises(SubscriptionTokenTransferError):
+                task._transfer_consumer_cert()
+
+    def transfer_entitlement_keys_test(self):
+        """Test the entitlement keys transfer method of the subscription token transfer task."""
+        # simulate entitlement keys not existing
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+            task._copy_pem_files = Mock()
+            task._copy_pem_files.return_value = True
+            task._transfer_entitlement_keys()
+            sysroot_path = util.join_paths(
+                sysroot,
+                TransferSubscriptionTokensTask.RHSM_ENTITLEMENT_KEYS_PATH
+            )
+            task._copy_pem_files.assert_called_once_with(
+                TransferSubscriptionTokensTask.RHSM_ENTITLEMENT_KEYS_PATH,
+                sysroot_path
+            )
+
+        # simulate entitlement keys not existing
+        # - this is a critical error and should raise an exception
+        #   (without proper certificates and keys the target system
+        #    would be unable to communicate with the Red Hat subscription
+        #    infrastructure)
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+            task._copy_pem_files = Mock()
+            task._copy_pem_files.return_value = False
+            with self.assertRaises(SubscriptionTokenTransferError):
+                task._transfer_entitlement_keys()
+
+    def transfer_repo_file_test(self):
+        """Test repo file transfer method of the subscription token transfer task."""
+        # simulate repo file file existing
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+            task._copy_file_to_path = Mock()
+            task._copy_file_to_path.return_value = True
+            task._transfer_repo_file()
+            sysroot_path = util.join_paths(
+                sysroot,
+                TransferSubscriptionTokensTask.RHSM_REPO_FILE_PATH
+            )
+            task._copy_file_to_path.assert_called_once_with(
+                TransferSubscriptionTokensTask.RHSM_REPO_FILE_PATH,
+                sysroot_path
+            )
+
+        # simulate repo file not existing
+        # - this is a critical error and should raise an exception
+        #   (without proper redhat.repo the target system would miss
+        #    the list of repositories and their access URLs)
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+            task._copy_file_to_path = Mock()
+            task._copy_file_to_path.return_value = False
+            with self.assertRaises(SubscriptionTokenTransferError):
+                task._transfer_repo_file()
+
+    def transfer_test(self):
+        """Test transfer_tokens being True is handled correctly for token transfer task."""
+
+        # If transfer_subscription_tokens is True, all token should be transferred.
+        # As we test each transfer method individually we just check here that all
+        # expected method are called.
+
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=True)
+            task._transfer_system_purpose = Mock()
+            task._transfer_rhsm_config_file = Mock()
+            task._transfer_consumer_key = Mock()
+            task._transfer_consumer_cert = Mock()
+            task._transfer_entitlement_keys = Mock()
+            task._transfer_repo_file = Mock()
+            # run the task
+            task.run()
+            # only the system purpose transfer method should have been called
+            task._transfer_system_purpose.assert_called_once()
+            task._transfer_rhsm_config_file.assert_called_once()
+            task._transfer_consumer_key.assert_called_once()
+            task._transfer_consumer_cert.assert_called_once()
+            task._transfer_entitlement_keys.assert_called_once()
+            task._transfer_repo_file.assert_called_once()
+
+    def no_transfer_test(self):
+        """Test transfer_tokens being False is handled correctly for token transfer task."""
+
+        # if transfer_subscription_tokens is False, only system purpose tokens should be
+        # transferred and others ignored
+
+        with tempfile.TemporaryDirectory() as sysroot:
+            task = TransferSubscriptionTokensTask(sysroot=sysroot,
+                                                  transfer_subscription_tokens=False)
+            task._transfer_system_purpose = Mock()
+            task._transfer_rhsm_config_file = Mock()
+            task._transfer_consumer_key = Mock()
+            task._transfer_consumer_cert = Mock()
+            task._transfer_entitlement_keys = Mock()
+            task._transfer_repo_file = Mock()
+            # run the task
+            task.run()
+            # only the system purpose transfer method should have been called
+            task._transfer_system_purpose.assert_called_once()
+            task._transfer_rhsm_config_file.assert_not_called()
+            task._transfer_consumer_key.assert_not_called()
+            task._transfer_consumer_cert.assert_not_called()
+            task._transfer_entitlement_keys.assert_not_called()
+            task._transfer_repo_file.assert_not_called()

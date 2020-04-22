@@ -16,6 +16,8 @@
 # Red Hat, Inc.
 #
 import os
+import glob
+import shutil
 
 from dasbus.typing import get_variant, Str
 
@@ -23,7 +25,7 @@ from pyanaconda.core import util
 
 from pyanaconda.modules.common.task import Task
 from pyanaconda.modules.common.errors.installation import InsightsConnectError, \
-    InsightsClientMissingError
+    InsightsClientMissingError, SubscriptionTokenTransferError
 
 from pyanaconda.modules.subscription import system_purpose
 
@@ -135,3 +137,138 @@ class RestoreRHSMLogLevelTask(Task):
         log.debug("subscription: setting RHSM log level back to INFO")
         self._rhsm_config_proxy.Set("logging.default_log_level",
                                     get_variant(Str, "INFO"), "")
+
+
+class TransferSubscriptionTokensTask(Task):
+    """Transfer subscription tokens to the target system."""
+
+    RHSM_REPO_FILE_PATH = "/etc/yum.repos.d/redhat.repo"
+    RHSM_CONFIG_FILE_PATH = "/etc/rhsm/rhsm.conf"
+    RHSM_SYSPURPOSE_FILE_PATH = "/etc/rhsm/syspurpose/syspurpose.json"
+    RHSM_ENTITLEMENT_KEYS_PATH = "/etc/pki/entitlement"
+    RHSM_CONSUMER_KEY_PATH = "/etc/pki/consumer/key.pem"
+    RHSM_CONSUMER_CERT_PATH = "/etc/pki/consumer/cert.pem"
+
+    TARGET_REPO_FOLDER_PATH = "/etc/yum.repos.d"
+
+    def __init__(self, sysroot, transfer_subscription_tokens):
+        """Create a new task.
+
+        :param str sysroot: target system root path
+        :param bool transfer_subscription_tokens: if True attempt to transfer subscription
+                                                  tokens to target system (we always transfer
+                                                  system purpose data unconditionally)
+        """
+        super().__init__()
+        self._sysroot = sysroot
+        self._transfer_subscription_tokens = transfer_subscription_tokens
+
+    @property
+    def name(self):
+        return "Transfer subscription tokens to target system"
+
+    def _copy_pem_files(self, input_folder, output_folder, not_empty=True):
+        """Copy all pem files from input_folder to output_folder.
+        Files with the pem extension are generally encryption keys and certificates.
+        If output_folder does not exist, it & any parts of its path will
+        be created.
+        :param str input_folder: input folder for the pem files
+        :param str output_folder: output folder where to copy the pem files
+        :return: False if the input directory does not exists or is empty,
+                True after all pem files have be successfully copied
+        :rtype: bool
+        """
+        # check the input folder exists
+        if not os.path.isdir(input_folder):
+            return False
+        # optionally check the input folder is not empty
+        if not_empty and not os.listdir(input_folder):
+            return False
+        # create the output folder path if it does not exist
+        if not os.path.isdir(output_folder):
+            util.mkdirChain(output_folder)
+        # transfer all the pem files in the input folder
+        for pem_file_path in glob.glob(os.path.join(input_folder, "*.pem")):
+            shutil.copy(pem_file_path, output_folder)
+        # if we got this far the pem copy operation was a success
+        return True
+
+    def _copy_file_to_path(self, file_path, target_file_path):
+        if not os.path.isfile(file_path):
+            return False
+        if not os.path.isdir(os.path.dirname(target_file_path)):
+            util.mkdirChain(os.path.dirname(target_file_path))
+        shutil.copy(file_path, target_file_path)
+        return True
+
+    def _transfer_system_purpose(self):
+        # transfer the system purpose file if present
+        # - this might be needed even if the system has not been subscribed
+        #   during the installation and is therefore always attempted
+        # - this means the syspurpose tool has been called in the installation
+        #   environment & we need to transfer the results to the target system
+        if os.path.exists(self.RHSM_SYSPURPOSE_FILE_PATH):
+            log.debug("subscription: transferring syspurpose file")
+            target_syspurpose_file_path = self._sysroot + self.RHSM_SYSPURPOSE_FILE_PATH
+            self._copy_file_to_path(self.RHSM_SYSPURPOSE_FILE_PATH, target_syspurpose_file_path)
+
+    def _transfer_rhsm_config_file(self):
+        """Transfer the RHSM config file."""
+
+        log.debug("subscription: transferring RHSM config file")
+        target_rhsm_config_path = self._sysroot + self.RHSM_CONFIG_FILE_PATH
+        if not self._copy_file_to_path(self.RHSM_CONFIG_FILE_PATH, target_rhsm_config_path):
+            msg = "RHSM config file ({}) is missing.".format(self.RHSM_CONFIG_FILE_PATH)
+            raise SubscriptionTokenTransferError(msg)
+
+    def _transfer_consumer_key(self):
+        """Transfer the consumer key."""
+        log.debug("subscription: transferring consumer key")
+        target_consumer_key_path = self._sysroot + self.RHSM_CONSUMER_KEY_PATH
+        if not self._copy_file_to_path(self.RHSM_CONSUMER_KEY_PATH, target_consumer_key_path):
+            msg = "RHSM consumer key ({}) is missing.".format(self.RHSM_CONSUMER_KEY_PATH)
+            raise SubscriptionTokenTransferError(msg)
+
+    def _transfer_consumer_cert(self):
+        """Transfer the consumer cert."""
+        log.debug("subscription: transferring consumer certificate")
+        target_consumer_key_path = self._sysroot + self.RHSM_CONSUMER_CERT_PATH
+        if not self._copy_file_to_path(self.RHSM_CONSUMER_CERT_PATH, target_consumer_key_path):
+            msg = "RHSM consumer certificate ({}) is missing.".format(self.RHSM_CONSUMER_CERT_PATH)
+            raise SubscriptionTokenTransferError(msg)
+
+    def _transfer_entitlement_keys(self):
+        """Transfer the entitlement keys."""
+        log.debug("subscription: transferring entitlement keys")
+        target_entitlement_keys_path = self._sysroot + self.RHSM_ENTITLEMENT_KEYS_PATH
+        if not self._copy_pem_files(self.RHSM_ENTITLEMENT_KEYS_PATH, target_entitlement_keys_path):
+            msg = "RHSM entitlement keys (from {}) are missing.".format(
+                self.RHSM_ENTITLEMENT_KEYS_PATH)
+            raise SubscriptionTokenTransferError(msg)
+
+    def _transfer_repo_file(self):
+        """Transfer the repo file."""
+        log.debug("subscription: transferring repo file")
+        target_repo_file_path = self._sysroot + self.RHSM_REPO_FILE_PATH
+        if not self._copy_file_to_path(self.RHSM_REPO_FILE_PATH, target_repo_file_path):
+            msg = "RHSM generated repo file ({}) is missing".format(self.RHSM_REPO_FILE_PATH)
+            raise SubscriptionTokenTransferError(msg)
+
+    def run(self):
+        """Transfer the subscription tokens to the target system.
+
+        Otherwise the target system would have to be registered and subscribed again
+        due to missing subscription tokens.
+        """
+        self._transfer_system_purpose()
+
+        # the other subscription tokens are only relevant if the system has been subscribed
+        if not self._transfer_subscription_tokens:
+            log.debug("subscription: transfer of subscription tokens not requested")
+            return
+
+        self._transfer_rhsm_config_file()
+        self._transfer_consumer_key()
+        self._transfer_consumer_cert()
+        self._transfer_entitlement_keys()
+        self._transfer_repo_file()
