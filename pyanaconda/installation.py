@@ -22,7 +22,7 @@ from pyanaconda.core.constants import PAYLOAD_LIVE_TYPES
 from pyanaconda.core.kernel import kernel_arguments
 from pyanaconda.modules.common.constants.objects import BOOTLOADER, SNAPSHOT, FIREWALL
 from pyanaconda.modules.common.constants.services import STORAGE, USERS, SERVICES, NETWORK, SECURITY, \
-    LOCALIZATION, TIMEZONE, BOSS
+    LOCALIZATION, TIMEZONE, BOSS, SUBSCRIPTION
 from pyanaconda.modules.common.structures.requirement import Requirement
 from pyanaconda.modules.common.task import sync_run_task
 from pyanaconda.progress import progress_message, progress_step, progress_complete, progress_init
@@ -35,6 +35,7 @@ from pyanaconda.threading import threadMgr
 from pyanaconda.kickstart import runPostScripts, runPreInstallScripts
 from pyanaconda.kexec import setup_kexec
 from pyanaconda.installation_tasks import Task, TaskQueue
+from pyanaconda.subscription import check_subscription_module_available
 from pykickstart.constants import SNAPSHOT_WHEN_POST_INSTALL
 
 from pyanaconda.anaconda_loggers import get_module_logger
@@ -318,6 +319,16 @@ def _prepare_installation(payload, ksdata):
         conf_task = storage_proxy.WriteConfigurationWithTask()
         late_storage.append_dbus_tasks(STORAGE, [conf_task])
         installation_queue.append(late_storage)
+
+    # Add installation tasks for the Subscription DBus module
+    # - to see if this is appropriate for the current environment we check if
+    #   the Subscription module is running via a helper function
+    if check_subscription_module_available():
+        subscription_config = TaskQueue("Subscription configuration",
+                                        N_("Configuring Red Hat subscription"))
+        subscription_proxy = SUBSCRIPTION.get_proxy()
+        subscription_dbus_tasks = subscription_proxy.InstallWithTasks()
+        subscription_config.append_dbus_tasks(SUBSCRIPTION, subscription_dbus_tasks)
 
     # Do bootloader.
     bootloader_proxy = STORAGE.get_proxy(BOOTLOADER)
