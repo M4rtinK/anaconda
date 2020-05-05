@@ -27,7 +27,8 @@ from dasbus.typing import get_variant, Str
 from dasbus.error import DBusError
 
 from pyanaconda.core import util
-from pyanaconda.core.constants import SUBSCRIPTION_REQUEST_TYPE_ORG_KEY
+from pyanaconda.core.constants import SUBSCRIPTION_REQUEST_TYPE_ORG_KEY, \
+    RHSM_SYSPURPOSE_FILE_PATH
 
 from pyanaconda.modules.common.errors.installation import InsightsConnectError, \
     InsightsClientMissingError, SubscriptionTokenTransferError
@@ -38,10 +39,11 @@ from pyanaconda.modules.common.constants.services import RHSM
 from pyanaconda.modules.common.constants.objects import RHSM_REGISTER
 
 from pyanaconda.modules.subscription.installation import ConnectToInsightsTask, \
-    SystemPurposeConfigurationTask, RestoreRHSMLogLevelTask, \
-    TransferSubscriptionTokensTask
+    RestoreRHSMLogLevelTask, TransferSubscriptionTokensTask
+
 from pyanaconda.modules.subscription.runtime import SetRHSMConfigurationTask, \
-    RHSMPrivateBus, RegisterWithUsernamePasswordTask, RegisterWithOrganizationKeyTask
+    RHSMPrivateBus, RegisterWithUsernamePasswordTask, RegisterWithOrganizationKeyTask, \
+    SystemPurposeConfigurationTask
 
 
 class ConnectToInsightsTaskTestCase(unittest.TestCase):
@@ -138,7 +140,7 @@ class SystemPurposeConfigurationTaskTestCase(unittest.TestCase):
 
     @patch("pyanaconda.modules.subscription.system_purpose.give_the_system_purpose")
     def system_purpose_task_test(self, give_the_system_purpose):
-        """Test the SystemPurposeConfigurationTask task."""
+        """Test the SystemPurposeConfigurationTask task - not yet set."""
         with tempfile.TemporaryDirectory() as sysroot:
             system_purpose_data = SystemPurposeData()
             system_purpose_data.role = "foo"
@@ -147,6 +149,54 @@ class SystemPurposeConfigurationTaskTestCase(unittest.TestCase):
             system_purpose_data.addons = ["a", "b", "c"]
             task = SystemPurposeConfigurationTask(sysroot, system_purpose_data)
             task.run()
+            give_the_system_purpose.assert_called_once_with(role="foo",
+                                                            sla="bar",
+                                                            usage="baz",
+                                                            addons=["a", "b", "c"],
+                                                            sysroot=sysroot)
+
+    @patch("pyanaconda.modules.subscription.system_purpose.give_the_system_purpose")
+    def system_purpose_task_already_set_test(self, give_the_system_purpose):
+        """Test the SystemPurposeConfigurationTask task - already set & no overwrite."""
+        with tempfile.TemporaryDirectory() as sysroot:
+            # simulate system purpose already being set
+            syspurpose_path = RHSM_SYSPURPOSE_FILE_PATH
+            directory = os.path.split(syspurpose_path)[0]
+            os.makedirs(util.join_paths(sysroot, directory))
+            os.mknod(util.join_paths(sysroot, syspurpose_path))
+            # prepare system purpose data
+            system_purpose_data = SystemPurposeData()
+            system_purpose_data.role = "foo"
+            system_purpose_data.sla = "bar"
+            system_purpose_data.usage = "baz"
+            system_purpose_data.addons = ["a", "b", "c"]
+            task = SystemPurposeConfigurationTask(sysroot=sysroot,
+                                                  system_purpose_data=system_purpose_data,
+                                                  overwrite=False)
+            task.run()
+            give_the_system_purpose.assert_not_called()
+
+    @patch("pyanaconda.modules.subscription.system_purpose.give_the_system_purpose")
+    def system_purpose_task_overwrite_test(self, give_the_system_purpose):
+        """Test the SystemPurposeConfigurationTask task - already set & overwrite."""
+        with tempfile.TemporaryDirectory() as sysroot:
+            # simulate system purpose already being set
+            syspurpose_path = RHSM_SYSPURPOSE_FILE_PATH
+            directory = os.path.split(syspurpose_path)[0]
+            os.makedirs(util.join_paths(sysroot, directory))
+            os.mknod(util.join_paths(sysroot, syspurpose_path))
+            # prepare system purpose data
+            system_purpose_data = SystemPurposeData()
+            system_purpose_data.role = "foo"
+            system_purpose_data.sla = "bar"
+            system_purpose_data.usage = "baz"
+            system_purpose_data.addons = ["a", "b", "c"]
+            task = SystemPurposeConfigurationTask(sysroot=sysroot,
+                                                  system_purpose_data=system_purpose_data,
+                                                  overwrite=True)
+            task.run()
+            # system purpose is marked as set, but overwrite is enabled,
+            # so give_system_purpose() should have been called
             give_the_system_purpose.assert_called_once_with(role="foo",
                                                             sla="bar",
                                                             usage="baz",

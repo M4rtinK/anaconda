@@ -27,6 +27,7 @@ from pyanaconda.core.signal import Signal
 from pyanaconda.core.constants import SECRET_TYPE_HIDDEN, SUBSCRIPTION_REQUEST_TYPE_ORG_KEY, \
     SUBSCRIPTION_REQUEST_VALID_TYPES
 from pyanaconda.core.configuration.anaconda import conf
+from pyanaconda.subscription import check_system_purpose_set
 
 from pyanaconda.modules.common.errors.general import InvalidValueError
 from pyanaconda.modules.common.base import KickstartService
@@ -44,10 +45,11 @@ from pyanaconda.modules.subscription import system_purpose
 from pyanaconda.modules.subscription.kickstart import SubscriptionKickstartSpecification
 from pyanaconda.modules.subscription.subscription_interface import SubscriptionInterface
 from pyanaconda.modules.subscription.installation import ConnectToInsightsTask, \
-    SystemPurposeConfigurationTask, RestoreRHSMLogLevelTask, TransferSubscriptionTokensTask
+    RestoreRHSMLogLevelTask, TransferSubscriptionTokensTask
 from pyanaconda.modules.subscription.initialization import StartRHSMTask
 from pyanaconda.modules.subscription.runtime import SetRHSMConfigurationTask, \
-    RegisterWithUsernamePasswordTask, RegisterWithOrganizationKeyTask
+    RegisterWithUsernamePasswordTask, RegisterWithOrganizationKeyTask, \
+    SystemPurposeConfigurationTask
 from pyanaconda.modules.subscription.rhsm_observer import RHSMObserver
 
 
@@ -73,9 +75,6 @@ class SubscriptionService(KickstartService):
         self.system_purpose_data_changed = Signal()
 
         self._load_valid_system_purpose_values()
-
-        self._is_system_purpose_applied = False
-        self.is_system_purpose_applied_changed = Signal()
 
         # subscription request
 
@@ -164,12 +163,9 @@ class SubscriptionService(KickstartService):
             # by the user in kickstart verbatim.
             system_purpose_data.addons = data.syspurpose.addons
 
+        # Setting system purpose data also automatically sets them to the installation
+        # environment, provided the structure is not empty.
         self.set_system_purpose_data(system_purpose_data)
-
-        # apply system purpose data, if any, so that it is all in place when we start
-        # talking to the RHSM service
-        if self.system_purpose_data.check_data_available():
-            self._apply_syspurpose()
 
         # subscription request
 
@@ -300,68 +296,42 @@ class SubscriptionService(KickstartService):
         :param system_purpose_data: system purpose data structure to be set
         :type system_purpose_data: DBus structure
         """
+        # record if the new data is different from current data
+        data_different = self._system_purpose_data != system_purpose_data
+        # set the data
         self._system_purpose_data = system_purpose_data
+        # emit the signal & show log message
         self.system_purpose_data_changed.emit()
         log.debug("System purpose data set to %s.", system_purpose_data)
+        # If new structure contains some data and the data is different than
+        # what was in the old structure, set system purpose data to the system.
+        #
+        # NOTE: We do this only after setting the value and logging the "set"
+        #       as having a set -> apply sequence in the logs makes more sense
+        #       than the other way around.
+        data_available = system_purpose_data.check_data_available()
+        if data_available and data_different:
+            self._apply_syspurpose(system_purpose_data)
 
-    @property
-    def is_system_purpose_applied(self):
-        """Report if system purpose has been applied to the system.
-
-        Note that we don't differentiate between the installation environment
-        and the target system, as the token transfer installation task will
-        make sure any system purpose configuration file created in the installation
-        environment will be transferred to the target system.
-
-        We also need to avoid running system purpose configuration again after
-        a successful subscription attempt, as subscription can actually change
-        the system purpose attached to the system via system purpose values
-        attached to an activation key. If we re-run the system purpose task
-        on the installed system, we would basically overwrite these changes.
-        """
-        return self._is_system_purpose_applied
-
-    def set_is_system_purpose_applied(self, system_purpose_applied):
-        """Set if system purpose is applied.
-
-        :param bool system_purpose_applied: True if applied, False otherwise
-
-        NOTE: We keep this as a private method, called by the completed signal of the
-              task that applies system purpose information on the system.
-        """
-        self._is_system_purpose_applied = system_purpose_applied
-        self.is_system_purpose_applied_changed.emit()
-        # as there is no public setter in the DBus API, we need to emit
-        # the properties changed signal here manually
-        self.module_properties_changed.emit()
-        log.debug("System purpose is applied set to: %s", system_purpose_applied)
-
-    def _apply_syspurpose(self):
+    def _apply_syspurpose(self, system_purpose_data, sysroot="/"):
         """Apply system purpose information to the installation environment.
 
         If this method is called, then the token transfer installation task will
-        make sure to transfer the result, so the system purpose installation task
-        does not have to run afterwards.
-        For this reason we record if this method has run via the
-        set_is_system_purpose_applied() method.
+        make sure to transfer the result, so setting system purpose again via
+        installation task will be a no-op.
+
+        Note that this method always passes overwrite=True to the task and
+        this will overwrite any existing system purpose data already in place,
+        which is the expectation for the installation environment.
+
+        :param system_purpose_data: system purpose data to apply
+        :param str sysroot: optional sysroot override
         """
         log.debug("subscription: Applying system purpose data")
-        task = SystemPurposeConfigurationTask(sysroot="/",
-                                              system_purpose_data=self.system_purpose_data)
-        # set system purpose as applied/not applied based on True/False returned by run()
-        self.set_is_system_purpose_applied(task.run())
-
-    def set_system_purpose_with_task(self):
-        """Set system purpose for the installed system with an installation task.
-
-        :return: a DBus path of an installation task
-        """
-        task = SystemPurposeConfigurationTask(sysroot=conf.target.system_root,
-                                              system_purpose_data=self.system_purpose_data)
-        # set system purpose as applied once the task successfully finishes running
-        task.succeeded_signal.connect(
-            lambda: self.set_is_system_purpose_applied(task.get_result()))
-        return task
+        task = SystemPurposeConfigurationTask(sysroot=sysroot,
+                                              system_purpose_data=system_purpose_data,
+                                              overwrite=True)
+        task.run()
 
     # subscription request
 
@@ -614,22 +584,6 @@ class SubscriptionService(KickstartService):
         :return: a list of requirements
         """
         requirements = []
-
-        # check if we need the syspurpose package needed for system purpose configuration
-        if self.system_purpose_data.check_data_available() and not self.is_system_purpose_applied:
-            # The system purpose installation task (which needs the syspurpose utility
-            # to be installed) runs:
-            # - if system purpose configuration has been requested
-            # - but system purpose has not been applied during the installation
-            # Only in such a case it will run on the target system and needs the
-            # syspurpose utility to be available on the target system.
-            requirements.append(
-                Requirement.for_package(
-                    "python3-syspurpose",
-                    reason="Needed for System Purpose configuration."
-                )
-            )
-
         # check if we need the insights-client package, which is needed to connect the
         # target system to Red Hat Insights
         if self.connect_to_insights:

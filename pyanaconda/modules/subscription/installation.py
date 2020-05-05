@@ -22,12 +22,11 @@ import shutil
 from dasbus.typing import get_variant, Str
 
 from pyanaconda.core import util
+from pyanaconda.subscription import check_system_purpose_set
 
 from pyanaconda.modules.common.task import Task
 from pyanaconda.modules.common.errors.installation import InsightsConnectError, \
     InsightsClientMissingError, SubscriptionTokenTransferError
-
-from pyanaconda.modules.subscription import system_purpose
 
 from pyanaconda.anaconda_loggers import get_module_logger
 log = get_module_logger(__name__)
@@ -79,35 +78,6 @@ class ConnectToInsightsTask(Task):
         rc = util.execWithRedirect(self.INSIGHTS_TOOL_PATH, ["--register"], root=self._sysroot)
         if rc:
             raise InsightsConnectError("Connecting to Red Hat Insights failed.")
-
-
-class SystemPurposeConfigurationTask(Task):
-    """Installation task for setting system purpose."""
-
-    def __init__(self, sysroot, system_purpose_data):
-        """Create a new system purpose configuration task.
-
-        :param str sysroot: a path to the root of the installed system
-        :param system_purpose_data: system purpose data DBus structure
-        :type system_purpose_data: DBusData instance
-        """
-        super().__init__()
-        self._sysroot = sysroot
-        self._system_purpose_data = system_purpose_data
-
-    @property
-    def name(self):
-        return "Set system purpose"
-
-    def run(self):
-        # apply System Purpose data
-        return system_purpose.give_the_system_purpose(
-            sysroot=self._sysroot,
-            role=self._system_purpose_data.role,
-            sla=self._system_purpose_data.sla,
-            usage=self._system_purpose_data.usage,
-            addons=self._system_purpose_data.addons
-        )
 
 
 class RestoreRHSMLogLevelTask(Task):
@@ -219,7 +189,7 @@ class TransferSubscriptionTokensTask(Task):
          - this means the syspurpose tool has been called in the installation
            environment & we need to transfer the results to the target system
         """
-        if os.path.exists(self.RHSM_SYSPURPOSE_FILE_PATH):
+        if check_system_purpose_set("/"):
             log.debug("subscription: transferring syspurpose file")
             target_syspurpose_file_path = self._sysroot + self.RHSM_SYSPURPOSE_FILE_PATH
             self._copy_file(self.RHSM_SYSPURPOSE_FILE_PATH, target_syspurpose_file_path)

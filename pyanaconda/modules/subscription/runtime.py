@@ -23,11 +23,14 @@ from dasbus.connection import MessageBus
 from dasbus.error import DBusError
 
 from pyanaconda.core.i18n import _
+from pyanaconda.subscription import check_system_purpose_set
 
 from pyanaconda.modules.common.task import Task
 from pyanaconda.modules.common.constants.services import RHSM
 from pyanaconda.modules.common.constants.objects import RHSM_REGISTER
 from pyanaconda.modules.common.errors.subscription import RegistrationError
+
+from pyanaconda.modules.subscription import system_purpose
 
 from pyanaconda.anaconda_loggers import get_module_logger
 log = get_module_logger(__name__)
@@ -65,6 +68,40 @@ class RHSMPrivateBus(MessageBus):
         # so we will not log it
         log.info("Connecting to the RHSM private DBus session.")
         return self._provider.get_addressed_bus_connection(self._private_bus_address)
+
+
+class SystemPurposeConfigurationTask(Task):
+    """Installation task for setting system purpose."""
+
+    def __init__(self, sysroot, system_purpose_data, overwrite=False):
+        """Create a new system purpose configuration task.
+
+        :param str sysroot: a path to the root of the installed system
+        :param system_purpose_data: system purpose data DBus structure
+        :type system_purpose_data: DBusData instance
+        :param bool overwrite: overwrite existing system purpose
+        """
+        super().__init__()
+        self._sysroot = sysroot
+        self._system_purpose_data = system_purpose_data
+        self._overwrite = overwrite
+
+    @property
+    def name(self):
+        return "Set system purpose"
+
+    def run(self):
+        # apply System Purpose data
+        # - by default only if not yet set
+        # - always if overwrite == True
+        if not check_system_purpose_set(self._sysroot) or self._overwrite:
+            return system_purpose.give_the_system_purpose(
+                sysroot=self._sysroot,
+                role=self._system_purpose_data.role,
+                sla=self._system_purpose_data.sla,
+                usage=self._system_purpose_data.usage,
+                addons=self._system_purpose_data.addons
+            )
 
 
 class SetRHSMConfigurationTask(Task):
