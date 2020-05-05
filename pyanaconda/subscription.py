@@ -17,6 +17,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import os
+
+from pyanaconda.core import util
+from pyanaconda.core.constants import RHSM_SYSPURPOSE_FILE_PATH
+
 from pyanaconda.modules.common.constants.namespaces import SUBSCRIPTION_NAMESPACE
 from pyanaconda.modules.common.constants.services import BOSS
 
@@ -30,3 +35,19 @@ def check_subscription_module_available():
     boss_proxy = BOSS.get_proxy()
     subscription_module_name = ".".join(SUBSCRIPTION_NAMESPACE)
     return subscription_module_name in boss_proxy.GetModules()
+
+def check_system_purpose_set(sysroot):
+    """Check if System Purpose has been set for the system.
+
+    By manipulating the sysroot parameter it is possible to
+    check is System Purpose has been set for both the installation
+    environment and the target system.
+
+    For installation environment use "/", for the target system
+    path to the installation root.
+
+    :param str sysroot: system root where to check
+    :return: True if System Purpose has been set, False otherwise
+    """
+    syspurpose_path = util.join_paths(sysroot, RHSM_SYSPURPOSE_FILE_PATH)
+    return os.path.exists(syspurpose_path)

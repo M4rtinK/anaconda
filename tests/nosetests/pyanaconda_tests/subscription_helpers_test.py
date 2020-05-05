@@ -17,11 +17,16 @@
 #
 # Red Hat Author(s): Martin Kolman <mkolman@redhat.com>
 #
+import os
+import tempfile
 
 import unittest
 from unittest.mock import patch
 
-from pyanaconda.subscription import check_subscription_module_available
+from pyanaconda.core import util
+from pyanaconda.core.constants import RHSM_SYSPURPOSE_FILE_PATH
+
+from pyanaconda.subscription import check_subscription_module_available, check_system_purpose_set
 
 
 class CheckSubscriptionAvailableTestCase(unittest.TestCase):
@@ -67,3 +72,22 @@ class CheckSubscriptionAvailableTestCase(unittest.TestCase):
         boss_proxy.GetModules.return_value = running_modules
         # call the function
         self.assertFalse(check_subscription_module_available())
+
+
+class CheckSystemPurposeSetTestCase(unittest.TestCase):
+    """Test the check_system_purpose_set helper function."""
+
+    def check_system_purpose_set_test(self):
+        """Test the check_system_purpose_set() helper function."""
+        # system purpose set
+        with tempfile.TemporaryDirectory() as sysroot:
+            # create a dummy syspurpose file
+            syspurpose_path = RHSM_SYSPURPOSE_FILE_PATH
+            directory = os.path.split(syspurpose_path)[0]
+            os.makedirs(util.join_paths(sysroot, directory))
+            os.mknod(util.join_paths(sysroot, syspurpose_path))
+            self.assertTrue(check_system_purpose_set(sysroot))
+
+        # system purpose not set
+        with tempfile.TemporaryDirectory() as sysroot:
+            self.assertFalse(check_system_purpose_set(sysroot))
