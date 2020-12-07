@@ -884,7 +884,7 @@ class SubscriptionSpoke(NormalSpoke):
         threadMgr.add(
             AnacondaThread(
                 name=THREAD_SUBSCRIPTION,
-                target=register_and_subscribe,
+                target=self._register_and_subscribe,
                 kwargs={
                     "payload": self.payload,
                     "progress_callback": self._subscription_progress_callback,
@@ -893,6 +893,23 @@ class SubscriptionSpoke(NormalSpoke):
                 }
             )
         )
+
+    def _register_and_subscribe(self):
+        """Try to register and subscribe, if possible.
+
+        Unlike the plain register_and_subscribe() function this
+        method is wrapping we will also handle the case of
+        the provided username + password representing an account
+        that is part of multiple organizations.
+
+        If such an account is used without organization being specified,
+        the registration attempt will be aborted so that the user can
+        specify which organization to use and try again.
+
+        If organzation id + activation key/s is used or if organization
+        is specified for username + password, register_and_subscribe()
+        will just be called directly.
+        """
 
     def _unregister(self):
         """Try to unregister a system."""

@@ -37,3 +37,9 @@ class UnregistrationError(AnacondaError):
 class SubscriptionError(AnacondaError):
     """Subscription attempt failed."""
     pass
+
+
+@dbus_error("GetOrgsError", namespace=ANACONDA_NAMESPACE)
+class GetOrgsError(AnacondaError):
+    """Failed to fetch organizations for user account."""
+    pass

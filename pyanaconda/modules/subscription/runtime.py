@@ -29,7 +29,7 @@ from pyanaconda.modules.common.task import Task
 from pyanaconda.modules.common.constants.services import RHSM
 from pyanaconda.modules.common.constants.objects import RHSM_REGISTER
 from pyanaconda.modules.common.errors.subscription import RegistrationError, \
-    UnregistrationError, SubscriptionError
+    UnregistrationError, SubscriptionError, GetOrgsError
 from pyanaconda.modules.common.structures.subscription import AttachedSubscription, \
     SystemPurposeData
 from pyanaconda.modules.subscription import system_purpose
@@ -570,3 +570,65 @@ class ParseAttachedSubscriptionsTask(Task):
         # return the DBus structures as a named tuple
         return SystemSubscriptionData(attached_subscriptions=attached_subscriptions,
                                       system_purpose_data=system_purpose_data)
+
+
+class GetOrganizationsForUserTask(Task):
+    """Get a list of organizations for Red Hat account username & password."""
+
+    def __init__(self, rhsm_register_server_proxy, username, password):
+        """Create a new organization list fetching task.
+
+        :param rhsm_register_server_proxy: DBus proxy for the RHSM RegisterServer object
+        :param str username: Red Hat account username
+        :param str password: Red Hat account password
+        """
+        super().__init__()
+        self._rhsm_register_server_proxy = rhsm_register_server_proxy
+        self._username = username
+        self._password = password
+
+    @property
+    def name(self):
+        return "Get list of organizations for user"
+
+    def _parse_orgs_json(self, orgs_json):
+        """Parse the JSON reponse from the GetOrgs DBus method.
+
+        Parse the json into a list of named tuples, where each tuple
+        contains organization id followed by human readable organization
+        name.
+        """
+        org_tuples = []
+        # TODO!!
+        log.debug("AAAA GET ORGS JSON")
+        log.debug(orgs_json)
+        return org_tuples
+
+    def run(self):
+        """Get list of organisations for a Red Hat account username and password.
+
+        :raises: GetOrgsError if calling the RHSM DBus API returns an error
+        """
+        org_tuples = []
+        log.debug("subscription: fetching organizations for a user")
+        with RHSMPrivateBus(self._rhsm_register_server_proxy) as private_bus:
+            try:
+                locale = os.environ.get("LANG", "")
+                private_register_proxy = private_bus.get_proxy(RHSM.service_name,
+                                                               RHSM_REGISTER.object_path)
+                orgs_json = private_register_proxy.GetOrgs(self._username,
+                                                           self._password,
+                                                           {},
+                                                           locale)
+                log.debug("subscription: fetched organizations for user")
+            except DBusError as e:
+                log.debug("subscription: failed to fetch organizations for user: %s",
+                          str(e))
+                # RHSM exception contain details as JSON due to DBus exception handling limitations
+                exception_dict = json.loads(str(e))
+                # return a generic error message in case the RHSM provided error message is missing
+                message = exception_dict.get("message", _("Failed to fetch organizations for user."))
+                raise GetOrgsError(message) from None
+
+        log.debug("subscription: number of organizations the user is memeber of: {}".format(len(org_tuples)))
+        return org_tuples
