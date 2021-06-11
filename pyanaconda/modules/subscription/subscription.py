@@ -43,12 +43,11 @@ from pyanaconda.modules.subscription import system_purpose
 from pyanaconda.modules.subscription.kickstart import SubscriptionKickstartSpecification
 from pyanaconda.modules.subscription.subscription_interface import SubscriptionInterface
 from pyanaconda.modules.subscription.installation import ConnectToInsightsTask, \
-    RestoreRHSMDefaultsTask, TransferSubscriptionTokensTask
+    RestoreRHSMDefaultsTask, TransferSubscriptionTokensTask, \
+    ProvisionTargetSystemForSatelliteTask
 from pyanaconda.modules.subscription.initialization import StartRHSMTask
-from pyanaconda.modules.subscription.runtime import SetRHSMConfigurationTask, \
-    RegisterWithUsernamePasswordTask, RegisterWithOrganizationKeyTask, \
-    UnregisterTask, AttachSubscriptionTask, SystemPurposeConfigurationTask, \
-    ParseAttachedSubscriptionsTask
+from pyanaconda.modules.subscription.runtime import RegisterAndSubscribeTask, \
+    UnregisterTask, SystemPurposeConfigurationTask, RollBackSatelliteProvisioningTask
 from pyanaconda.modules.subscription.rhsm_observer import RHSMObserver
 
 
@@ -97,6 +96,11 @@ class SubscriptionService(KickstartService):
         #   or else the system can't be connected to Insights
         self._connect_to_insights = False
         self.connect_to_insights_changed = Signal()
+
+        # Satellite
+        self.registered_to_satellite_changed = Signal()
+        self._registered_to_satellite = False
+        self._rhsm_conf_before_satellite_provisioning = None
 
         # registration status
         self.registered_changed = Signal()
@@ -477,6 +481,31 @@ class SubscriptionService(KickstartService):
         self.module_properties_changed.emit()
         log.debug("System registered set to: %s", system_registered)
 
+    @property
+    def registered_to_satellite(self):
+        """Return True if the system has been registered to a Satellite instance.
+
+        :return: True if the system has been registered to Satellite, False otherwise
+        :rtype: bool
+        """
+        return self._registered_to_satellite
+
+    def set_registered_to_satellite(self, system_registered_to_satellite):
+        """Set if the system is registered to a Satellite instance.
+
+        If we are not registered to a Satellite instance it means we are registered
+        to Hosted Candlepin.
+
+        :param bool system_registered_to_satellite: True if system has been registered
+                                                    to Satellite, False otherwise
+        """
+        self._registered_to_satellite = system_registered_to_satellite
+        self.registered_to_satellite_changed.emit()
+        # as there is no public setter in the DBus API, we need to emit
+        # the properties changed signal here manually
+        self.module_properties_changed.emit()
+        log.debug("System registered to Satellite set to: %s", system_registered_to_satellite)
+
     # subscription status
 
     @property
@@ -618,51 +647,14 @@ class SubscriptionService(KickstartService):
                                         subscription_request=self._subscription_request)
         return task
 
-    def register_username_password_with_task(self):
-        """Register with username and password based on current subscription request.
-
-        :return: a DBus path of an installation task
-        """
-        # NOTE: we access self._subscription_request directly
-        #       to avoid the sensitive data clearing happening
-        #       in the subscription_request property getter
-        username = self._subscription_request.account_username
-        password = self._subscription_request.account_password.value
-        register_server_proxy = self.rhsm_observer.get_proxy(RHSM_REGISTER_SERVER)
-        task = RegisterWithUsernamePasswordTask(rhsm_register_server_proxy=register_server_proxy,
-                                                username=username,
-                                                password=password)
-        # if the task succeeds, it means the system has been registered
-        task.succeeded_signal.connect(
-            lambda: self.set_registered(True))
-        return task
-
-    def register_organization_key_with_task(self):
-        """Register with organization and activation key(s) based on current subscription request.
-
-        :return: a DBus path of an installation task
-        """
-        # NOTE: we access self._subscription_request directly
-        #       to avoid the sensitive data clearing happening
-        #       in the subscription_request property getter
-        organization = self._subscription_request.organization
-        activation_keys = self._subscription_request.activation_keys.value
-        register_server_proxy = self.rhsm_observer.get_proxy(RHSM_REGISTER_SERVER)
-        task = RegisterWithOrganizationKeyTask(rhsm_register_server_proxy=register_server_proxy,
-                                               organization=organization,
-                                               activation_keys=activation_keys)
-        # if the task succeeds, it means the system has been registered
-        task.succeeded_signal.connect(
-            lambda: self.set_registered(True))
-        return task
-
     def unregister_with_task(self):
         """Unregister the system.
 
         :return: a DBus path of an installation task
         """
-        rhsm_unregister_proxy = self.rhsm_observer.get_proxy(RHSM_UNREGISTER)
-        task = UnregisterTask(rhsm_unregister_proxy=rhsm_unregister_proxy)
+        task = UnregisterTask(rhsm_observer=self.rhsm_observer,
+                              rhsm_configuration=self._rhsm_conf_before_satellite_provisioning
+        )
         # we will no longer be registered and subscribed if the task is successful,
         # so set the corresponding properties appropriately
         task.succeeded_signal.connect(
@@ -672,24 +664,9 @@ class SubscriptionService(KickstartService):
         # and clear attached subscriptions
         task.succeeded_signal.connect(
             lambda: self.set_attached_subscriptions([]))
-        return task
-
-    def attach_subscription_with_task(self):
-        """Attach a subscription.
-
-        This should only be run on a system that has been successfully registered.
-        Attached subscription depends on system type, system purpose data
-        and entitlements available for the account that has been used for registration.
-
-        :return: a DBus path of an installation task
-        """
-        sla = self.system_purpose_data.sla
-        rhsm_attach_proxy = self.rhsm_observer.get_proxy(RHSM_ATTACH)
-        task = AttachSubscriptionTask(rhsm_attach_proxy=rhsm_attach_proxy,
-                                      sla=sla)
-        # if the task succeeds, it means a subscription has been attached
+        # clear the Satellite registration status as well
         task.succeeded_signal.connect(
-            lambda: self.set_subscription_attached(True))
+            lambda: self.set_registered_to_satellite(False))
         return task
 
     def _set_system_subscription_data(self, system_subscription_data):
@@ -701,22 +678,25 @@ class SubscriptionService(KickstartService):
         self.set_attached_subscriptions(system_subscription_data.attached_subscriptions)
         self.set_system_purpose_data(system_subscription_data.system_purpose_data)
 
-    def parse_attached_subscriptions_with_task(self):
-        """Parse attached subscriptions with task.
+    def register_and_subscribe_with_task(self):
+        """Register and subscribe the installation environment.
 
-        Parse data about attached subscriptions and final system purpose data.
-        This data is available as JSON strings via the RHSM DBus API.
+        Also handle Satellite provisioning and attached subscription parsing.
 
-        :return: a DBus path of an installation task
+        :return: a DBus path of a runtime task
         """
-        rhsm_entitlement_proxy = self.rhsm_observer.get_proxy(RHSM_ENTITLEMENT)
-        rhsm_syspurpose_proxy = self.rhsm_observer.get_proxy(RHSM_SYSPURPOSE)
-        task = ParseAttachedSubscriptionsTask(rhsm_entitlement_proxy=rhsm_entitlement_proxy,
-                                              rhsm_syspurpose_proxy=rhsm_syspurpose_proxy)
-        # if the task succeeds, set attached subscriptions and system purpose data
-        task.succeeded_signal.connect(
-            lambda: self._set_system_subscription_data(task.get_result())
+
+        task = RegisterAndSubscribeTask(
+                rhsm_observer=self.rhsm_observer,
+                subscription_request=self.subscription_request,
+                system_purpose_data=self.system_purpose_data,
+                registered_callback=self.set_registered,
+                registered_to_satellite_callback=self.set_registered_to_satellite,
+                subscription_attached_callback=self.set_subscription_attached,
+                subscription_data_callback=self._set_system_subscription_data,
+                config_backup_callback=self._set_pre_satellite_rhsm_conf_snapshot
         )
+
         return task
 
     def collect_requirements(self):
