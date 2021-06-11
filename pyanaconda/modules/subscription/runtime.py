@@ -29,10 +29,11 @@ from pyanaconda.modules.common.task import Task
 from pyanaconda.modules.common.constants.services import RHSM
 from pyanaconda.modules.common.constants.objects import RHSM_REGISTER
 from pyanaconda.modules.common.errors.subscription import RegistrationError, \
-    UnregistrationError, SubscriptionError
+    UnregistrationError, SubscriptionError, SatelliteProvisioningError
 from pyanaconda.modules.common.structures.subscription import AttachedSubscription, \
     SystemPurposeData
 from pyanaconda.modules.subscription import system_purpose
+from pyanaconda.modules.subscription import satellite
 from pyanaconda.anaconda_loggers import get_module_logger
 
 import gi
@@ -580,3 +581,121 @@ class ParseAttachedSubscriptionsTask(Task):
         # return the DBus structures as a named tuple
         return SystemSubscriptionData(attached_subscriptions=attached_subscriptions,
                                       system_purpose_data=system_purpose_data)
+
+
+class DownloadSatelliteProvisioningScriptTask(Task):
+    """Download the provisioning script from a Satellite instance."""
+
+    def __init__(self, satellite_url, proxy_url):
+        """Create a new Satellite related task.
+
+        :param str satellite_url: URL to Satellite instace to download from
+        :param str proxy_url: proxy URL for the download attempt
+        """
+        super().__init__()
+        self._satellite_url = satellite_url
+        self._proxy_url = proxy_url
+
+    @property
+    def name(self):
+        return "Download Satellite provisioning script"
+
+    def run(self):
+        log.debug("subscription: downloading Satellite provisioning script")
+        download_success = satellite.download_satellite_provisioning_script(
+            satellite_url=self._satellite_url,
+            proxy_url=self._proxy_url
+        )
+        if download_success:
+            log.debug("subscription: Satellite provisioning script successfully downloaded")
+        else:
+            message = "Failed to download Satellite provisioning script."
+            raise SatelliteProvisioningError(message) from None
+
+
+class RunSatelliteProvisioningScriptTask(Task):
+    """Run the provisioning script we downloaded from a Satellite instance."""
+
+    def __init__(self):
+        """Create a new Satellite related task."""
+        super().__init__()
+
+    @property
+    def name(self):
+        return "Run Satellite provisioning script"
+
+    def run(self):
+        log.debug("subscription: running Satellite provisioning script"
+                  " in installation environment")
+        if satellite.run_satellite_provisioning_script(sysroot="/"):
+            log.debug("subscription: Satellite provisioning script executed successfully")
+        else:
+            message = "Failed to run Satellite provisioning script."
+            raise SatelliteProvisioningError(message) from None
+
+
+class BackupRHSMConfBeforeSatelliteProvisioningTask(Task):
+    """Backup the RHSM configuration state before the Satellite provisioning script is run.
+
+    The Satellite provisioning script sets arbitrary RHSM configuration options, which
+    we might need to roll back in case the user decides to unregister and then register
+    to a different Satellite instance or back to Hosted Candlepin.
+
+    So backup the RHSM configuration state just before we run the Satellite provisioning
+    script that changes the config file. This gives us a config snapshot we can then use
+    to restore the RHSM configuration to a "clean" state as needed.
+    """
+
+    def __init__(self, rhsm_config_proxy):
+        """Create a new Satellite related task.
+
+        :param rhsm_config_proxy: DBus proxy for the RHSM Config object
+        """
+        super().__init__()
+        self._rhsm_config_proxy = rhsm_config_proxy
+
+    @property
+    def name(self):
+        return "Save RHSM configuration before Satellite provisioning"
+
+    def run(self):
+        # retrieve a snapshot of "clean" RHSM configuration and return it
+        return self._rhsm_config_proxy.GetAll("")
+
+
+class RollBackSatelliteProvisioningTask(Task):
+    """Roll back relevant parts of Satellite provisioning.
+
+    The current Anaconda GUI makes it possible to unregister and
+    change the Satellite URL as well as switch back from Satellite
+    to registration on Hosted Candlepin.
+
+    Due to this we need to be able to roll back changes to the RHSM
+    configuration done by the Satellite provisioning script.
+
+    To make this possible we first save a "clean" snapshot of the RHSM
+    config state so that this task can then restore the snapshot as
+    needed.
+
+    We don't actually uninstall the certs added by the provisioning
+    script, but they should not interfere with another run of a different
+    script & will be gone after the installation environment restarts.
+    """
+
+    def __init__(self, rhsm_config_proxy, rhsm_configuration):
+        """Create a new Satellite related task.
+
+        :param rhsm_config_proxy: DBus proxy for the RHSM Config object
+        :param dict rhsm_configuration: "clean" RHSM configuration dict to restore
+        """
+        super().__init__()
+        self._rhsm_config_proxy = rhsm_config_proxy
+        self._rhsm_configuration = rhsm_configuration
+
+    @property
+    def name(self):
+        return "Restore RHSM configuration after Satellite provisioning"
+
+    def run(self):
+        # restore the full RHSM configuration back to clean values
+        self._rhsm_config_proxy.SetAll(self._rhsm_configuration, "")

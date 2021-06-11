@@ -24,10 +24,13 @@ from dasbus.typing import get_variant, Str
 from pyanaconda.core import util
 from pyanaconda.core.constants import RHSM_SYSPURPOSE_FILE_PATH
 from pyanaconda.core.subscription import check_system_purpose_set
+from pyanaconda.core.configuration.anaconda import conf
 
 from pyanaconda.modules.common.task import Task
 from pyanaconda.modules.common.errors.installation import InsightsConnectError, \
     InsightsClientMissingError, SubscriptionTokenTransferError
+from pyanaconda.modules.common.errors.subscription import SatelliteProvisioningError
+from pyanaconda.modules.subscription import satellite
 
 from pyanaconda.anaconda_loggers import get_module_logger
 log = get_module_logger(__name__)
@@ -244,3 +247,54 @@ class TransferSubscriptionTokensTask(Task):
 
         # transfer the RHSM config file
         self._transfer_file(self.RHSM_CONFIG_FILE_PATH, "RHSM config file")
+
+
+class ProvisionTargetSystemForSatelliteTask(Task):
+    """Provision target system for Satellite.
+
+    In case we are registering to a Satellite instance, run the appropriate
+    Satellite provisioning script on the target system.
+
+    This should assure the target system has all the needed self certificates
+    installed and rhsm.conf tweaks applied.
+    """
+
+    def __init__(self, sysroot, registered_to_satellite):
+        """Create a new task.
+
+        :param str sysroot: target system root path
+        :param bool registered_to_satellite: is Satellite actually in use ?
+        """
+        super().__init__()
+        self._sysroot = sysroot
+        self._registered_to_satellite = registered_to_satellite
+
+    @property
+    def name(self):
+        return "Provisioning target system for Satellite"
+
+    def run(self):
+        """Provision target system for Satellite.
+
+        First check if we are actually registered to a Satellite instance.
+
+        If not, do nothing.
+
+        If we are registered to a Satellite instance, run the Satellite
+        provisioning script that has been downloaded from the instance previously.
+
+        """
+        if self._registered_to_satellite:
+            log.debug("subscription: provisioning target system for Satellite")
+            provisioning_success = satellite.run_satellite_provisioning_script(
+                sysroot=self._sysroot
+            )
+            if provisioning_success:
+                log.debug("subscription: target system successfully provisioned for Satellite")
+            else:
+                # FIXME: handle this exception gracefully (skippable error dialog)
+                raise SatelliteProvisioningError("Satellite provisioning script failed.")
+        else:
+            log.debug(
+                "subscription: not registered to Satellite, skipping Satellite provisioning."
+            )
