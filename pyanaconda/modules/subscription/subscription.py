@@ -43,12 +43,15 @@ from pyanaconda.modules.subscription import system_purpose
 from pyanaconda.modules.subscription.kickstart import SubscriptionKickstartSpecification
 from pyanaconda.modules.subscription.subscription_interface import SubscriptionInterface
 from pyanaconda.modules.subscription.installation import ConnectToInsightsTask, \
-    RestoreRHSMDefaultsTask, TransferSubscriptionTokensTask
+    RestoreRHSMDefaultsTask, TransferSubscriptionTokensTask, \
+    ProvisionTargetSystemForSatelliteTask
 from pyanaconda.modules.subscription.initialization import StartRHSMTask
 from pyanaconda.modules.subscription.runtime import SetRHSMConfigurationTask, \
     RegisterWithUsernamePasswordTask, RegisterWithOrganizationKeyTask, \
     UnregisterTask, AttachSubscriptionTask, SystemPurposeConfigurationTask, \
-    ParseAttachedSubscriptionsTask
+    ParseAttachedSubscriptionsTask, DownloadSatelliteProvisioningScriptTask, \
+    RunSatelliteProvisioningScriptTask, BackupRHSMConfBeforeSatelliteProvisioningTask, \
+    RollBackSatelliteProvisioningTask
 from pyanaconda.modules.subscription.rhsm_observer import RHSMObserver
 
 
@@ -97,6 +100,11 @@ class SubscriptionService(KickstartService):
         #   or else the system can't be connected to Insights
         self._connect_to_insights = False
         self.connect_to_insights_changed = Signal()
+
+        # Satellite
+        self.registered_to_satellite_changed = Signal()
+        self._registered_to_satellite = False
+        self._rhsm_conf_before_satellite_provisioning = None
 
         # registration status
         self.registered_changed = Signal()
@@ -477,6 +485,31 @@ class SubscriptionService(KickstartService):
         self.module_properties_changed.emit()
         log.debug("System registered set to: %s", system_registered)
 
+    @property
+    def registered_to_satellite(self):
+        """Return True if the system has been registered to a Satellite instance.
+
+        :return: True if the system has been registered to Satellite, False otherwise
+        :rtype: bool
+        """
+        return self._registered_to_satellite
+
+    def set_registered_to_satellite(self, system_registered_to_satellite):
+        """Set if the system is registered to a Satellite instance.
+
+        If we are not registered to a Satellite instance it means we are registered
+        to Hosted Candlepin.
+
+        :param bool system_registered_to_satellite: True if system has been registered
+                                                    to Satellite, False otherwise
+        """
+        self._registered_to_satellite = system_registered_to_satellite
+        self.registered_to_satellite_changed.emit()
+        # as there is no public setter in the DBus API, we need to emit
+        # the properties changed signal here manually
+        self.module_properties_changed.emit()
+        log.debug("System registered to Satellite set to: %s", system_registered_to_satellite)
+
     # subscription status
 
     @property
@@ -672,6 +705,9 @@ class SubscriptionService(KickstartService):
         # and clear attached subscriptions
         task.succeeded_signal.connect(
             lambda: self.set_attached_subscriptions([]))
+        # clear the Satellite registration status as well
+        task.succeeded_signal.connect(
+            lambda: self.set_registered_to_satellite(False))
         return task
 
     def attach_subscription_with_task(self):
@@ -716,6 +752,77 @@ class SubscriptionService(KickstartService):
         # if the task succeeds, set attached subscriptions and system purpose data
         task.succeeded_signal.connect(
             lambda: self._set_system_subscription_data(task.get_result())
+        )
+        return task
+
+    def download_satellite_provisioning_script_with_task(self):
+        """Download Satellite provisioning script with task.
+
+        :return: a DBus path of an installation task
+        """
+        # construct proxy URL needed by the task from the
+        # proxy data in subscription request (if any)
+        # (it is logical to use the same proxy for provisioning
+        #  script download as for RHSM access)
+        if self.subscription_request.server_proxy_hostname:
+            proxy = ProxyString(host=self.subscription_request.server_proxy_hostname,
+                                username=self.subscription_request.server_proxy_user,
+                                password=self.subscription_request.server_proxy_password.value)
+            # only set port if valid in the struct (not -1):
+            if self.subscription_request.server_proxy_port != -1:
+                proxy.port = self.subscription_request.server_proxy_port
+                # refresh the ProxyString internal URL cache after setting the port number
+                proxy.parse_components()
+            proxy_url = str(proxy)
+        else:
+            proxy_url = None
+
+        task = DownloadSatelliteProvisioningScriptTask(
+            satellite_url=self.subscription_request.server_hostname,
+            proxy_url=proxy_url
+        )
+        return task
+
+    def run_satellite_provisioning_script_with_task(self):
+        """Run Satellite provisioning script with task.
+
+        :return: a DBus path of an installation task
+        """
+        task = RunSatelliteProvisioningScriptTask()
+        # If the task succeeds, it means the system has been provisioned
+        # for Satellite.
+        task.succeeded_signal.connect(
+            lambda: self.set_registered_to_satellite(True))
+        return task
+
+    def _set_pre_satellite_rhsm_conf_snapshot(self, conf_snapshot):
+        """Save spanshot or RHSM config before Stallite provisioning."""
+        self._rhsm_conf_before_satellite_provisioning = conf_snapshot
+
+    def save_rhsm_conf_before_satellite_provisioning_with_task(self):
+        """Save RHSM conf before Satellite provisioning with task.
+
+        :return: a DBus path of an installation task
+        """
+        rhsm_config_proxy = self.rhsm_observer.get_proxy(RHSM_CONFIG)
+        task = BackupRHSMConfBeforeSatelliteProvisioningTask(
+            rhsm_config_proxy=rhsm_config_proxy,
+        )
+        # store the RHSM config snapshot
+        task.succeeded_signal.connect(
+            lambda: self._set_pre_satellite_rhsm_conf_snapshot(task.get_result())
+        )
+        return task
+
+    def roll_back_satellite_provisioning_with_task(self):
+        """Roll back Satellite provisioning with task.
+
+        :return: a DBus path of an installation task
+        """
+        rhsm_config_proxy = self.rhsm_observer.get_proxy(RHSM_CONFIG)
+        task = RollBackSatelliteProvisioningTask(
+            rhsm_config_proxy=rhsm_config_proxy,
+            rhsm_configuration=self._rhsm_conf_before_satellite_provisioning
         )
         return task
 

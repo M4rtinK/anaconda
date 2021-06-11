@@ -43,6 +43,8 @@ class SubscriptionInterface(KickstartModuleInterface):
                             self.implementation.connect_to_insights_changed)
         self.watch_property("IsRegistered",
                             self.implementation.registered_changed)
+        self.watch_property("IsRegisteredToSatellite",
+                            self.implementation.registered_to_satellite_changed)
         self.watch_property("IsSubscriptionAttached",
                             self.implementation.subscription_attached_changed)
 
@@ -145,6 +147,11 @@ class SubscriptionInterface(KickstartModuleInterface):
         return self.implementation.registered
 
     @property
+    def IsRegisteredToSatellite(self) -> Bool:
+        """Report if the system is registered to a Satellite instance."""
+        return self.implementation.registered_to_satellite
+
+    @property
     def IsSubscriptionAttached(self) -> Bool:
         """Report if an entitlement has been successfully attached."""
         return self.implementation.subscription_attached
@@ -201,4 +208,40 @@ class SubscriptionInterface(KickstartModuleInterface):
         """
         return TaskContainer.to_object_path(
             self.implementation.parse_attached_subscriptions_with_task()
+        )
+
+    def DownloadSatelliteProvisioningScriptWithTask(self) -> ObjPath:
+        """Download Satellite provisioning script.
+
+        :return: a DBus path of an installation task
+        """
+        return TaskContainer.to_object_path(
+            self.implementation.download_satellite_provisioning_script_with_task()
+        )
+
+    def RunSatelliteProvisioningScriptWithTask(self) -> ObjPath:
+        """Run Satellite provisioning script.
+
+        :return: a DBus path of an installation task
+        """
+        return TaskContainer.to_object_path(
+            self.implementation.run_satellite_provisioning_script_with_task()
+        )
+
+    def BackupRHSMConfBeforeSatelliteProvisioningWithTask(self) -> ObjPath:
+        """Backup RHSM config snapshot before Satellite provisioning.
+
+        :return: a DBus path of an installation task
+        """
+        return TaskContainer.to_object_path(
+            self.implementation.save_rhsm_conf_before_satellite_provisioning_with_task()
+        )
+
+    def RollBackSatelliteProvisioningWithTask(self) -> ObjPath:
+        """Roll back Satellite provisioning using a runtime DBus task.
+
+        :return: a DBus path of an installation task
+        """
+        return TaskContainer.to_object_path(
+            self.implementation.roll_back_satellite_provisioning_with_task()
         )
