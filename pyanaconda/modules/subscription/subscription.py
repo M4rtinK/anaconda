@@ -543,6 +543,8 @@ class SubscriptionService(KickstartService):
           the INFO log level in rhsm.conf or else target system will
           end up with RHSM logging in DEBUG mode
         - transfer subscription tokens
+        - apply Satellite provisioning on the target system,
+          in case we are registered to Satellite
         - connect to insights, this can run only once subscription
           tokens are in place on the target system or else it would
           fail as Insights client needs the subscription tokens to
@@ -557,6 +559,10 @@ class SubscriptionService(KickstartService):
             TransferSubscriptionTokensTask(
                 sysroot=conf.target.system_root,
                 transfer_subscription_tokens=self.subscription_attached
+            ),
+            ProvisionTargetSystemForSatelliteTask(
+                sysroot=conf.target.system_root,
+                registered_to_satellite=self.registered_to_satellite
             ),
             ConnectToInsightsTask(
                 sysroot=conf.target.system_root,
