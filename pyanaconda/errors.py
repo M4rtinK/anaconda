@@ -23,6 +23,7 @@ from pyanaconda.modules.common.errors.installation import BootloaderInstallation
     InsightsClientMissingError, InsightsConnectError
 from pyanaconda.modules.common.errors.payload import SourceSetupError
 from pyanaconda.modules.common.errors.storage import UnusableStorageError
+from pyanaconda.modules.common.errors.subscription import SatelliteProvisioningError
 from pyanaconda.payload.errors import PayloadInstallError, PayloadSetupError
 
 
@@ -115,6 +116,9 @@ class ErrorHandler(object):
             InsightsClientMissingError.__name__: self._insightsErrorHandler,
             InsightsConnectError.__name__: self._insightsErrorHandler,
 
+            # Satellite
+            SatelliteProvisioningError.__name__: self._target_satellite_provisioning_error_handler,
+
             # General installation errors.
             NonCriticalInstallationError.__name__: self._non_critical_error_handler,
         }
@@ -178,6 +182,13 @@ class ErrorHandler(object):
             return ERROR_CONTINUE
         else:
             return ERROR_RAISE
+
+    def _target_satellite_provisioning_error_handler(self, exn):
+        message = _("Failed to provision the target system for Satellite.")
+        details = str(exn)
+
+        self.ui.showDetailedError(message, details)
+        return ERROR_RAISE
 
     def _non_critical_error_handler(self, exn):
         message = _("The following error occurred during the installation:"
