@@ -26,7 +26,6 @@ from pyanaconda.core.constants import THREAD_WAIT_FOR_CONNECTING_NM, \
     SOURCE_TYPE_HDD, SOURCE_TYPE_CDN, SOURCE_TYPES_OVERRIDEN_BY_CDN
 from pyanaconda.core.i18n import _
 from pyanaconda.core.constants import PAYLOAD_TYPE_DNF
-from pyanaconda.ui.lib.payload import create_source, set_source, tear_down_sources
 from pyanaconda.ui.lib.storage import unmark_protected_device
 from pyanaconda.payload.manager import payloadMgr
 
@@ -36,7 +35,8 @@ from pyanaconda.modules.common.structures.subscription import SubscriptionReques
 from pyanaconda.modules.common.structures.secret import SECRET_TYPE_HIDDEN, \
     SECRET_TYPE_TEXT
 from pyanaconda.modules.common.errors.subscription import RegistrationError, \
-    UnregistrationError, SubscriptionError
+    UnregistrationError, SubscriptionError, SatelliteProvisioningError
+from pyanaconda.modules.subscription.constants import RHSM_SERVICE_NAME
 
 from pyanaconda.anaconda_loggers import get_module_logger
 log = get_module_logger(__name__)
@@ -51,48 +51,6 @@ class SubscriptionPhase(Enum):
     REGISTER = 2
     ATTACH_SUBSCRIPTION = 3
     DONE = 4
-
-# temporary methods for Subscription/CDN related source switching
-
-
-def _tear_down_existing_source(payload):
-    """Tear down existing payload, so we can set a new one.
-
-    :param payload: Anaconda payload instance
-    """
-    source_proxy = payload.get_source_proxy()
-
-    if source_proxy.Type == SOURCE_TYPE_HDD and source_proxy.Partition:
-        unmark_protected_device(source_proxy.Partition)
-
-    tear_down_sources(payload.proxy)
-
-
-def switch_source(payload, source_type):
-    """Switch to an installation source.
-
-    :param payload: Anaconda payload instance
-    :param source_type: installation source type
-    """
-    _tear_down_existing_source(payload)
-
-    new_source_proxy = create_source(source_type)
-    set_source(payload.proxy, new_source_proxy)
-
-
-def _do_payload_restart(payload):
-    """Restart the Anaconda payload.
-
-    This should be done after changing the installation sorce,
-    such as when switching to and from the CDN.
-
-    :param payload: Anaconda payload instance
-    """
-    # restart payload
-    payloadMgr.restart_thread(payload,
-                              fallback=False,
-                              checkmount=False,
-                              onlyOnChange=False)
 
 
 def check_cdn_is_installation_source(payload):
@@ -122,11 +80,6 @@ def check_cdn_is_installation_source(payload):
 # Also in some cases, multiple individual DBus tasks will need to be run
 # in sequence with any errors handled accordingly.
 #
-# Anaconda modularity is not yet advanced enough to handle this in a generic
-# manner, so we need simple scheduler living in the context of the main Anaconda
-# thread. The simple scheduler hosts the code that starts the respective subscription
-# handling thread, which assures appropriate tasks are run.
-#
 # As the scheduler code than can be run either during early startup or in reaction to user
 # interaction in the Subscription spoke we avoid code duplication.
 
@@ -141,40 +94,23 @@ def dummy_error_callback(error_message):
     pass
 
 
-def org_keys_sufficient(subscription_request=None):
-    """Report if sufficient credentials are set for org & keys registration attempt.
 
-    :param subscription_request: an subscription request, if None a fresh subscription request
-                                 will be fetched from the Subscription module over DBus
-    :type subscription_request: SubscriptionRequest instance
-    :return: True if sufficient, False otherwise
-    :rtype: bool
+def roll_back_satellite_provisioning():
+    """Roll back Satellite provisioning changes.
+
+    Roll back changes to rhsm.conf done by the provisioning script,
+    which should be enough to effectively de-provision the installation
+    environment.
+
+    There will still be the certificates installed by the provisioning
+    script, but those should not cause issues with any other certificates
+    that might be added by a different provisioning script and should
+    go away once the installation environment is rebooted.
     """
-    if subscription_request is None:
-        subscription_proxy = SUBSCRIPTION.get_proxy()
-        subscription_request_struct = subscription_proxy.SubscriptionRequest
-        subscription_request = SubscriptionRequest.from_structure(subscription_request_struct)
-    organization_set = bool(subscription_request.organization)
-    key_set = subscription_request.activation_keys.type in SECRET_SET_TYPES
-    return organization_set and key_set
-
-
-def username_password_sufficient(subscription_request=None):
-    """Report if sufficient credentials are set for username & password registration attempt.
-
-    :param subscription_request: an subscription request, if None a fresh subscription request
-                                 will be fetched from the Subscription module over DBus
-    :type subscription_request: SubscriptionRequest instance
-    :return: True if sufficient, False otherwise
-    :rtype: bool
-    """
-    if subscription_request is None:
-        subscription_proxy = SUBSCRIPTION.get_proxy()
-        subscription_request_struct = subscription_proxy.SubscriptionRequest
-        subscription_request = SubscriptionRequest.from_structure(subscription_request_struct)
-    username_set = bool(subscription_request.account_username)
-    password_set = subscription_request.account_password.type in SECRET_SET_TYPES
-    return username_set and password_set
+    subscription_proxy = SUBSCRIPTION.get_proxy()
+    task_path = subscription_proxy.RollBackSatelliteProvisioningWithTask()
+    task_proxy = SUBSCRIPTION.get_proxy(task_path)
+    task.sync_run_task(task_proxy)
 
 
 def register_and_subscribe(payload, progress_callback=None, error_callback=None,
@@ -254,56 +190,32 @@ def register_and_subscribe(payload, progress_callback=None, error_callback=None,
             return
         log.debug("Subscription GUI: unregistration succeeded")
 
-    # Try to register.
+    # Try to register and subscribe
     #
     # If we got this far the system was either not registered
     # or was unregistered successfully.
     log.debug("subscription thread: attempting to register")
     progress_callback(SubscriptionPhase.REGISTER)
-    # check authentication method has been set and credentials seem to be
-    # sufficient (though not necessarily valid)
-    subscription_request_struct = subscription_proxy.SubscriptionRequest
-    subscription_request = SubscriptionRequest.from_structure(subscription_request_struct)
-    task_path = None
-    if subscription_request.type == SUBSCRIPTION_REQUEST_TYPE_USERNAME_PASSWORD:
-        if username_password_sufficient():
-            task_path = subscription_proxy.RegisterUsernamePasswordWithTask()
-    elif subscription_request.type == SUBSCRIPTION_REQUEST_TYPE_ORG_KEY:
-        if org_keys_sufficient():
-            task_path = subscription_proxy.RegisterOrganizationKeyWithTask()
 
-    if task_path:
-        task_proxy = SUBSCRIPTION.get_proxy(task_path)
-        try:
-            task.sync_run_task(task_proxy)
-        except RegistrationError as e:
-            log.debug("subscription thread: registration attempt failed: %s", e)
-            log.debug("subscription thread: skipping auto attach due to registration error")
-            error_callback(str(e))
-            return
-        log.debug("subscription thread: registration succeeded")
-    else:
-        log.debug("subscription thread: credentials insufficient, skipping registration attempt")
-        error_callback(_("Registration failed due to insufficient credentials."))
-        return
+    # reigstration and subscripotion is handled by a combined tasks that also
+    # handles Satellite support and attached subscription parsing
+    task_path = subscription_proxy.RegisterAndSubscribeWithTask()
 
-    # try to attach subscription
-    log.debug("subscription thread: attempting to auto attach an entitlement")
-    progress_callback(SubscriptionPhase.ATTACH_SUBSCRIPTION)
-    task_path = subscription_proxy.AttachSubscriptionWithTask()
     task_proxy = SUBSCRIPTION.get_proxy(task_path)
     try:
         task.sync_run_task(task_proxy)
+    except SatelliteProvisioningError as e:
+        log.debug("subscription thread: Satellite provisioning failed: %s", e)
+        error_callback(str(e))
+        return
+    except RegistrationError as e:
+        log.debug("subscription thread: registration attempt failed: %s", e)
+        error_callback(str(e))
+        return
     except SubscriptionError as e:
         log.debug("subscription thread: failed to attach subscription: %s", e)
         error_callback(str(e))
         return
-
-    # parse attached subscription data
-    log.debug("subscription thread: parsing attached subscription data")
-    task_path = subscription_proxy.ParseAttachedSubscriptionsWithTask()
-    task_proxy = SUBSCRIPTION.get_proxy(task_path)
-    task.sync_run_task(task_proxy)
 
     # check if the current installation source should be overridden by
     # the CDN source we can now use
@@ -398,7 +310,14 @@ def unregister(payload, overridden_source_type, progress_callback=None, error_ca
                 log.debug("subscription thread: restarting payload after unregistration")
                 _do_payload_restart(payload)
 
-        log.debug("Subscription GUI: unregistration succeeded")
+        # check if we were registered to a Satellite instance and roll that back as well
+        # if needed
+        if subscription_proxy.IsRegisteredToSatellite:
+            log.debug("subscription thread: rolling back Satellite provisioning")
+            roll_back_satellite_provisioning()
+            log.debug("subscription thread: Satellite provisioning rolled back")
+
+        log.debug("subscription thread: unregistration succeeded")
         progress_callback(SubscriptionPhase.DONE)
     else:
         log.warning("subscription thread: not registered, so can't unregister")
