@@ -25,6 +25,7 @@ from pyanaconda.core.constants import THREAD_WAIT_FOR_CONNECTING_NM, \
     SUBSCRIPTION_REQUEST_TYPE_USERNAME_PASSWORD, SUBSCRIPTION_REQUEST_TYPE_ORG_KEY, \
     SOURCE_TYPE_HDD, SOURCE_TYPE_CDN, SOURCE_TYPES_OVERRIDEN_BY_CDN
 from pyanaconda.core.i18n import _
+from pyanaconda.core import util
 from pyanaconda.core.constants import PAYLOAD_TYPE_DNF
 from pyanaconda.ui.lib.payload import create_source, set_source, tear_down_sources
 from pyanaconda.ui.lib.storage import unmark_protected_device
@@ -36,7 +37,8 @@ from pyanaconda.modules.common.structures.subscription import SubscriptionReques
 from pyanaconda.modules.common.structures.secret import SECRET_TYPE_HIDDEN, \
     SECRET_TYPE_TEXT
 from pyanaconda.modules.common.errors.subscription import RegistrationError, \
-    UnregistrationError, SubscriptionError
+    UnregistrationError, SubscriptionError, SatelliteProvisioningError
+from pyanaconda.modules.subscription.constants import RHSM_SERVICE_NAME
 
 from pyanaconda.anaconda_loggers import get_module_logger
 log = get_module_logger(__name__)
@@ -177,6 +179,81 @@ def username_password_sufficient(subscription_request=None):
     return username_set and password_set
 
 
+def provision_system_for_satellite():
+    """Provision the installation environment for a Satellite instance.
+
+    This methid is speculatively run if custom server hostname has been
+    set by the user. Only if the URL specified by the server hostname
+    contains Satellite provisioning artifacts then actualy provisioning
+    of installation environment will take place.
+
+    """
+    # FIXME: add a toggle for skippinng the provisioning step so that server
+    #        hostname can be used for Staging CDN instead of for Satellite
+
+    subscription_proxy = SUBSCRIPTION.get_proxy()
+    download_task_path = subscription_proxy.DownloadSatelliteProvisioningScriptWithTask()
+    download_task_proxy = SUBSCRIPTION.get_proxy(download_task_path)
+    try:
+        log.debug("subscription thread: downloading Satellite provisioning script")
+        task.sync_run_task(download_task_proxy)
+        log.debug("subscription thread: downloaded Satellite provisioning script")
+    except SatelliteProvisioningError:
+        log.debug("subscription thread: failed to download Satellite provisioning script")
+        # Failing to download the Satellite provisioning script for a user provided server hostname
+        # is an unrecoverable error (wrong URL or incorrectly configured Satellite instance),
+        # so we end there.
+        return False
+
+    # before running the Satellite provisioning script we back up the current RHSM config
+    # file state, so that we can restore it if Satellite provisioning rollback become necessary
+    backup_task_path = subscription_proxy.BackupRHSMConfBeforeSatelliteProvisioningWithTask()
+    backup_task_proxy = SUBSCRIPTION.get_proxy(backup_task_path)
+    task.sync_run_task(backup_task_proxy)
+
+    # now run the Satellite provisioning script we just downloaded, so that the installation
+    # environment can talk to the Satellite instance the user has specified via custom
+    # server hostname
+    run_script_task_path = subscription_proxy.RunSatelliteProvisioningScriptWithTask()
+    run_script_task_proxy = SUBSCRIPTION.get_proxy(run_script_task_path)
+    try:
+        log.debug("subscription thread: running Satellite provisioning script")
+        task.sync_run_task(run_script_task_proxy)
+        log.debug("subscription thread: Satellite provisioning script has been run")
+        # unfortunatelly the RHSM service apparently does not pick up the changes done
+        # by the provisioning script to rhsm.conf, so we need to restart the RHSM systemd
+        # service, which will make it re-read the config file
+        # FIXME: find out if we can use something less radical than a full systemd service restart
+        util.restart_service(RHSM_SERVICE_NAME)
+
+    except SatelliteProvisioningError:
+        log.debug("subscription thread: Satellite provisioning script run failed")
+        # Failing to run the Satellite provisioning script successfully,
+        # which is an unrecoverable error, so we end there.
+        return False
+
+    # provisioning script downloaded and executed without apparent issues - success
+    return True
+
+
+def roll_back_satellite_provisioning():
+    """Roll back Satellite provisioning changes.
+
+    Roll back changes to rhsm.conf done by the provisioning script,
+    which should be enough to effectively de-provision the installation
+    environment.
+
+    There will still be the certificates installed by the provisioning
+    script, but those should not cause issues with any other certificates
+    that might be added by a different provisioning script and should
+    go away once the installation environment is rebooted.
+    """
+    subscription_proxy = SUBSCRIPTION.get_proxy()
+    task_path = subscription_proxy.RollBackSatelliteProvisioningWithTask()
+    task_proxy = SUBSCRIPTION.get_proxy(task_path)
+    task.sync_run_task(task_proxy)
+
+
 def register_and_subscribe(payload, progress_callback=None, error_callback=None,
                            restart_payload=False):
     """Try to register and subscribe the installation environment.
@@ -260,10 +337,13 @@ def register_and_subscribe(payload, progress_callback=None, error_callback=None,
     # or was unregistered successfully.
     log.debug("subscription thread: attempting to register")
     progress_callback(SubscriptionPhase.REGISTER)
-    # check authentication method has been set and credentials seem to be
-    # sufficient (though not necessarily valid)
+
+    # fetch the subscription request
     subscription_request_struct = subscription_proxy.SubscriptionRequest
     subscription_request = SubscriptionRequest.from_structure(subscription_request_struct)
+
+    # check authentication method has been set and credentials seem to be
+    # sufficient (though not necessarily valid)
     task_path = None
     if subscription_request.type == SUBSCRIPTION_REQUEST_TYPE_USERNAME_PASSWORD:
         if username_password_sufficient():
@@ -273,6 +353,19 @@ def register_and_subscribe(payload, progress_callback=None, error_callback=None,
             task_path = subscription_proxy.RegisterOrganizationKeyWithTask()
 
     if task_path:
+        # Now that we know we can do a registration attempt also check if custom server hostname
+        # is set, which would indicate we are most likely talking to a Satellite instance.
+        # If so, provision the insstallation environment for that Satellite instance.
+        if subscription_request.server_hostname:
+            # if custome rserver hostname is set, attempt to provision the installation
+            # environment for Satellite
+            log.debug("subscription thread: provisioning system for Satellite")
+            if provision_system_for_satellite():
+                log.debug("subscription thread: system provisioned for Satellite")
+            else:
+                error_callback(_("Satellite provisioning failed."))
+                return
+
         task_proxy = SUBSCRIPTION.get_proxy(task_path)
         try:
             task.sync_run_task(task_proxy)
@@ -398,7 +491,14 @@ def unregister(payload, overridden_source_type, progress_callback=None, error_ca
                 log.debug("subscription thread: restarting payload after unregistration")
                 _do_payload_restart(payload)
 
-        log.debug("Subscription GUI: unregistration succeeded")
+        # check if we were registered to a Satellite instance and roll that back as well
+        # if needed
+        if subscription_proxy.IsRegisteredToSatellite:
+            log.debug("subscription thread: rolling back Satellite provisioning")
+            roll_back_satellite_provisioning()
+            log.debug("subscription thread: Satellite provisioning rolled back")
+
+        log.debug("subscription thread: unregistration succeeded")
         progress_callback(SubscriptionPhase.DONE)
     else:
         log.warning("subscription thread: not registered, so can't unregister")
