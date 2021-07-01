@@ -609,6 +609,7 @@ class SubscriptionSpoke(NormalSpoke):
         # * the subscription status tab * #
 
         # general status
+        self._subscription_status_label = self.builder.get_object("subscription_status_label")
         self._method_status_label = self.builder.get_object("method_status_label")
         self._role_status_label = self.builder.get_object("role_status_label")
         self._sla_status_label = self.builder.get_object("sla_status_label")
@@ -1014,6 +1015,19 @@ class SubscriptionSpoke(NormalSpoke):
         Update state of the part of the spoke, that shows data about the
         currently attached subscriptions.
         """
+        # top level status label
+        if self._subscription_module.IsRegisteredToSatellite:
+            self._subscription_status_label.set_text(
+                _("The system is registered to a Satellite instance.")
+            )
+        else:
+            self._subscription_status_label.set_text(
+                _("The system is registered.")
+            )
+
+        # FIXME: show the satellite instance URL somewhere as well ?
+        #        or does a Satellite instance have a name we can obtain somehow and show to users ?
+
         # authentication method
         if self.authentication_method == AuthenticationMethod.USERNAME_PASSWORD:
             method_string = _("Registered with account {}").format(
