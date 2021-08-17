@@ -190,7 +190,7 @@ def register_and_subscribe(payload, progress_callback=noop, error_callback=noop,
     :param payload: Anaconda payload instance
     :param progress_callback: progress callback function, takes one argument, subscription phase
     :type progress_callback: callable(subscription_phase)
-    :param error_callback: error callback function, takes one argument, the error message
+    :param error_callback: error callback function, takes one argument, the error instance
     :type error_callback: callable(error_message)
     :param bool restart_payload: should payload restart be attempted if it appears necessary ?
 
@@ -249,7 +249,7 @@ def register_and_subscribe(payload, progress_callback=noop, error_callback=noop,
             log.debug("registration attempt: unregistration failed: %s", e)
             # Failing to unregister the system is an unrecoverable error,
             # so we end there.
-            error_callback(str(e))
+            error_callback(e)
             return
         log.debug("Subscription GUI: unregistration succeeded")
 
@@ -269,15 +269,15 @@ def register_and_subscribe(payload, progress_callback=noop, error_callback=noop,
         task.sync_run_task(task_proxy)
     except SatelliteProvisioningError as e:
         log.debug("registration attempt: Satellite provisioning failed: %s", e)
-        error_callback(str(e))
+        error_callback(e)
         return
     except RegistrationError as e:
         log.debug("registration attempt: registration attempt failed: %s", e)
-        error_callback(str(e))
+        error_callback(e)
         return
     except SubscriptionError as e:
         log.debug("registration attempt: failed to attach subscription: %s", e)
-        error_callback(str(e))
+        error_callback(e)
         return
 
     # check if the current installation source should be overridden by
@@ -342,7 +342,7 @@ def unregister(payload, overridden_source_type, progress_callback=noop, error_ca
             task.sync_run_task(task_proxy)
         except UnregistrationError as e:
             log.debug("registration attempt: unregistration failed: %s", e)
-            error_callback(str(e))
+            error_callback(e)
             return
 
         # If the CDN overrode an installation source we should revert that
