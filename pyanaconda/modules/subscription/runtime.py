@@ -909,9 +909,19 @@ class RegisterAndSubscribeTask(Task):
             # which is an unrecoverable error, so we end there.
             raise e
 
+    def _roll_back_satellite_provisioning(self):
+        """Something failed after we did Satellite provisioning - roll it back."""
+        log.debug("registration attempt: rolling back Satellite provisioning")
+        rollback_task = RollBackSatelliteProvisioningTask(
+            rhsm_config_proxy=self._rhsm_observer.get_proxy(RHSM_CONFIG),
+            rhsm_configuration=self._rhsm_configuration
+        )
+        rollback_task.run()
+        log.debug("registration attempt: Satellite provisioning rolled back")
+
     def run(self):
         """Try to register and subscribe the installation environment."""
-
+        provisioned_for_satellite = False
         # check authentication method has been set and credentials seem to be
         # sufficient (though not necessarily valid)
         register_task = None
@@ -950,6 +960,7 @@ class RegisterAndSubscribeTask(Task):
                 # environment for Satellite
                 log.debug("registration attempt: provisioning system for Satellite")
                 self._provision_system_for_satellite()
+                provisioned_for_satellite = True
                 # if we got there without an exception being raised, it was a success!
                 log.debug("registration attempt: system provisioned for Satellite")
 
@@ -959,12 +970,16 @@ class RegisterAndSubscribeTask(Task):
             except (RegistrationError, MultipleOrganizationsError) as e:
                 log.debug("registration attempt: registration attempt failed: %s", e)
                 log.debug("registration attempt: skipping auto attach due to registration error")
+                if provisioned_for_satellite:
+                    self._roll_back_satellite_provisioning()
                 raise e
             log.debug("registration attempt: registration succeeded")
         else:
             log.debug(
                 "registration attempt: credentials insufficient, skipping registration attempt"
             )
+            if provisioned_for_satellite:
+                self._roll_back_satellite_provisioning()
             raise RegistrationError(_("Registration failed due to insufficient credentials."))
 
         # try to attach subscription
@@ -975,7 +990,14 @@ class RegisterAndSubscribeTask(Task):
             rhsm_attach_proxy=rhsm_attach_proxy,
             sla=sla
         )
-        subscription_task.run()
+        try:
+            subscription_task.run()
+        except SubscriptionError as e:
+            # also roll back Satellite provisioning if registration was successfull
+            # but auto-attach failed
+            if provisioned_for_satellite:
+                self._roll_back_satellite_provisioning()
+            raise e
         # if we got this far without an exception then subscriptions have been attached
         self._subscription_attached_callback(True)
 
