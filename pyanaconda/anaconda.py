@@ -182,6 +182,11 @@ class Anaconda(object):
         """Report if Anaconda should run with the TUI."""
         return self._display_mode == DisplayModes.TUI
 
+    @property
+    def cockpit_mode(self):
+        """Report if Anaconda should run with cockpit UI."""
+        return self._display_mode == DisplayModes.COCKPIT
+
     def log_display_mode(self):
         if not self.display_mode:
             log.error("Display mode is not set!")
@@ -273,6 +278,11 @@ class Anaconda(object):
         if self._intf:
             raise RuntimeError("Second attempt to initialize the InstallInterface")
 
+
+        # FIXME: at the moment we force cockpit display mode - make this configurable
+        #        by CLI option or similar
+        self.display_mode = DisplayModes.COCKPIT
+
         if self.gui_mode:
             from pyanaconda.ui.gui import GraphicalUserInterface
             # Run the GUI in non-fullscreen mode, so live installs can still
@@ -290,6 +300,14 @@ class Anaconda(object):
 
             # needs to be refreshed now we know if gui or tui will take place
             addon_paths = collect_addon_ui_paths(ADDON_PATHS, "tui")
+        elif self.cockpit_mode:
+            from pyanaconda.ui.cockpit import CockpitUserInterface
+            self._intf = CockpitUserInterface(None, self.payload)
+
+            # needs to be refreshed now we know if gui or tui will take place
+            # FIXME - what about Cockpit based addons ?
+            addon_paths = collect_addon_ui_paths(ADDON_PATHS, "tui")
+
         elif not self.display_mode:
             raise RuntimeError("Display mode not set.")
         else:
