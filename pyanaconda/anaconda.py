@@ -273,7 +273,14 @@ class Anaconda(object):
         if self._intf:
             raise RuntimeError("Second attempt to initialize the InstallInterface")
 
-        if self.gui_mode:
+        if self.opts.webui:
+            from pyanaconda.ui.cockpit import CockpitUserInterface
+            self._intf = CockpitUserInterface(None, self.payload)
+
+            # needs to be refreshed now we know if gui or tui will take place
+            # FIXME - what about Cockpit based addons ?
+            addon_paths = collect_addon_ui_paths(ADDON_PATHS, "tui")
+        elif self.gui_mode:
             from pyanaconda.ui.gui import GraphicalUserInterface
             # Run the GUI in non-fullscreen mode, so live installs can still
             # use the window manager

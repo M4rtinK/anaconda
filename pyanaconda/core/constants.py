@@ -324,7 +324,7 @@ class DisplayModes(Enum):
 
 DISPLAY_MODE_NAME = {
     DisplayModes.GUI: "graphical mode",
-    DisplayModes.TUI: "text mode"
+    DisplayModes.TUI: "text mode",
 }
 
 INTERACTIVE_MODE_NAME = {

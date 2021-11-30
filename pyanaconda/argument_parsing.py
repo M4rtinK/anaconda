@@ -418,6 +418,11 @@ def getArgumentParser(version_string, boot_cmdline=None):
     ap.add_argument("--noninteractive", dest="noninteractive", action="store_true",
                     help=help_parser.help_text("noninteractive"))
 
+    # temporary boot option, if passed Web UI is shown instead of GTK3 UI
+    # in the graphical interface mode
+    ap.add_argument("--webui", action="store_true", default=False,
+                    help=help_parser.help_text("webui"))
+
     # Profile
     ap.add_argument("--profile", dest="profile_id", metavar="PROFILE_ID",
                     default="", help=help_parser.help_text("profile"))
