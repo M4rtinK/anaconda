@@ -28,6 +28,8 @@ RUN set -ex; \
   dnf update -y; \
   dnf install -y \
   'dnf-command(copr)' \
+  git \
+  npm \
   curl \
   python3-pip \
   /usr/bin/xargs \
