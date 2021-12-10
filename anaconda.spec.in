@@ -75,9 +75,8 @@ BuildRequires: libxml2
 
 %if %{use_cockpit}
 Requires: anaconda-webui = %{version}-%{release}
-%else
-Requires: anaconda-gui = %{version}-%{release}
 %endif
+Requires: anaconda-gui = %{version}-%{release}
 Requires: anaconda-tui = %{version}-%{release}
 
 %description
@@ -162,9 +161,8 @@ BuildRequires: desktop-file-utils
 # live installation currently implies a graphical installation
 %if %{use_cockpit}
 Requires: anaconda-webui = %{version}-%{release}
-%else
-Requires: anaconda-gui = %{version}-%{release}
 %endif
+Requires: anaconda-gui = %{version}-%{release}
 Requires: usermode
 Requires: zenity
 Recommends: xhost
@@ -251,7 +249,7 @@ Requires: cockpit-ws
 %description webui
 This package contains Cockpit based user interface for the Anaconda installer.
 
-%else
+%endif
 
 %package gui
 Summary: Graphical user interface for the Anaconda installer
@@ -280,7 +278,6 @@ BuildRequires: gsettings-desktop-schemas
 
 %description gui
 This package contains graphical user interface for the Anaconda installer.
-%endif
 
 %package tui
 Summary: Textual user interface for the Anaconda installer
@@ -409,7 +406,7 @@ desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{buildroot}%{_d
 %{_datadir}/cockpit/anaconda-webui/manifest.json
 %{_datadir}/metainfo/org.cockpit-project.anaconda-webui.metainfo.xml
 
-%else
+%endif
 
 %files gui
 %{python3_sitearch}/pyanaconda/ui/gui/*
@@ -422,7 +419,6 @@ desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{buildroot}%{_d
 %endif
 %{_datadir}/anaconda/window-manager
 %{_datadir}/anaconda/anaconda-gtk.css
-%endif
 
 %files tui
 %{python3_sitearch}/pyanaconda/rescue.py
