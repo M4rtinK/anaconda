@@ -60,10 +60,13 @@ bots:
 
 # FIXME: we need to download this from somewhere if not existing
 $(ISO_FILE):
-	curl https://download.fedoraproject.org/pub/fedora/linux/development/rawhide/Server/x86_64/os/images/boot.iso --output $(ISO_FILE)
+	curl -LO https://download.fedoraproject.org/pub/fedora/linux/development/rawhide/Server/x86_64/os/images/boot.iso -o $(ISO_FILE)
 
 integration-test: bots test/common $(ISO_FILE)
 	test/run-test $(ISO_FILE)
+
+vm-run: $(ISO_FILE)
+	VM_ONLY=true test/run-test $(ISO_FILE)
 
 # checkout Cockpit's test API; this has no API stability guarantee, so check out a stable tag
 # when you start a new project, use the latest release, and update it from time to time

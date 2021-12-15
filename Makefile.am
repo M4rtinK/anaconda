@@ -388,7 +388,7 @@ run-rpm-tests-only: rpms
 			ROOT_ANACONDA_PATH=$(abs_srcdir) TESTS=rpm_tests/rpm_tests.sh check
 
 cockpit-tests: rpms
-	$(MAKE) RPM_PATH=$(RPM_BUILD_DIR) --directory pyanaconda/ui/cockpit/ integration-test
+	$(MAKE) RPM_PATH=$(RPM_BUILD_DIR) --directory pyanaconda/ui/cockpit/anaconda-webui integration-test
 
 coverage-report:
 	$(COVERAGE) combine tests/.coverage.*
