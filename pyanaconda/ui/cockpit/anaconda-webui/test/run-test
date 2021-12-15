@@ -1,0 +1,46 @@
+#!/bin/sh
+
+set -ex
+
+clean_up () {
+    ARG=$?
+    pkill -9 -f  'python -m http.server'
+    virsh -c qemu:///session destroy test-updates
+    virsh -c qemu:///session undefine test-updates
+    exit $ARG
+}
+
+trap clean_up SIGINT SIGTERM EXIT
+pushd ../../../../
+wget -nc https://kojipkgs.fedoraproject.org//packages/cockpit/259/1.fc35/x86_64/cockpit-ws-259-1.fc35.x86_64.rpm
+wget -nc https://kojipkgs.fedoraproject.org//packages/cockpit/259/1.fc35/x86_64/cockpit-bridge-259-1.fc35.x86_64.rpm
+scripts/makeupdates --add $RPM_PATH/anaconda-*.rpm --add cockpit-*.rpm
+python -m http.server &
+popd
+
+# determine ssh forward port
+ssh_port=22000
+until echo '' | nc localhost $ssh_port 2>&1 >/dev/null | grep -q 'Connection refused'; do
+    ssh_port=$((ssh_port+1))
+done
+echo "Host ssh port: $ssh_port"
+
+# Run the test VM
+virt-install --connect qemu:///session \
+        --quiet --name test-updates \
+        --os-variant fedora-rawhide \
+        --memory 1024 \
+        --noautoconsole \
+        --graphics vnc,listen=127.0.0.2 \
+        --extra-args='inst.sshd inst.nokill inst.updates=http://10.0.2.2:8000/updates.img' \
+        --network none \
+        --qemu-commandline='-netdev user,id=hostnet0,hostfwd=tcp:127.0.0.2:'${ssh_port}'-:22,hostfwd=tcp:127.0.0.2:9091-:9090 -device virtio-net-pci,netdev=hostnet0,id=net0' \
+        --initrd-inject `pwd`/test/ks.cfg --extra-args "inst.ks=file:/ks.cfg" \
+        --disk size=10,format=qcow2 --location $1
+
+until $(curl --output /dev/null --silent --head --fail http://127.0.0.2:9091/cockpit/@localhost/anaconda-webui/index.html); do
+    echo 'Waiting for anaconda UI to show up...\n'
+    sleep 5
+done
+
+TEST_ALLOW_NOLOGIN=true test/check-basic -t --machine 127.0.0.2:${ssh_port} --browser 127.0.0.2:9091
