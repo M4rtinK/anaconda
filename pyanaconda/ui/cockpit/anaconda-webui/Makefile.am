@@ -60,7 +60,7 @@ bots:
 
 # FIXME: we need to download this from somewhere if not existing
 $(ISO_FILE):
-	curl -LO https://download.fedoraproject.org/pub/fedora/linux/development/rawhide/Server/x86_64/os/images/boot.iso -o $(ISO_FILE)
+	curl -L https://download.fedoraproject.org/pub/fedora/linux/development/rawhide/Server/x86_64/os/images/boot.iso -o $(ISO_FILE)
 
 integration-test: bots test/common $(ISO_FILE)
 	test/run-test $(ISO_FILE)
