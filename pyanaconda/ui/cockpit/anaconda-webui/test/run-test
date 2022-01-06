@@ -16,8 +16,8 @@ pushd ../../../../
 # FIXME boot.iso on rawhide does not currently contain the new cockpit dependencies
 # This will change once we include this changes upstream and start building boot.iso with the new dependencies
 # Then we can safely remove this workaround
-test ! -e cockpit-ws*.rpm && curl -LO -o /dev/null https://kojipkgs.fedoraproject.org//packages/cockpit/259/1.fc35/x86_64/cockpit-ws-259-1.fc35.x86_64.rpm
-test ! -e cockpit-bridge*.rpm && curl -LO -o /dev/null https://kojipkgs.fedoraproject.org//packages/cockpit/259/1.fc35/x86_64/cockpit-bridge-259-1.fc35.x86_64.rpm
+test ! -e cockpit-ws*.rpm && curl -LO https://kojipkgs.fedoraproject.org//packages/cockpit/259/1.fc35/x86_64/cockpit-ws-259-1.fc35.x86_64.rpm
+test ! -e cockpit-bridge*.rpm && curl -LO https://kojipkgs.fedoraproject.org//packages/cockpit/259/1.fc35/x86_64/cockpit-bridge-259-1.fc35.x86_64.rpm
 
 scripts/makeupdates --add $RPM_PATH/anaconda-*.rpm --add cockpit-*.rpm
 python3 -m http.server &
