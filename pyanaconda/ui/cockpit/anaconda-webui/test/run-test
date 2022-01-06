@@ -46,4 +46,4 @@ until $(curl --silent -o /dev/null --head --fail http://127.0.0.2:9091/cockpit/@
     sleep 5
 done
 
-TEST_ALLOW_NOLOGIN=true test/check-basic -t --machine 127.0.0.2:22000 --browser 127.0.0.2:9091
+TEST_ALLOW_NOLOGIN=true test/common/run-tests --jobs 1 --machine 127.0.0.2:22000 --browser 127.0.0.2:9091
