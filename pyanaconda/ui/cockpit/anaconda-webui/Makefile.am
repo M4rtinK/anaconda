@@ -34,7 +34,7 @@ dist_noinst_DATA = \
 	webpack.config.js
 
 $(WEBPACK_TEST): $(LIB_TEST) $(shell find src/ -type f) package-lock.json webpack.config.js
-	NODE_ENV=production node_modules/.bin/webpack
+	NODE_ENV=production $(CURDIR)/node_modules/.bin/webpack
 
 install-data-hook: $(WEBPACK_TEST)
 	mkdir -p $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
