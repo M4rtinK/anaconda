@@ -448,8 +448,6 @@ if __name__ == "__main__":
     display_mode_coversion_table = {
         constants.DisplayModes.GUI: pykickstart_constants.DISPLAY_MODE_GRAPHICAL,
         constants.DisplayModes.TUI: pykickstart_constants.DISPLAY_MODE_TEXT,
-        # FIXME: add display mode to pykickstart ?
-        constants.DisplayModes.COCKPIT: pykickstart_constants.DISPLAY_MODE_TEXT
     }
     ksdata.displaymode.displayMode = display_mode_coversion_table[anaconda.display_mode]
     ksdata.displaymode.nonInteractive = not anaconda.interactive_mode
