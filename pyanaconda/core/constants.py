@@ -320,13 +320,11 @@ STORAGE_LUKS2_MIN_RAM = "luks2_min_ram"
 class DisplayModes(Enum):
     GUI = "GUI"
     TUI = "TUI"
-    COCKPIT = "COCKPIT"
 
 
 DISPLAY_MODE_NAME = {
     DisplayModes.GUI: "graphical mode",
     DisplayModes.TUI: "text mode",
-    DisplayModes.COCKPIT: "cockpit mode"
 }
 
 INTERACTIVE_MODE_NAME = {
