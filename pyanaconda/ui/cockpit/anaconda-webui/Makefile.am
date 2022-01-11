@@ -48,7 +48,7 @@ EXTRA_DIST = dist src
 
 # checkout Cockpit's PF/React/build library; again this has no API stability guarantee, so check out a stable tag
 $(LIB_TEST):
-	git clone -b 258 --depth=1 https://github.com/cockpit-project/cockpit.git tmp/cockpit
+	git clone -b 260 --depth=1 https://github.com/cockpit-project/cockpit.git tmp/cockpit
 	mv tmp/cockpit/pkg/lib src/
 	rm -rf tmp/cockpit
 
@@ -74,7 +74,7 @@ vm-run: $(ISO_FILE)
 # checkout Cockpit's test API; this has no API stability guarantee, so check out a stable tag
 # when you start a new project, use the latest release, and update it from time to time
 test/common:
-	git clone -b 258 --depth=1 https://github.com/cockpit-project/cockpit.git tmp/cockpit
+	git clone -b 260 --depth=1 https://github.com/cockpit-project/cockpit.git tmp/cockpit
 	mv tmp/cockpit/test/common test/common
 	rm -rf tmp/cockpit
 
