@@ -68,6 +68,7 @@ integration-test: bots test/common $(ISO_FILE)
 	test/run-test $(ISO_FILE)
 
 vm-run: $(ISO_FILE)
+	if test -z "$$RPM_PATH"; then echo 'Please set RPM_PATH variable'; exit 1; fi
 	VM_ONLY=true test/run-test $(ISO_FILE)
 
 # checkout Cockpit's test API; this has no API stability guarantee, so check out a stable tag
