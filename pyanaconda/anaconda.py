@@ -274,7 +274,7 @@ class Anaconda(object):
             raise RuntimeError("Second attempt to initialize the InstallInterface")
 
         if self.opts.webui:
-            from pyanaconda.ui.cockpit import CockpitUserInterface
+            from pyanaconda.ui.webui import CockpitUserInterface
             self._intf = CockpitUserInterface(None, self.payload)
 
             # needs to be refreshed now we know if gui or tui will take place
