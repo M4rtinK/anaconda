@@ -83,7 +83,7 @@ export const Summary = () => {
 
     return (
         <>
-            {path[0] === 'summary' && <Header title='Installation summary' />}
+            {path[0] === 'summary' && <Header title='Installation summary - test' />}
             {path[0] === 'summary' &&
             <PageSection className='summary'>
                 <Form>
