@@ -21,6 +21,7 @@ import {
     Checkbox,
     Form, FormGroup,
     PageSection,
+    TextArea,
 } from '@patternfly/react-core';
 
 import { useEvent, useObject } from 'hooks';
@@ -35,6 +36,7 @@ export const RootAccount = () => {
     const [pwdConfirm, setPwdConfirm] = useState('');
     const [pwdMessage, setPwdMessage] = useState('');
     const [pwdStrength, setPwdStrength] = useState('');
+    const [rootSshKey, setRootSshKey] = useState('');
     const address = useContext(AddressContext);
 
     const usersProxy = useObject(() => {
@@ -44,12 +46,17 @@ export const RootAccount = () => {
             '/org/fedoraproject/Anaconda/Modules/Users',
         );
         setIsLocked(proxy.IsRootAccountLocked);
+        // FIXME: actually fetch the correct key via DBus, if any
 
         return proxy;
     }, null, [address]);
 
     useEvent(usersProxy, 'changed', (event, data) => {
         setIsLocked(data.IsRootAccountLocked);
+        const rootkey = usersProxy.SshKeys.find(key => key.username.v === 'root');
+        if (rootkey) {
+            setRootSshKey(rootkey.key.v);
+        }
     });
 
     useEffect(() => {
@@ -83,9 +90,14 @@ export const RootAccount = () => {
 
     const onDoneClicked = () => {
         usersProxy.SetRootAccountLocked(isLocked);
+        usersProxy.SetSshKeys([{ key: cockpit.variant('s', rootSshKey), username: cockpit.variant('s', 'root') }]).then(console.info, console.error);
+
         // TODO Set crypted root password
         cockpit.location.go(['summary']);
     };
+
+    console.info('SSH keys:');
+    console.info(usersProxy.SshKeys);
 
     return (
         <>
@@ -116,6 +128,11 @@ export const RootAccount = () => {
                         />
                     </FormGroup>
                 </Form>
+                <TextArea
+                  aria-label='public SSH key for the root account'
+                  value={rootSshKey}
+                  onChange={setRootSshKey}
+                />
             </PageSection>
         </>
     );
