@@ -15,24 +15,46 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from 'cockpit';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 
 import {
-    Form, FormGroup,
+    Form,
+    FormGroup,
+    FormSelect,
+    FormSelectOption,
     PageSection,
     Switch,
 } from '@patternfly/react-core';
 
-import { Header } from '../Common.jsx';
+import { AddressContext, Header } from '../Common.jsx';
 
 // This is a wrapper around timedatectl dbus API
 import { ServerTime } from 'serverTime';
-import { useObject } from 'hooks';
+import { useEvent, useObject } from 'hooks';
 
 export const TimeDate = () => {
-    const [timezone, setTimezone] = useState();
-    const [timezones, setTimezones] = useState();
+    const [timezone, setTimezone] = useState('');
+    const [timezones, setTimezones] = useState([]);
     const [useNetworkTime, setUseNetworkTime] = useState(true);
+    const address = useContext(AddressContext);
+
+    const timezoneProxy = useObject(() => {
+        const client = cockpit.dbus(
+            'org.fedoraproject.Anaconda.Modules.Timezone',
+            { superuser: 'try', bus: 'none', address }
+        );
+        const proxy = client.proxy(
+            'org.fedoraproject.Anaconda.Modules.Timezone',
+            '/org/fedoraproject/Anaconda/Modules/Timezone',
+        );
+        setTimezone(proxy.Timezone);
+
+        return proxy;
+    }, null, [address]);
+
+    useEvent(timezoneProxy, 'changed', (event, data) => {
+        setTimezone(data.Timezone);
+    });
 
     const serverTime = useObject(() => new ServerTime(),
                                  st => st.close(),
@@ -44,6 +66,7 @@ export const TimeDate = () => {
     }, [serverTime]);
 
     const onDoneClicked = () => {
+        timezoneProxy.SetTimezone(timezone);
         cockpit.location.go(['summary']);
     };
 
@@ -55,7 +78,11 @@ export const TimeDate = () => {
             />
             <PageSection>
                 <Form isHorizontal>
-                    <Timezones timezone={timezone} timezones={timezones} />
+                    <Timezones
+                      timezone={timezone}
+                      timezones={timezones}
+                      setTimezone={setTimezone}
+                    />
                     <FormGroup
                       fieldId='network-time-switch'
                       hasNoPaddingTop
@@ -74,8 +101,27 @@ export const TimeDate = () => {
     );
 };
 
-const Timezones = ({ timezone, timezones }) => {
-    return null;
+const Timezones = ({ timezone, timezones, setTimezone }) => {
+    return (
+        <FormGroup
+          fieldId='timezone-selection'
+          label='Timezone'>
+            <FormSelect
+              id='timezone-selection'
+              label='Select timezone'
+              value={timezone}
+              onChange={setTimezone}
+            >
+                {timezones.map((option, index) => (
+                    <FormSelectOption
+                      key={index}
+                      value={option}
+                      label={option}
+                    />
+                ))}
+            </FormSelect>
+        </FormGroup>
+    );
 };
 
 const TimeDateManual = ({ timedate, useNetworkTime }) => {
