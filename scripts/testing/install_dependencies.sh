@@ -28,7 +28,7 @@
 
 set -eu
 
-dnf install $@ rpm-build /usr/bin/xargs
+dnf -y install $@ rpm-build /usr/bin/xargs npm libvirt virt-install
 
 TEMP=$(mktemp /tmp/anaconda.spec.XXXXXXX)
 
@@ -38,7 +38,7 @@ sed 's/@PACKAGE_VERSION@/0/; s/@PACKAGE_RELEASE@/0/; s/%{__python3}/python3/' ./
 # get all build requires dependencies from the spec file and strip out version
 # version could be problematic because of fedora version you are running and
 # they are mostly not important for automake
-rpmspec -q --buildrequires $TEMP | sed 's/>=.*$//' | xargs -d '\n' dnf install $@
+rpmspec -q --buildrequires $TEMP | sed 's/>=.*$//' | xargs -d '\n' dnf -y install $@
 
 # clean up the temp file
 rm $TEMP

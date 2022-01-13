@@ -307,7 +307,8 @@ container-rpms:
 	sh -exc ' \
 			/run-build-and-arg make rpms && \
 			rm -rf ./result && \
-			cp -rv /tmp/anaconda/result ./'
+			cp -rv /tmp/anaconda/result ./ && \
+			cp -rv /tmp/anaconda/ui/webui/dist ./ui/webui/dist'
 
 container-rpms-scratch:
 	$(MAKE) -f ./Makefile.am CONTAINER_ADD_ARGS="-e TEST_BUILD=true" container-rpms
