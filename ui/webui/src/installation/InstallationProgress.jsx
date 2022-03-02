@@ -20,7 +20,7 @@ import React from "react";
 
 import { Bullseye, Progress } from "@patternfly/react-core";
 
-import { AddressContext } from "./Common.jsx";
+import { AddressContext } from "../Common.jsx";
 
 import "./InstallationProgress.scss";
 

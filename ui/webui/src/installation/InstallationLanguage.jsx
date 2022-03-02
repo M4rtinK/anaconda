@@ -19,13 +19,12 @@ import React, { useContext, useEffect, useState } from "react";
 import cockpit from "cockpit";
 
 import {
-    ActionGroup,
     Form, FormGroup,
     SelectGroup, SelectOption, Select, SelectVariant,
     Title,
 } from "@patternfly/react-core";
 
-import { AddressContext } from "./Common.jsx";
+import { AddressContext } from "../Common.jsx";
 
 import { useEvent, useObject } from "hooks";
 
@@ -167,8 +166,6 @@ export const InstallationLanguage = ({ onSelectLang }) => {
             <FormGroup label={_("What language would you like to use during the installation process?")}>
                 <LanguageSelector lang={lang} onSelectLang={setLang} menuAppendTo={document.body}/>
             </FormGroup>
-            <ActionGroup>
-            </ActionGroup>
         </Form>
     );
 };
