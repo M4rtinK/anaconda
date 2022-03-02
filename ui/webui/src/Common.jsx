@@ -49,12 +49,6 @@ export const Header = ({ done, doneDisabled, title }) => {
                 <Title headingLevel="h1" size="2xl">
                     {title || "Subpage description"}
                 </Title>
-                <Button
-                  id={"help-btn-" + pageId}
-                  variant="secondary"
-                  onClick={() => console.log("I am on pageId " + (pageId || "summary"))}>
-                    Help
-                </Button>
             </Level>
         </PageSection>
     );
