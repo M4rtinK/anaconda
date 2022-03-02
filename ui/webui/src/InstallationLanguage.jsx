@@ -20,9 +20,7 @@ import cockpit from "cockpit";
 
 import {
     ActionGroup,
-    Button,
     Form, FormGroup,
-    PageSection,
     SelectGroup, SelectOption, Select, SelectVariant,
     Title,
 } from "@patternfly/react-core";
@@ -162,19 +160,15 @@ export const InstallationLanguage = ({ onSelectLang }) => {
     };
 
     return (
-        <PageSection>
-            <Form>
-                <Title headingLevel="h2" size="1xl">
-                    WELCOME TO FEDORA...
-                </Title>
-                <FormGroup label={_("What language would you like to use during the installation process?")}>
-                    <LanguageSelector lang={lang} onSelectLang={setLang} />
-                </FormGroup>
-                <ActionGroup>
-                    <Button id="continue-btn" variant="primary" onClick={handleOnContinue}>{_("Continue")}</Button>
-                    <Button variant="link">{_("Quit")}</Button>
-                </ActionGroup>
-            </Form>
-        </PageSection>
+        <Form>
+            <Title headingLevel="h2" size="1xl">
+                WELCOME TO FEDORA...
+            </Title>
+            <FormGroup label={_("What language would you like to use during the installation process?")}>
+                <LanguageSelector lang={lang} onSelectLang={setLang} menuAppendTo={document.body}/>
+            </FormGroup>
+            <ActionGroup>
+            </ActionGroup>
+        </Form>
     );
 };
