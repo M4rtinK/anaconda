@@ -18,27 +18,15 @@ import cockpit from "cockpit";
 import React from "react";
 
 import {
-    PageSection
+    Form
 } from "@patternfly/react-core";
-
-import { Header } from "../Common.jsx";
 
 const _ = cockpit.gettext;
 
 export const InstallationSource = () => {
-    const onDoneClicked = () => {
-        cockpit.location.go(["summary"]);
-    };
-
     return (
-        <>
-            <Header
-              done={onDoneClicked}
-              title={_("Installation source")}
-            />
-            <PageSection>
-                Not implemented
-            </PageSection>
-        </>
+        <Form isHorizontal>
+            {_("Not implemented")}
+        </Form>
     );
 };

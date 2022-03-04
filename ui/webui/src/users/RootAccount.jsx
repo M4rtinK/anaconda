@@ -20,13 +20,12 @@ import React, { useState, useContext, useEffect } from "react";
 import {
     Checkbox,
     Form, FormGroup,
-    PageSection,
 } from "@patternfly/react-core";
 
 import { useEvent, useObject } from "hooks";
 
 import { password_quality as passwordQuality, PasswordFormFields } from "cockpit-components-password.jsx";
-import { AddressContext, Header } from "../Common.jsx";
+import { AddressContext } from "../Common.jsx";
 
 const _ = cockpit.gettext;
 
@@ -88,36 +87,29 @@ export const RootAccount = () => {
     };
 
     return (
-        <>
-            <Header
-              doneDisabled={isLocked === undefined}
-              done={onDoneClicked}
-              title={_("Root password")}
-            />
-            <PageSection>
-                <Form isHorizontal>
-                    <PasswordFormFields
-                      change={onPwdChange}
-                      error_password={errors && errors.pwd}
-                      idPrefix="root-account-set-pwd"
-                      password={pwd}
-                      password_confirm={pwdConfirm}
-                      password_confirm_label={_("Confirm root password")}
-                      password_label={_("Root password")}
-                      password_message={pwdMessage}
-                      password_strength={pwdStrength}
+        <Form isHorizontal>
+            <Form isHorizontal>
+                <PasswordFormFields
+                  change={onPwdChange}
+                  error_password={errors && errors.pwd}
+                  idPrefix="root-account-set-pwd"
+                  password={pwd}
+                  password_confirm={pwdConfirm}
+                  password_confirm_label={_("Confirm root password")}
+                  password_label={_("Root password")}
+                  password_message={pwdMessage}
+                  password_strength={pwdStrength}
+                />
+                <FormGroup fieldId="root-account-lock">
+                    <Checkbox
+                      id="root-account-lock"
+                      isChecked={isLocked}
+                      isDisabled={isLocked === undefined}
+                      label={_("Lock root account")}
+                      onChange={setIsLocked}
                     />
-                    <FormGroup fieldId="root-account-lock">
-                        <Checkbox
-                          id="root-account-lock"
-                          isChecked={isLocked}
-                          isDisabled={isLocked === undefined}
-                          label={_("Lock root account")}
-                          onChange={setIsLocked}
-                        />
-                    </FormGroup>
-                </Form>
-            </PageSection>
-        </>
+                </FormGroup>
+            </Form>
+        <Form/>
     );
 };

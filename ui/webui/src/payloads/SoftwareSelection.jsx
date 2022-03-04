@@ -18,10 +18,8 @@ import cockpit from "cockpit";
 import React from "react";
 
 import {
-    PageSection
+    Form
 } from "@patternfly/react-core";
-
-import { Header } from "../Common.jsx";
 
 const _ = cockpit.gettext;
 
@@ -31,14 +29,8 @@ export const SoftwareSelection = () => {
     };
 
     return (
-        <>
-            <Header
-              done={onDoneClicked}
-              title={_("Software selection")}
-            />
-            <PageSection>
-                Not implemented
-            </PageSection>
-        </>
+        <Form isHorizontal>
+            {_("Not implemented")}
+        </Form>
     );
 };

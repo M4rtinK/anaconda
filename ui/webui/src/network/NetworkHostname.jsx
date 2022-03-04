@@ -18,10 +18,8 @@ import cockpit from "cockpit";
 import React from "react";
 
 import {
-    PageSection
+    Form
 } from "@patternfly/react-core";
-
-import { Header } from "../Common.jsx";
 
 const _ = cockpit.gettext;
 
@@ -31,14 +29,8 @@ export const NetworkHostname = () => {
     };
 
     return (
-        <>
-            <Header
-              done={onDoneClicked}
-              title={_("Network & Host Name")}
-            />
-            <PageSection>
-                Not implemented
-            </PageSection>
-        </>
+        <Form>
+            {_("Not implemented")}
+        </Form>
     );
 };

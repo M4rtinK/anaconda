@@ -19,11 +19,8 @@ import React, { useEffect, useState } from "react";
 
 import {
     Form, FormGroup,
-    PageSection,
     Switch,
 } from "@patternfly/react-core";
-
-import { Header } from "../Common.jsx";
 
 // This is a wrapper around timedatectl dbus API
 import { ServerTime } from "serverTime";
@@ -45,34 +42,22 @@ export const TimeDate = () => {
         serverTime.get_timezones().then(setTimezones, console.error);
     }, [serverTime]);
 
-    const onDoneClicked = () => {
-        cockpit.location.go(["summary"]);
-    };
-
     return (
-        <>
-            <Header
-              done={onDoneClicked}
-              title={_("Time & Date")}
-            />
-            <PageSection>
-                <Form isHorizontal>
-                    <Timezones timezone={timezone} timezones={timezones} />
-                    <FormGroup
-                      fieldId="network-time-switch"
-                      hasNoPaddingTop
-                      label={_("Network time")}>
-                        <Switch
-                          id="network-time-switch"
-                          isChecked={useNetworkTime}
-                          label={_("Use network time")}
-                          onChange={setUseNetworkTime}
-                        />
-                    </FormGroup>
-                    <TimeDateManual timedate={serverTime.utc_fake_now} useNetworkTime={useNetworkTime} />
-                </Form>
-            </PageSection>
-        </>
+        <Form isHorizontal>
+            <Timezones timezone={timezone} timezones={timezones} />
+            <FormGroup
+              fieldId="network-time-switch"
+              hasNoPaddingTop
+              label={_("Network time")}>
+                <Switch
+                  id="network-time-switch"
+                  isChecked={useNetworkTime}
+                  label={_("Use network time")}
+                  onChange={setUseNetworkTime}
+                />
+            </FormGroup>
+            <TimeDateManual timedate={serverTime.utc_fake_now} useNetworkTime={useNetworkTime} />
+        </Form>
     );
 };
 
