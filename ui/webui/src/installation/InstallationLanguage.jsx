@@ -140,7 +140,7 @@ export const InstallationLanguage = ({ onSelectLang }) => {
     const langCookie = (window.localStorage.getItem("cockpit.lang") || "en-us").split("-");
     const [lang, setLang] = useState(langCookie[0] + "_" + langCookie[1].toUpperCase() + ".UTF-8");
 
-    const handleOnContinue = () => {
+    useEffect(() => {
         if (!lang) {
             return;
         }
@@ -154,9 +154,11 @@ export const InstallationLanguage = ({ onSelectLang }) => {
 
         document.cookie = cookie;
         window.localStorage.setItem("cockpit.lang", cockpitLang);
-        cockpit.location.go(["summary"]);
-        window.location.reload(true);
-    };
+    }, [lang]);
+
+    useEffect(() => {
+        return () => window.location.reload(true);
+    }, [lang]);
 
     return (
         <Form>
@@ -164,7 +166,7 @@ export const InstallationLanguage = ({ onSelectLang }) => {
                 WELCOME TO FEDORA...
             </Title>
             <FormGroup label={_("What language would you like to use during the installation process?")}>
-                <LanguageSelector lang={lang} onSelectLang={setLang} menuAppendTo={document.body}/>
+                <LanguageSelector lang={lang} onSelectLang={setLang} menuAppendTo={document.body} />
             </FormGroup>
         </Form>
     );
