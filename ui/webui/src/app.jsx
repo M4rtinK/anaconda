@@ -68,34 +68,41 @@ export const Application = () => {
 
     const steps = [
         {
+            id: "installation-language",
             name: _("Installation language"),
             component: wrapWithContext(<InstallationLanguage />),
             stepNavItemProps: { id: "installation-language" }
         },
         {
+            id: "installation-destination",
             name: _("Storage configuration"),
             component: wrapWithContext(<InstallationDestination />),
             stepNavItemProps: { id: "installation-destination" }
         },
         {
+            id: "review-configuration",
             name: _("Review"),
             component: wrapWithContext(<ReviewConfiguration />),
             nextButtonText: _("Begin installation"),
             stepNavItemProps: { id: "review-configuration" }
         },
         {
+            id: "installation-progress",
             name: _("Installation progress"),
             component: wrapWithContext(<InstallationProgress onAddNotification={onAddNotification} />),
             stepNavItemProps: { id: "installation-progress" },
             nextButtonText: _("Next")
         },
         {
+            id: "installation-complete",
             name: _("Installation complete"),
             component: wrapWithContext(<InstallationComplete />),
             stepNavItemProps: { id: "installation-complete" },
             nextButtonText: _("Reboot")
         }
     ];
+    const startAtStep = steps.findIndex(step => step.id === path[0]) + 1;
+    const goToStep = newStep => cockpit.location.go([newStep.id]);
     const title = _("Anaconda Installer");
 
     return (
@@ -132,6 +139,10 @@ export const Application = () => {
               description={_("PRE-RELEASE/TESTING")}
               steps={steps}
               cancelButtonText={_("Quit")}
+              onBack={goToStep}
+              onGoToStep={goToStep}
+              onNext={goToStep}
+              startAtStep={startAtStep}
             />
         </Page>
     );
