@@ -47,6 +47,7 @@ const getSteps = ({
     address,
     currentStepId,
     onAddErrorNotification,
+    toggleContextHelp,
     setIsFormValid,
     stepNotification,
     stepsOrder
@@ -81,7 +82,9 @@ const getSteps = ({
                 <Renderer
                   idPrefix={s.id}
                   setIsFormValid={setIsFormValid}
-                  onAddErrorNotification={onAddErrorNotification} />,
+                  onAddErrorNotification={onAddErrorNotification}
+                  toggleContextHelp={toggleContextHelp}
+                />,
                 s.title || s.label
             ),
             stepNavItemProps: { id: s.id },
@@ -91,7 +94,7 @@ const getSteps = ({
     });
 };
 
-export const AnacondaWizard = ({ onAddErrorNotification, title }) => {
+export const AnacondaWizard = ({ onAddErrorNotification, toggleContextHelp, title }) => {
     const [isFormValid, setIsFormValid] = useState(true);
 
     const stepsOrder = [
@@ -128,6 +131,7 @@ export const AnacondaWizard = ({ onAddErrorNotification, title }) => {
         currentStepId,
         setIsFormValid,
         onAddErrorNotification,
+        toggleContextHelp,
         stepNotification,
         stepsOrder
     });

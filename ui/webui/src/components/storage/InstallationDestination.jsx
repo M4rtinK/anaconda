@@ -256,7 +256,7 @@ const LocalStandardDisks = ({ idPrefix, onAddErrorNotification }) => {
     );
 };
 
-export const InstallationDestination = ({ idPrefix, onAddErrorNotification }) => {
+export const InstallationDestination = ({ idPrefix, onAddErrorNotification, toggleContextHelp }) => {
     const [requiredSize, setRequiredSize] = useState(0);
 
     useEffect(() => {
@@ -271,13 +271,17 @@ export const InstallationDestination = ({ idPrefix, onAddErrorNotification }) =>
     return (
         <>
             <TextContent>
-                <Text component={TextVariants.p}>{
-                    cockpit.format(_(
+                <Text component={TextVariants.p}>
+                    {cockpit.format(_(
                         "Select the device(s) to install to. The installation requires " +
                         "$0 of available space. Storage will be automatically partitioned."
-                    ), cockpit.format_bytes(requiredSize))
-                }
+                    ), cockpit.format_bytes(requiredSize))}
+                    {" "}
+                    <Button variant="link" isInline onClick={toggleContextHelp}>
+                        {_("Learn more about your storage options.")}
+                    </Button>
                 </Text>
+
             </TextContent>
             <Alert
               isInline
