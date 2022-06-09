@@ -33,12 +33,13 @@ import { InstallationDestination, applyDefaultStorage } from "./storage/Installa
 import { InstallationLanguage } from "./localization/InstallationLanguage.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
 import { ReviewConfiguration, ReviewConfigurationConfirmModal } from "./review/ReviewConfiguration.jsx";
+import { LogViewerModal } from "./LogViewer.jsx";
 import { exitGui } from "../helpers/exit.js";
 import { usePageLocation } from "hooks";
 
 const _ = cockpit.gettext;
 
-export const AnacondaWizard = ({ onAddErrorNotification, toggleContextHelp, title }) => {
+export const AnacondaWizard = ({ onAddErrorNotification, toggleContextHelp, title, showLogViewer, setShowLogViewer }) => {
     const [isFormValid, setIsFormValid] = useState(true);
     const [stepNotification, setStepNotification] = useState();
     const [isInProgress, setIsInProgress] = useState(false);
@@ -104,6 +105,8 @@ export const AnacondaWizard = ({ onAddErrorNotification, toggleContextHelp, titl
             setStepNotification={setStepNotification}
             isInProgress={isInProgress}
             setIsInProgress={setIsInProgress}
+            showLogViewer={showLogViewer}
+            setShowLogViewer={setShowLogViewer}
           />}
           hideClose
           mainAriaLabel={`${title} content`}
@@ -117,7 +120,7 @@ export const AnacondaWizard = ({ onAddErrorNotification, toggleContextHelp, titl
     );
 };
 
-const Footer = ({ isFormValid, setIsFormValid, setStepNotification, isInProgress, setIsInProgress }) => {
+const Footer = ({ isFormValid, setIsFormValid, setStepNotification, isInProgress, setIsInProgress, showLogViewer, setShowLogViewer }) => {
     const [nextWaitsConfirmation, setNextWaitsConfirmation] = useState(false);
     const [quitWaitsConfirmation, setQuitWaitsConfirmation] = useState(false);
 
@@ -179,6 +182,10 @@ const Footer = ({ isFormValid, setIsFormValid, setStepNotification, isInProgress
                             <QuitInstallationConfirmModal
                               exitGui={exitGui}
                               setQuitWaitsConfirmation={setQuitWaitsConfirmation}
+                            />}
+                            {showLogViewer &&
+                            <LogViewerModal
+                              setShowLogViewer={setShowLogViewer}
                             />}
                             <ActionList>
                                 <Button

@@ -44,6 +44,7 @@ export const Application = () => {
     const [conf, setConf] = useState();
     const [notifications, setNotifications] = useState({});
     const [isHelpExpanded, setIsHelpExpanded] = useState(false);
+    const [showLogViewer, setShowLogViewer] = useState(false);
 
     useEffect(() => {
         cockpit.file("/run/anaconda/bus.address").watch(address => {
@@ -96,7 +97,7 @@ export const Application = () => {
         <Page
           data-debug={conf.Anaconda.debug}
           additionalGroupedContent={
-              <AnacondaHeader beta={beta} title={title} />
+              <AnacondaHeader beta={beta} title={title} setShowLogViewer={setShowLogViewer} />
           }
           groupProps={{
               sticky: "top"
@@ -130,6 +131,8 @@ export const Application = () => {
                   onAddErrorNotification={onAddErrorNotification}
                   toggleContextHelp={toggleContextHelp}
                   title={title}
+                  showLogViewer={showLogViewer}
+                  setShowLogViewer={setShowLogViewer}
                 />
             </AddressContext.Provider>
         </Page>
