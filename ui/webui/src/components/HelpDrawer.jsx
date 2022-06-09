@@ -47,16 +47,16 @@ export const HelpDrawer = ({ isExpanded, setIsExpanded, children }) => {
                 Storage options
             </Title>
             <Text component={TextVariants.p}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                ea commodo consequat.
+                Installation destination allows you to configure which disks will be used as the installation target for your Fedora installation. At least 1 disk must  be selected for the installation to proceed.
             </Text>
             <Text component={TextVariants.p}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                ea commodo consequat.
+                All locally available storage devices (SATA, IDE and SCSI hard drives, USB flash drives, etc.) are displayed in the Local Standard Disks section. Local disks are detected when the installer starts - any storage devices connected after the installation has started will not be shown.
+            </Text>
+            <Text component={TextVariants.p}>
+                If you need to configure additional local storage devices, refresh the page using the refresh icon. All detected disks, including any new ones, will be displayed in the Local Standard Disks section.
+            </Text>
+            <Text component={TextVariants.p}>
+                The installer will determine the total amount of space on all selected disks, and it will create a Btrfs layout suitable for your system. The specifics of this layout depend on whether your system uses BIOS or UEFI firmware, and the total amount of free space on your disks. A ZRAM-based swap will be used instead of a disk-based swap partition.
             </Text>
         </TextContent>
     );
