@@ -37,7 +37,8 @@ export const AnacondaHeader = ({ beta, title, setShowLogViewer }) => {
         ? (
             <Popover
               headerContent={_("This is unstable, pre-release software")}
-              minWidth="40rem"
+              minWidth="30rem"
+              flipBehavior={["bottom", "right", "left", "top"]}
               bodyContent={
                   <TextContent>
                       <Text component={TextVariants.p}>
