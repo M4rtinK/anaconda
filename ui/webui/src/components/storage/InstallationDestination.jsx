@@ -18,7 +18,7 @@ import cockpit from "cockpit";
 import React, { useEffect, useState } from "react";
 
 import {
-    Alert,
+    Alert, AlertActionCloseButton,
     Bullseye,
     Button,
     EmptyState,
@@ -260,6 +260,7 @@ const LocalStandardDisks = ({ idPrefix, setIsFormValid, onAddErrorNotification }
 
 export const InstallationDestination = ({ idPrefix, setIsFormValid, onAddErrorNotification, toggleContextHelp, stepNotification, isInProgress }) => {
     const [requiredSize, setRequiredSize] = useState(0);
+    const [showDisksAlert, setShowdisksAlert] = useState(true);
 
     useEffect(() => {
         getRequiredSpace()
@@ -309,15 +310,17 @@ export const InstallationDestination = ({ idPrefix, setIsFormValid, onAddErrorNo
                   title={stepNotification.message}
                   variant="danger"
                 />}
-            <Alert
-              isInline
-              variant="info"
-              title={_("Selected disks will be erased at install")}
-            >
-                <p>
-                    {_("To prevent loss, backup the data.")}
-                </p>
-            </Alert>
+            {showDisksAlert &&
+                <Alert
+                  isInline
+                  variant="info"
+                  actionClose={<AlertActionCloseButton onClose={() => setShowdisksAlert(false)} />}
+                  title={_("Selected disks will be erased at install")}
+                >
+                    <p>
+                        {_("To prevent loss, backup the data.")}
+                    </p>
+                </Alert>}
             <LocalStandardDisks
               idPrefix={idPrefix}
               setIsFormValid={setIsFormValid}
