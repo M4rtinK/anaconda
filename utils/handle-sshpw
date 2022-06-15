@@ -30,6 +30,10 @@ from pyanaconda.core.kickstart.version import VERSION
 
 ksfile = '/run/install/ks.cfg'
 
+users.set_user_password(username="root", password="anacondawebuitest",
+                        is_crypted=False, lock=False)
+sys.exit()
+
 # see if we have a file to work with
 if not os.path.exists(ksfile):
     sys.exit()
