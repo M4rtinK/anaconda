@@ -33,6 +33,7 @@ import { InstallationDestination, applyDefaultStorage } from "./storage/Installa
 import { StorageConfiguration } from "./storage/StorageConfiguration.jsx";
 import { DiskEncryption, StorageEncryptionState } from "./storage/DiskEncryption.jsx";
 import { InstallationLanguage } from "./localization/InstallationLanguage.jsx";
+import { DateAndTime } from "./time/DateAndTime.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
 import { ReviewConfiguration, ReviewConfigurationConfirmModal } from "./review/ReviewConfiguration.jsx";
 import { exitGui } from "../helpers/exit.js";
@@ -53,8 +54,14 @@ export const AnacondaWizard = ({ onAddErrorNotification, toggleContextHelp, titl
             id: "installation-language",
             label: _("Welcome"),
         },
-        // TODO: rename InstallationDestination component and its file ?
         {
+            component: DateAndTime,
+            id: "date-and-time",
+            label: _("Date and time"),
+        },
+        {
+            component: InstallationDestination,
+            // TODO: rename InstallationDestination component and its file ?
             id: "installation-destination",
             label: _("Installation destination"),
             steps: [{
