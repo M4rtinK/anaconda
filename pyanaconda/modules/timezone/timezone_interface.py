@@ -36,6 +36,7 @@ class TimezoneInterface(KickstartModuleInterface):
         self.watch_property("Timezone", self.implementation.timezone_changed)
         self.watch_property("IsUTC", self.implementation.is_utc_changed)
         self.watch_property("NTPEnabled", self.implementation.ntp_enabled_changed)
+        self.watch_property("NTPStatus", self.implementation.ntp_status_changed)
         self.watch_property("TimeSources", self.implementation.time_sources_changed)
         self.watch_property("GeolocationResult", self.implementation.geolocation_result_changed)
 
@@ -79,6 +80,15 @@ class TimezoneInterface(KickstartModuleInterface):
         """
         self.implementation.set_timezone_with_priority(timezone, priority)
 
+    def GetTimezones(self) -> Dict[Str, List[Str]]:
+        """Get valid timezones.
+
+        Return a dictionary, where keys are region ids and values are lists of timezone names in the region.
+
+        :return: a list of timezones
+        """
+        return self.implementation.get_timezones()
+
     @property
     def IsUTC(self) -> Bool:
         """Is the hardware clock set to UTC?
@@ -115,6 +125,22 @@ class TimezoneInterface(KickstartModuleInterface):
         :param ntp_enabled: should be NTP service enabled?
         """
         self.implementation.set_ntp_enabled(ntp_enabled)
+
+    @property
+    @emits_properties_changed
+    def NTPStatus(self) -> Str:
+        """The status of the NTP service.
+        Valid values:
+            IN_PROGRESS   The status is being checked right now.
+            DISABLED      The NTP service is disabled.
+            OFFLINE       It is necessary to set up networking first.
+            NO_SOURCES    There are no working time sources configured.
+            SYNCHRONIZED  The time is synchronized by the NTP service.
+        :return: a string representation of the NTP status
+        """
+        # FIXME: Check what kind of info we are able to get from chronyd.
+        #        Change the valid values if necessary, it is just a suggestion.
+        return self.implementation.ntp_status
 
     @property
     def TimeSources(self) -> List[Structure]:
@@ -157,3 +183,17 @@ class TimezoneInterface(KickstartModuleInterface):
         return GeolocationData.to_structure(
             self.implementation.geolocation_result
         )
+
+    def GetSystemDateTime(self) -> Str:
+        """Get the current local date and time of the system.
+        The timezone set via the Timezone property affects the returned data.
+        :return: a string representing the date and time in ISO 8601 format
+        """
+        return self.implementation.get_system_date_time()
+
+    def SetSystemDateTime(self, date_time_spec: Str):
+        """Set the current local date and time of the system.
+        The timezone set via the Timezone property will be applied to the received data.
+        :param date_time_spec: a string representing the date and time in ISO 8601 format
+        """
+        self.implementation.set_system_date_time(date_time_spec)

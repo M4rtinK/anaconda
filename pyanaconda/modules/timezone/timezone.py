@@ -34,8 +34,12 @@ from pyanaconda.modules.common.structures.requirement import Requirement
 from pyanaconda.modules.timezone.initialization import GeolocationTask
 from pyanaconda.modules.timezone.installation import ConfigureHardwareClockTask, \
     ConfigureNTPTask, ConfigureTimezoneTask
+from pyanaconda.modules.timezone.runtime import GetNTPStatusTask, GetSystemDateTimeTask, \
+    SetSystemDateTimeTask, GetTimezonesTask
 from pyanaconda.modules.timezone.kickstart import TimezoneKickstartSpecification
 from pyanaconda.modules.timezone.timezone_interface import TimezoneInterface
+from pyanaconda.modules.timezone.constants import NTPStatus
+from pyanaconda.timezone import get_timezone
 
 from pyanaconda.anaconda_loggers import get_module_logger
 log = get_module_logger(__name__)
@@ -58,6 +62,10 @@ class TimezoneService(KickstartService):
 
         self.ntp_enabled_changed = Signal()
         self._ntp_enabled = True
+
+        self.ntp_status_changed = Signal()
+        # FIXME: replace placeholder
+        self._ntp_status = NTPStatus.SYNCHRONIZED.value
 
         self.time_sources_changed = Signal()
         self._time_sources = []
@@ -167,6 +175,26 @@ class TimezoneService(KickstartService):
         self.timezone_changed.emit()
         log.debug("Timezone is set to %s.", timezone)
 
+    def get_timezones(self):
+        """Get all valid timezones.
+
+        :return: list of valid timezones
+        :rtype: list of str
+        """
+        task = GetTimezonesTask()
+        timezone_dict = task.run()
+        # FIXME: remove
+        log.debug("ALL TIMEZONES")
+        log.debug(timezone_dict)
+        # convert to a dict of lists for easier transfer over DBus
+        # - change the nested sets to lists
+        new_timezone_dict = {}
+        for region in timezone_dict:
+            new_timezone_dict[region] = list(timezone_dict[region])
+        log.debug("ALL TIMEZONES")
+        log.debug(new_timezone_dict)
+        return new_timezone_dict
+
     @property
     def is_utc(self):
         """Is the hardware clock set to UTC?"""
@@ -188,6 +216,12 @@ class TimezoneService(KickstartService):
         self._ntp_enabled = ntp_enabled
         self.ntp_enabled_changed.emit()
         log.debug("NTP is set to %s.", ntp_enabled)
+
+    @property
+    def ntp_status(self):
+        """Current status of the NTP service."""
+        # FIXME: hook the ntp_status_changed signal
+        return self._ntp_status
 
     @property
     def time_sources(self):
@@ -259,3 +293,28 @@ class TimezoneService(KickstartService):
         :return GeolocationData: result of the lookup, empty if not ready yet
         """
         return self._geoloc_result
+
+    def get_system_date_time(self):
+        """Get system time as a ISO 8601 formatted string.
+
+        :return: system time as ISO 8601 formatted string
+        :rtype: str
+        """
+        # FIXME: remove
+        log.debug("AAA TIME - CURRENT TIMEZONE")
+        log.debug(self._timezone)
+        # FIXME: check if this is correct to do ?
+        if self._timezone is None:
+            timezone = "America/New_York"
+        else:
+            timezone = self._timezone
+        task = GetSystemDateTimeTask(get_timezone(timezone))
+        return task.run()
+
+    def set_system_date_time(self, date_time_spec):
+        """Set system time based on a ISO 8601 formatted string.
+
+        :param str date_time_spec: ISO 8601 time specification to use
+        """
+        task = SetSystemDateTimeTask(date_time_spec=date_time_spec, timezone=self._timezone)
+        task.run()
