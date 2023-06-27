@@ -107,14 +107,45 @@ category. You can quickly list these by searching the Red Hat bugzilla for bugs 
 
 Patches for bugs without keywords are welcome, too!
 
+WebUI development
+-----------------
+
+For good starting points how to develop and test Web UI interface of Anaconda see ``ui/webui/README.rst`` and ``ui/webui/test/README.rst``.
+
+PatternFly
+^^^^^^^^^^
+
+Provides all the Web UI Widgets we use.
+
+https://www.patternfly.org/v4/
+
+Pixel tests
+^^^^^^^^^^^
+
+Make it possible to watch for uninteded graphical changes as well as veryfing that automated NPM dependency updates have not cuased any visible breakage.
+
+Cockpit test framework
+^^^^^^^^^^^^^^^^^^^^^^
+
+An easy to use Python test framework, that makes it possible to test the Web UI. All our Web UI unit tests use this framework.
+
+https://github.com/cockpit-project/cockpit/tree/main/test
+
+Cockpit CI infrastructure
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Pull request tests run on Cockpit CI infrastructure.
+
+https://github.com/cockpit-project/cockpituous/tree/main/tasks#github-webhook-integration
+
+
+See ``ui/webui/README.rst`` and ``ui/webui/test/README.rst`` for more details about how to develop and test Web UI interface of Anaconda.
+
+
 Testing Anaconda changes
 ------------------------
 
 To test changes in Anaconda you have a few options based on what you need to do.
-
-WebUI development
-^^^^^^^^^^^^^^^^^
-See ``ui/webui/README.rst`` and ``ui/webui/test/README.rst`` for more details about how to develop and test Web UI interface of Anaconda.
 
 Backend and TUI development
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
