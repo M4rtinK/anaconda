@@ -48,6 +48,7 @@ RUN set -ex; \
 COPY ["lorax-build", "/"]
 COPY ["lorax-build-webui", "/"]
 COPY ["adjust-templates-for-webui.patch", "/"]
+COPY ["do-not-cleanup-pam-binaries-in-usr-sbin.patch", "/"]
 
 RUN mkdir /lorax /anaconda-rpms /images
 

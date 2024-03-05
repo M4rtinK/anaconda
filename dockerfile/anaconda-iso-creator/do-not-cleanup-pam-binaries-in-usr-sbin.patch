@@ -1,0 +1,26 @@
+From 0a81fbb66c136439b19ab5cfb371e2f460efb2c9 Mon Sep 17 00:00:00 2001
+From: Martin Kolman <mkolman@redhat.com>
+Date: Tue, 30 Apr 2024 13:55:33 +0200
+Subject: [PATCH] Do not cleanup pam binaries in /usr/sbin
+
+They are needed for correct Wayland compositor startup.
+---
+ 80-rhel/runtime-cleanup.tmpl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/80-rhel/runtime-cleanup.tmpl b/80-rhel/runtime-cleanup.tmpl
+index 92a9934..45940dc 100644
+--- a/80-rhel/runtime-cleanup.tmpl
++++ b/80-rhel/runtime-cleanup.tmpl
+@@ -293,7 +293,7 @@ removefrom openssh /usr/libexec/*
+ removefrom openssh-clients /etc/ssh/* /usr/bin/ssh-*
+ removefrom openssh-clients /usr/libexec/*
+ removefrom openssh-server /etc/ssh/* /usr/libexec/openssh/sftp-server
+-removefrom pam /usr/sbin/* /usr/share/locale/*
++removefrom pam /usr/share/locale/*
+ removefrom policycoreutils /etc/* /usr/bin/* /usr/share/locale/*
+ removefrom polkit /usr/bin/*
+ removefrom popt /usr/share/locale/*
+-- 
+2.44.0
+

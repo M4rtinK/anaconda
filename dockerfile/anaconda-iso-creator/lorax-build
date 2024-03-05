@@ -36,6 +36,10 @@ mkdir -p $REPO_DIR
 cp -a $INPUT_RPMS/* $REPO_DIR || echo "RPM files can't be copied!"  # We could just do the build with official repositories only
 createrepo_c $REPO_DIR
 
+cp -r /usr/share/lorax/templates.d/ /lorax/
+
+patch -p2 -i /do-not-cleanup-pam-binaries-in-usr-sbin.patch -d ./templates.d/80-rhel/
+
 # build boot.iso with our rpms
 . /etc/os-release
 # The download.fedoraproject.org automatic redirector often selects download-ib01.f.o. for GitHub's cloud, which is too unreliable; use a mirror
@@ -47,6 +51,7 @@ MINOR_VERSION=${VERSION_ID#*.}
 lorax -p RHEL -v "$MAJOR_VERSION" -r "$MINOR_VERSION" \
       --volid "RHEL-$MAJOR_VERSION-$MINOR_VERSION-BaseOS-x86_64" \
       --nomacboot \
+      --sharedir ./templates.d/80-rhel/ \
       -s http://download.devel.redhat.com/rhel-10/nightly/RHEL-10-Public-Beta/latest-RHEL-10/compose/BaseOS/x86_64/os/ \
       -s http://download.devel.redhat.com/rhel-10/nightly/RHEL-10-Public-Beta/latest-RHEL-10/compose/AppStream/x86_64/os/ \
       -s https://download.copr.fedorainfracloud.org/results/m4rtink/python-pam-rebuild/centos-stream-10-x86_64/ \
