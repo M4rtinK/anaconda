@@ -34,7 +34,6 @@ Source0: https://github.com/rhinstaller/%{name}/releases/download/%{name}-%{vers
 %define langtablever 0.0.60
 %define libarchivever 3.0.4
 %define libblockdevver 2.1
-%define libreportanacondaver 2.0.21-1
 %define libxklavierver 5.4
 %define mehver 0.23-1
 %define nmver 1.0
@@ -88,7 +87,6 @@ Requires: python3-dnf >= %{dnfver}
 Requires: python3-blivet >= %{pythonblivetver}
 Requires: python3-blockdev >= %{libblockdevver}
 Requires: python3-meh >= %{mehver}
-Requires: libreport-anaconda >= %{libreportanacondaver}
 Requires: libselinux-python3
 Requires: python3-rpm >= %{rpmver}
 Requires: python3-pyparted >= %{pypartedver}

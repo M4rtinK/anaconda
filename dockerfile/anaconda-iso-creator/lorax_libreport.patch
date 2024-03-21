@@ -1,0 +1,38 @@
+From 30f197e02c024936c317b0c9e1901b8fb2a2d2e1 Mon Sep 17 00:00:00 2001
+From: Martin Kolman <mkolman@redhat.com>
+Date: Thu, 21 Mar 2024 17:38:50 +0100
+Subject: [PATCH] Drop libreport from the templates
+
+TODO: commit message & issue refference
+---
+ share/templates.d/99-generic/runtime-cleanup.tmpl | 1 -
+ share/templates.d/99-generic/runtime-install.tmpl | 1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/share/templates.d/99-generic/runtime-cleanup.tmpl b/share/templates.d/99-generic/runtime-cleanup.tmpl
+index 236a4d7c..c9f5e5bd 100644
+--- a/share/templates.d/99-generic/runtime-cleanup.tmpl
++++ b/share/templates.d/99-generic/runtime-cleanup.tmpl
+@@ -304,7 +304,6 @@ removefrom procps-ng /usr/bin/vmstat /usr/bin/w /usr/bin/watch
+ removefrom psmisc /usr/share/locale/*
+ removefrom python3-kickstart /usr/lib/python*/site-packages/pykickstart/locale/*
+ removefrom readline /usr/${libdir}/libhistory*
+-removefrom libreport /usr/share/locale/*
+ removefrom rdma-core /etc/rdma/mlx4.conf
+ removefrom rpm /usr/bin/* /usr/share/locale/*
+ removefrom rsync /etc/*
+diff --git a/share/templates.d/99-generic/runtime-install.tmpl b/share/templates.d/99-generic/runtime-install.tmpl
+index dcab9c39..53e7b2ab 100644
+--- a/share/templates.d/99-generic/runtime-install.tmpl
++++ b/share/templates.d/99-generic/runtime-install.tmpl
+@@ -158,7 +158,6 @@ installpkg google-noto-sans-cjk-fonts
+ 
+ ## debugging/bug reporting tools
+ installpkg gdb-gdbserver
+-installpkg libreport-plugin-bugzilla libreport-plugin-reportuploader
+ installpkg fpaste
+ installpkg python3-pyatspi
+ 
+-- 
+2.43.2
+
