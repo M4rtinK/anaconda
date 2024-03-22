@@ -1,0 +1,170 @@
+#!/usr/bin/python3
+
+import argparse
+import os
+import shutil
+import time
+import sys
+
+
+# folder where Anaconda boot ISOs are stored
+ISO_FOLDER = "result/iso/"
+# initial boot ISO we will update
+INPUT_ISO = os.path.join(ISO_FOLDER, "boot.iso")
+# updated boot ISO (eq including an Anaconda updates image and possibly other bits]
+UPDATED_ISO = os.path.join(ISO_FOLDER, "updated_boot.iso")
+# the folder needed to include updates image into the updated ISO
+UPDATES_FOLDER = os.path.join(ISO_FOLDER, "images")
+# how is the makeupdates output file called ?
+UPDATES_IMAGE = "updates.img"
+BOOT_OPTIONS = "inst.sshd inst.nokill"
+
+# name of the mkksiso command
+MKKSISO = "mkksiso"
+
+def warmup_sudo():
+    """Get sudo right after invocation, for use later (mkksiso needs it).
+
+    otherwise we might get into the situation, where sudo is requested in the
+    middle of execution of this script (eq. after a long makeupdates run if widget compilation
+    is necessary), destroying the UX.
+    """
+    os.system('sudo echo "we need sudo later, so lets get it now"')
+
+def make_updates_image(git_id):
+    """Build an updates image based on tag/hash and prepare it for inclusion in boot ISO."""
+    print("** preparing updates image via tag/hash: %s" % git_id)
+    # create the necessary folder structure
+    os.makedirs(UPDATES_FOLDER, exist_ok=True)
+    # prepare updates image
+    os.system("./scripts/makeupdates -k -c -t %s" % git_id)
+    # move it next to the ISOs
+    shutil.move(UPDATES_IMAGE, os.path.join(UPDATES_FOLDER, UPDATES_IMAGE))
+    print("** updates image is ready in: %s" % UPDATES_FOLDER)
+
+def check_input_iso_available():
+    """Check if we have the input ISO.
+
+    If yes, print which ISO is being used.
+    If not, notify the user and exit.
+    """
+    if os.path.exists(INPUT_ISO):
+        print("** using input boot ISO: %s" % INPUT_ISO)
+    else:
+        print("** error: input boot ISO (%s) not found" % INPUT_ISO)
+        sys.exit(1)
+
+def check_updated_iso_available():
+    """Check if the output ISO has been created.
+
+    If yes, then tell the user where to find it.
+    If no, notify the user and exit.
+    """
+
+    if not os.path.exists(UPDATED_ISO):
+        print("** updated boot ISO is available, run with VM of choice: %s" % UPDATED_ISO)
+    else:
+        print("** error: updated boot ISO (%s) not found" % UPDATED_ISO)
+        sys.exit(1)
+
+def check_updates_image_available():
+    """Check if the updates image is in place.
+
+    If not, report an error and exit.
+    """
+
+    if not os.path.exists(os.path.join(UPDATES_FOLDER, UPDATES_IMAGE)):
+        print("** error: updates image not found in:" % UPDATES_FOLDER)
+        sys.exit(1)
+
+def check_mkksiso_available():
+    """Check if mkksiso is available on the system."""
+    if shutil.which(MKKSISO) is None:
+        print("** error: mkksiso tool not found, please install the lorax package first")
+        sys.exit(1)
+
+def generate_image_timestamp_option():
+    """Generate a dummy time stamp option to easily check what image has been booted.
+
+    This way the user can easily check which updated image they are running, by checking
+    /proc/cmdline or boot options at boot time.
+    """
+    timestamp = "build_time=%s" % time.strftime("%d/%m/%Y_%H:%M:%S")
+    print("** using time stamp option: %s" % timestamp)
+    return timestamp
+
+def generate_updated_iso():
+    # prepare time stamp
+    timestamp_option = generate_image_timestamp_option()
+
+    # TODO: is this necessary ?
+    os.chdir(ISO_FOLDER)
+
+    # TODO: can this work with relative paths ?
+    os.system('sudo mkksiso -a images -c "%s" boot.iso updated_boot.iso' % timestamp_option)
+
+def run_image_with_virtinstall():
+    cmd = """virt-install
+          --wait --connect qemu:///session
+          --name fedora-vm-xwayland-test
+          --os-variant=detect=on --memory 4096
+          --noautoconsole --graphics vnc,listen=127.0.0.2
+          --extra-args 'inst.sshd inst.loglevel=debug inst.keymap=es inst.vnc'
+          --network none
+          --qemu-commandline='-netdev user,id=hostnet0,hostfwd=tcp:127.0.0.2:2301-:22,hostfwd=:127.0.0.2:13389-:3389 -device virtio-net-pci,netdev=hostnet0,id=net0,addr=0x16'
+          --location ${OUTPUT_ISO}"""
+
+
+
+
+def main():
+    parser = argparse.ArgumentParser(description="update Anaconda boot.iso")
+    parser.add_argument('-t', '--tag', action='store', type=str,
+                        help='add commits from TAG to HEAD to the image (NOTE: also works with commit hashes)')
+#    parser.add_argument('-v', '--virt-install', action='store_true',
+#                        help='run the image with virt-install')
+
+    args = parser.parse_args()
+
+    # check if we have the input ISO
+    check_input_iso_available()
+
+    # check if we have the mkksiso tool
+    check_mkksiso_available()
+
+    # get sudo, needed for later (mkksiso)
+    warmup_sudo()
+
+    # generate updates image
+    make_updates_image(args.tag)
+
+    # check updates image has been generated and is in place
+    check_updates_image_available()
+
+    # remove previous updated boot ISO (if it exists)
+    if os.path.exists(UPDATED_ISO):
+        os.remove(UPDATED_ISO)
+
+    # generate updated boot iso
+    generate_updated_iso()
+
+    # check the updated ISO has been generated
+    check_updated_iso_available()
+
+    # check if we should run the image in virt-install
+    # TODO                        
+
+if __name__ == "__main__":
+    main()
+
+
+
+# TODO/ideas:
+# - add arbitrary files ?
+# - add arbitrary boot options
+# - kickstart support ?
+# - investigate/integrate reanaconda workflow ?
+
+
+
+
