@@ -1,7 +1,5 @@
 #
-# Private constants for the subscription module.
-#
-# Copyright (C) 2021 Red Hat, Inc.
+# Copyright (C) 2021  Red Hat, Inc.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions of
@@ -17,8 +15,21 @@
 # License and may only be used or replicated with the express permission of
 # Red Hat, Inc.
 #
+# Red Hat Author(s): Martin Kolman <mkolman@redhat.com>
+#
 
-# name of the RHSM systemd unit
-RHSM_SERVICE_NAME = "rhsm.service"
-# server hostname prefix marking the URL as not Satellite
-SERVER_HOSTNAME_NOT_SATELLITE_PREFIX = "not-satellite:"
+import unittest
+
+from pyanaconda.modules.subscription.utils import flatten_rhsm_nested_dict
+
+
+class FlattenRHSMNestedDictTestCase(unittest.TestCase):
+    """Test the RHSM nested dict flattening function."""
+
+    def test_empty_dict(self):
+        """Test the flattening function can handle an empty dict being passed."""
+        assert flatten_rhsm_nested_dict({}) == {}
+
+    def test_nested_dict(self):
+        """Test the flattening function can handle a nested dict being passed."""
+        assert flatten_rhsm_nested_dict({"foo": {"bar": "baz"}}) == {"foo.bar": "baz"}

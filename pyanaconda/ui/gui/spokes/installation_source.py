@@ -28,7 +28,7 @@ from pyanaconda.core.constants import PAYLOAD_TYPE_DNF, SOURCE_TYPE_HDD, SOURCE_
     SOURCE_TYPE_CLOSEST_MIRROR, SOURCE_TYPE_CDN, PAYLOAD_STATUS_SETTING_SOURCE, \
     PAYLOAD_STATUS_INVALID_SOURCE, PAYLOAD_STATUS_CHECKING_SOFTWARE, SOURCE_TYPE_REPO_PATH, \
     DRACUT_REPO_DIR
-from pyanaconda.core.i18n import _, CN_
+from pyanaconda.core.i18n import _, CN_, C_
 from pyanaconda.core.path import join_paths
 from pyanaconda.core.payload import parse_nfs_url, create_nfs_url, parse_hdd_url
 from pyanaconda.core.regexes import URL_PARSE, HOSTNAME_PATTERN_WITHOUT_ANCHORS
@@ -122,7 +122,7 @@ class SourceSpoke(NormalSpoke, GUISpokeInputCheckHandler, SourceSwitchHandler):
         # attached there is no need to refresh the installation source,
         # as without the subscription tokens the refresh would fail anyway.
         if cdn_source and not self.subscribed:
-            log.debug("CDN source but no subscribtion attached - skipping payload restart.")
+            log.debug("CDN source but no subscription attached - skipping payload restart.")
         elif source_changed or repo_changed or self._error:
             payloadMgr.start(self.payload)
         else:
@@ -312,6 +312,22 @@ class SourceSpoke(NormalSpoke, GUISpokeInputCheckHandler, SourceSwitchHandler):
         return subscribed
 
     @property
+    def registered_to_satellite(self):
+        """Report if the system is registered to a Satellite instance.
+
+        NOTE: This will be always False when the Subscription
+              module is not available.
+
+        :return: True if registered to Satellite, False otherwise
+        :rtype: bool
+        """
+        registered_to_satellite = False
+        if is_module_available(SUBSCRIPTION):
+            subscription_proxy = SUBSCRIPTION.get_proxy()
+            registered_to_satellite = subscription_proxy.IsRegisteredToSatellite
+        return registered_to_satellite
+
+    @property
     def status(self):
         # When CDN is selected as installation source and system
         # is not yet subscribed, the automatic repo refresh will
@@ -322,6 +338,32 @@ class SourceSpoke(NormalSpoke, GUISpokeInputCheckHandler, SourceSwitchHandler):
         # will be displayed.
         source_proxy = self.payload.get_source_proxy()
         cdn_source = source_proxy.Type == SOURCE_TYPE_CDN
+
+        log.debug("AAA SOURCE TYPE ?")
+        log.debug(source_proxy.Type)
+
+# FIXME: port to modular payload
+#
+#        if cdn_source:
+#            if self.registered_to_satellite:
+#                # override the regular CDN source name to make it clear Satellite
+#                # provided repositories are being used
+#                return _("Satellite")
+#            else:
+#                source_proxy = self.payload.get_source_proxy()
+#                return source_proxy.Description
+#        elif threadMgr.get(constants.THREAD_CHECK_SOFTWARE):
+#            return _("Checking software dependencies...")
+#        elif not self.ready:
+#            return _(BASEREPO_SETUP_MESSAGE)
+#        elif not self.payload.base_repo:
+#            return _("Error setting up base repository")
+#        elif self._error:
+#            return _("Error setting up software source")
+#        elif not self.payload.is_complete():
+#            return _("Nothing selected")
+#        else:
+
 
         if cdn_source and not self.subscribed:
             source_proxy = self.payload.get_source_proxy()
@@ -729,6 +771,26 @@ class SourceSpoke(NormalSpoke, GUISpokeInputCheckHandler, SourceSwitchHandler):
 
         # Update the URL entry validation now that we're done messing with sensitivites
         self._update_url_entry_check()
+
+        # If subscription module is available we might need to refresh the label
+        # of the CDN/Satellite radio button, so that it properly describes what is providing
+        # the repositories available after registration.
+        #
+        # For registration to Red Hat hosted infrastructure (also called Hosted Candlepin) the
+        # global Red Hat CDN efficiently provides quick access to the repositories to customers
+        # across the world over the public Internet.
+        #
+        # If registered to a customer Satellite instance, it is the Satellite instance itself that
+        # provides the software repositories.
+        #
+        # This is an important distinction as Satellite instances are often used in environments
+        # not connected to the public Internet, so seeing the installation source being provided
+        # by Red Hat CDN which the machine might not be able to reach could be very confusing.
+        if is_module_available(SUBSCRIPTION):
+            if self.registered_to_satellite:
+                self._cdn_button.set_label(C_("GUI|Software Source", "_Satellite"))
+            else:
+                self._cdn_button.set_label(C_("GUI|Software Source", "Red Hat _CDN"))
 
         # Show the info bar with an error message if any.
         # This error message has the highest priority.
