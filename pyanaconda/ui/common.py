@@ -594,6 +594,11 @@ class Hub(Screen):
            and then coming back to the hub does not count as exiting and
            entering.
         """
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA HUB ENTRY HUB ENTRY HUB ENTRY *****")
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA HUB ENTRY HUB ENTRY HUB ENTRY *****")
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA HUB ENTRY HUB ENTRY HUB ENTRY *****")
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA HUB ENTRY HUB ENTRY HUB ENTRY *****")
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA HUB ENTRY HUB ENTRY HUB ENTRY *****")
         log.debug("Entered hub: %s", hub_instance)
 
     def _collectCategoriesAndSpokes(self):
@@ -613,6 +618,11 @@ class Hub(Screen):
            user selects a spoke from the hub.  They are only exited when the
            continue or quit button is clicked on the hub.
         """
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA HUB EXIT HUB EXIT HUB EXIT *****")
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA HUB EXIT HUB EXIT HUB EXIT *****")
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA HUB EXIT HUB EXIT HUB EXIT *****")
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA HUB EXIT HUB EXIT HUB EXIT *****")
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA HUB EXIT HUB EXIT HUB EXIT *****")
         log.debug("Left hub: %s", hub_instance)
 
     def __repr__(self):

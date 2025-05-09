@@ -80,8 +80,12 @@ class SetUpDNFSourcesTask(SetUpSourcesTask):
 
         :return SetUpDNFSourcesResult: a result of the task
         """
+        log.debug("DNF INITIALIZE - SetUpDNFSourcesTask - run start")
+        # Set up the main source.
+        log.debug("DNF INITIALIZE - SetUpDNFSourcesTask - run - main source")
         # Set up the main source.
         super().run()
+        log.debug("DNF INITIALIZE - SetUpDNFSourcesTask - run - main source - done")
 
         # Process the configuration of the main source.
         repository = self._process_source_metadata(self._source)

@@ -30,6 +30,8 @@ from pyanaconda.modules.common.containers import (
 )
 from pyanaconda.modules.payloads.constants import PayloadType, SourceType
 
+from pyanaconda.anaconda_loggers import get_module_logger
+log = get_module_logger(__name__)
 
 @dbus_interface(PAYLOADS.interface_name)
 class PayloadsInterface(KickstartModuleInterface):
@@ -102,6 +104,7 @@ class PayloadsInterface(KickstartModuleInterface):
 
         :return: True or False
         """
+        log.debug("AAA IsNetworkRequired ? - implementation: %s" % self.implementation)
         return self.implementation.is_network_required()
 
     def CalculateRequiredSpace(self) -> UInt64:
@@ -110,7 +113,13 @@ class PayloadsInterface(KickstartModuleInterface):
         :return: required size in bytes
         :rtype: int
         """
-        return self.implementation.calculate_required_space()
+        log.debug("AAA CalculateRequiredSpace (interface)")
+        log.debug(self.implementation)
+        log.debug(self.implementation.calculate_required_space)
+        result = self.implementation.calculate_required_space()
+        log.debug("AAA CalculateRequiredSpace (interface) - done")
+        log.debug(result)
+        return result
 
     def GetKernelVersionList(self) -> List[Str]:
         """Get the kernel versions list.

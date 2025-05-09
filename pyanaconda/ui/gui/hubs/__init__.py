@@ -222,35 +222,83 @@ class Hub(GUIObject, common.Hub):
         self._updateContinue()
 
     def _updateCompleteness(self, spoke, update_continue=True):
+        log.debug("AAA _updateCompleteness")
+        log.debug("AAA _updateCompleteness - set sensitive")
         spoke.selector.set_sensitive(spoke.sensitive and spoke.ready)
+        log.debug("AAA _updateCompleteness - set status")
+        log.debug("AAA _updateCompleteness - set status spoke: %s, continue: %s" % (spoke, update_continue))
         spoke.selector.set_property("status", spoke.status)
+        log.debug("AAA _updateCompleteness - set status - done")
+        log.debug("AAA _updateCompleteness - set tooltip")
         spoke.selector.set_tooltip_markup(escape_markup(spoke.status))
+        log.debug("AAA _updateCompleteness - set incomplete")
         spoke.selector.set_incomplete(not spoke.completed and spoke.mandatory)
+        log.debug("AAA _updateCompleteness - handle completeness")
         self._handleCompleteness(spoke, update_continue)
+        log.debug("AAA _updateCompleteness - done")
 
     def _handleCompleteness(self, spoke, update_continue=True):
         # Add the spoke to the incomplete list if it's now incomplete, and make
         # sure it's not on the list if it's now complete.  Then show the box if
         # it's needed and hide it if it's not.
-        if not spoke.mandatory or spoke.completed:
+        log.debug("AAA handle completeness - spoke %s, %s" % (spoke, update_continue))
+        log.debug("AAA handle completeness - check if mandatory or completed")
+        log.debug("AAA handle completeness - get mandatory")
+        mandatory = spoke.mandatory
+        log.debug(mandatory)
+        log.debug("AAA handle completeness - get mandatory - done")
+        log.debug("AAA handle completeness - get completed")
+        completed = spoke.completed
+        log.debug(completed)
+        log.debug("AAA handle completeness - get completed - done")
+        if mandatory or completed:
+        #if not spoke.mandatory or spoke.completed:
+            log.debug("AAA handle completeness - not mandatory or completed")
             if spoke in self._incompleteSpokes:
+                log.debug("AAA handle completeness - not mandatory or completed - removing from incomplete spokes")
                 self._incompleteSpokes.remove(spoke)
+                log.debug("AAA handle completeness - not mandatory or completed - removing from incomplete spokes - done")
                 log.debug("incomplete spokes: %s", self._incompleteSpokes)
         else:
+            log.debug("AAA handle completeness - mandatory or complete")
             if spoke not in self._incompleteSpokes:
+                log.debug("AAA handle completeness - mandatory or complete - not in incomplete spokes")
                 self._incompleteSpokes.append(spoke)
+                log.debug("AAA handle completeness - mandatory or complete - not in incomplete spokes - added")
                 log.debug("incomplete spokes: %s", self._incompleteSpokes)
 
         if update_continue:
+            log.debug("AAA handle completeness - update continue")
             self._updateContinue()
+            log.debug("AAA handle completeness - update continue - done")
+        log.debug("AAA handle completeness - done for %s, %s" % (spoke, update_continue))
 
     def _get_warning(self):
         """Get the warning message for the hub."""
+        log.debug("AAA _get_warning()")
         warning = None
         if len(self._incompleteSpokes) == 0:
+            log.debug("AAA _get_warning() - no warning")
+            log.debug("AAA _get_warning() - no warning - self._checker")
+            log.debug(self._checker)
+            log.debug("AAA _get_warning() - no warning - self._checker - done")
+            log.debug("AAA _get_warning() - no warning - self._checker.check() 1")
+            log.debug(self._checker.check())
+            log.debug("AAA _get_warning() - no warning - self._checker.check() - done 1")
+
+            log.debug("AAA _get_warning() - no warning - self._checker.check() 2")
+            log.debug(self._checker.check())
+            log.debug("AAA _get_warning() - no warning - self._checker.check() - done 2")
+
+            log.debug("AAA _get_warning() - no warning - self._checker.check() 3")
+            log.debug(self._checker.check())
+            log.debug("AAA _get_warning() - no warning - self._checker.check() - done 3")
+
             if self._checker and not self._checker.check():
+                log.debug("AAA _get_warning() - no warning - get error message")
                 warning = self._checker.error_message
                 log.error(self._checker.error_message)
+                log.debug("AAA _get_warning() - no warning - get error message - done")
 
                 # If this is a kickstart, consider the user to be warned and
                 # let them continue anyway, manually
@@ -258,23 +306,34 @@ class Hub(GUIObject, common.Hub):
                     self._auto_continue = False
                     self._checker_ignore = True
         else:
+            log.debug("AAA _get_warning() - some warning")
             warning = _("Please complete items marked with this icon before continuing to the next step.")
 
+        log.debug("AAA _get_warning() - warning: %s" % warning)
         return warning
 
     def _updateContinue(self):
         # Check that this warning isn't already set to avoid spamming the
         # info bar with incomplete spoke messages when the hub starts
+        log.debug("AAA _updateContinue")
+        log.debug("AAA _updateContinue - get warning")
         warning = self._get_warning()
+        #log.debug("AAA _updateContinue - get warning - SKIP")
+        warning = ""
+        log.debug("AAA _updateContinue - get warning - done")
 
         if warning != self._warningMsg:
+            log.debug("AAA _updateContinue - warning missmatch")
             self.clear_info()
             self._warningMsg = warning
 
             if warning:
+                log.debug("AAA _updateContinue - warning set new")
                 self.set_warning(warning)
 
+        log.debug("AAA _updateContinue - update continue button")
         self._updateContinueButton()
+        log.debug("AAA _updateContinue - update continue button - done")
 
     @property
     def continuePossible(self):
@@ -302,6 +361,10 @@ class Hub(GUIObject, common.Hub):
             except queue.Empty:
                 break
 
+
+            log.debug("AAA *** QUEUE MESSAGE:")
+            log.debug(code)
+            log.debug(args)
             # The first argument to all codes is the name of the spoke we are
             # acting on.  If no such spoke exists, throw the message away.
             spoke = self._spokes.get(args[0], None)
@@ -310,6 +373,7 @@ class Hub(GUIObject, common.Hub):
                 continue
 
             if code == hubQ.HUB_CODE_NOT_READY:
+                log.debug("AAA *** QUEUE - NOT READY")
                 self._updateCompleteness(spoke)
 
                 if spoke not in self._notReadySpokes:
@@ -318,6 +382,7 @@ class Hub(GUIObject, common.Hub):
                 self._updateContinueButton()
                 log.debug("spoke is not ready: %s", spoke)
             elif code == hubQ.HUB_CODE_READY:
+                log.debug("AAA *** QUEUE - READY")
                 self._updateCompleteness(spoke)
 
                 if spoke in self._notReadySpokes:
@@ -346,9 +411,11 @@ class Hub(GUIObject, common.Hub):
                             self._click_continue = True
 
             elif code == hubQ.HUB_CODE_MESSAGE:
+                log.debug("AAA *** QUEUE - STATUS")
                 spoke.selector.set_property("status", args[1])
                 log.debug("setting %s status to: %s", spoke, args[1])
 
+            log.debug("AAA *** QUEUE - TASK DONE")
             q.task_done()
 
         # queue is now empty, should continue be clicked?
@@ -418,28 +485,47 @@ class Hub(GUIObject, common.Hub):
         spoke.entered.emit(spoke)
 
     def spoke_done(self, spoke):
+        log.debug("AAAAAAAAAA SPOKE DONE SPOKE DONE SPOKE DONE")
+        log.debug("AAAAAAAAAA SPOKE DONE SPOKE DONE SPOKE DONE")
+        log.debug("AAAAAAAAAA SPOKE DONE SPOKE DONE SPOKE DONE")
+        log.debug("AAAAAAAAAA SPOKE DONE SPOKE DONE SPOKE DONE")
+        log.debug("AAAAAAAAAA SPOKE DONE SPOKE DONE SPOKE DONE")
         # Ignore if not in a spoke
         if not self._inSpoke:
+            log.debug("AAAAAAAAAA SPOKE DONE - not in spoke")
             return
 
         if spoke.changed and (not spoke.skipTo or (spoke.skipTo and spoke.applyOnSkip)):
+            log.debug("AAAAAAAAAA SPOKE DONE - changed")
             spoke.apply()
+            log.debug("AAAAAAAAAA SPOKE DONE - changed - apply")
             spoke.execute()
+            log.debug("AAAAAAAAAA SPOKE DONE - changed - execute")
 
         spoke.exited.emit(spoke)
+        log.debug("AAAAAAAAAA SPOKE DONE - exited emit")
 
         self._inSpoke = False
 
         # Now update the selector with the current status and completeness.
+        log.debug("AAAAAAAAAA SPOKE DONE - updating completeness")
         for sp in self._spokes.values():
+            log.debug("AAAAAAAAAA SPOKE DONE - updating completeness - processing spoke %s" % sp)
             if not sp.indirect:
+                log.debug("AAAAAAAAAA SPOKE DONE - updating completeness - updating spoke %s" % sp)
                 self._updateCompleteness(sp, update_continue=False)
+                log.debug("AAAAAAAAAA SPOKE DONE - updating completeness - updating spoke %s - DONE" % sp)
+        log.debug("AAAAAAAAAA SPOKE DONE - updating completeness - done")
 
+
+        log.debug("AAAAAAAAAA SPOKE DONE - update continue")
         self._updateContinue()
+        log.debug("AAAAAAAAAA SPOKE DONE - update continue - done")
 
         # And then if that spoke wants us to jump straight to another one,
         # handle that now.
         if spoke.skipTo and spoke.skipTo in self._spokes:
+            log.debug("AAAAAAAAAA SPOKE DONE - skip to spoke")
             dest = spoke.skipTo
 
             # Clear out the skipTo setting so we don't cycle endlessly.
@@ -448,4 +534,5 @@ class Hub(GUIObject, common.Hub):
             self._on_spoke_clicked(self._spokes[dest].selector, None, self._spokes[dest])
         # Otherwise, switch back to the hub (that's us!)
         else:
+            log.debug("AAAAAAAAAA SPOKE DONE - return to hub")
             self.main_window.returnToHub()

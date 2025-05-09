@@ -1558,15 +1558,32 @@ class NetworkSpoke(FirstbootSpokeMixIn, NormalSpoke):
     def completed(self):
         # TODO: check also if source requires updates when implemented
         # If we can't configure network, don't require it
-        return (not conf.system.can_configure_network
+        log.debug("AAA NETWORK SPOKE completed()")
+        log.debug("AAA NETWORK SPOKE completed() - SKIP")
+        return True
+        result = (not conf.system.can_configure_network
                 or self._network_module.IsConnecting()
                 or self._network_module.Connected)
+        log.debug("AAA NETWORK SPOKE completed() - done")
+        return result
 
     @property
     def mandatory(self):
         # the network spoke should be mandatory only if it is running
         # during the installation and if the installation source requires network
-        return ANACONDA_ENVIRON in anaconda_flags.environs and self.payload.needs_network
+        log.debug("AAA NETWORK SPOKE mandatory()")
+        log.debug("AAA NETWORK SPOKE mandatory() - getting env in")
+        env_in = ANACONDA_ENVIRON in anaconda_flags.environs
+        log.debug(env_in)
+        log.debug("AAA NETWORK SPOKE mandatory() - getting env in - done")
+        log.debug("AAA NETWORK SPOKE mandatory() - getting needs network")
+        needs_network = self.payload.needs_network
+        log.debug(needs_network)
+        log.debug("AAA NETWORK SPOKE mandatory() - getting needs network - done")
+        log.debug("AAA NETWORK SPOKE mandatory() - done")
+        return env_in and needs_network
+
+        #return ANACONDA_ENVIRON in anaconda_flags.environs and self.payload.needs_network
 
     @property
     def status(self):

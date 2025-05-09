@@ -103,18 +103,32 @@ def get_source(payload_proxy):
     :return: a DBus proxy of a source
     :raise: ValueError if there is no source to return
     """
+    log.debug("AAA get_source()")
+    log.debug("AAA get_source() - using proxy:")
+    log.debug(payload_proxy)
+    log.debug("AAA get_source() - using proxy - done")
     sources = payload_proxy.Sources
+    log.debug("AAA get_source() - sources")
+    log.debug(sources)
 
     if sources:
         # Return the first source in the list. We don't
         # really support multiple sources at this moment.
+
+        log.debug("AAA get_source() - sources return")
+        log.debug(PAYLOADS.get_proxy(sources[0]))
         return PAYLOADS.get_proxy(sources[0])
 
     # Or create a new source of the specified type
     # and attach it to the given payload.
+    log.debug("AAA get_source() - create new source")
     source = create_source(payload_proxy.DefaultSourceType)
+    log.debug("AAA get_source() - new source:")
+    log.debug(source)
+    source = create_source(payload_proxy.DefaultSourceType)
+    log.debug("AAA get_source() - set_source()")
     set_source(payload_proxy, source)
-
+    log.debug("AAA get_source() - done!")
     return source
 
 

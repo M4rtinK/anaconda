@@ -52,11 +52,21 @@ class FileSystemSpaceChecker:
 
     def _calculate_free_space(self):
         """Calculate the available space."""
-        return Size(self.device_tree.GetFileSystemFreeSpace(("/", "/usr")))
+        log.debug("AAA FileSystemSpaceChecker -  calculate free space")
+        result = Size(self.device_tree.GetFileSystemFreeSpace(("/", "/usr")))
+        log.debug("AAA FileSystemSpaceChecker -  calculate free space - done")
+        log.debug(result)
+        return result
 
     def _calculate_needed_space(self):
         """Calculate the needed space."""
-        return self.payload.space_required
+        log.debug("AAA FileSystemSpaceChecker - calculate needed space")
+        log.debug("AAA FileSystemSpaceChecker - calculate needed space - calling self.payload.space_required")
+        result = self.payload.space_required
+        log.debug("AAA FileSystemSpaceChecker - calculate needed space - calling self.payload.space_required - done")
+        log.debug("AAA FileSystemSpaceChecker - calculate needed space - done")
+        log.debug(result)
+        return result
 
     def _calculate_deficit(self, needed):
         """Calculate the deficit.
@@ -66,6 +76,7 @@ class FileSystemSpaceChecker:
         :param needed: a needed space
         :return: a deficit size or None
         """
+        log.debug("AAA FileSystemSpaceChecker - calculate deficit")
         root_id = self.device_tree.GetRootDevice()
 
         if not root_id:
@@ -77,7 +88,10 @@ class FileSystemSpaceChecker:
 
         current = root_data.size
         required = self.device_tree.GetRequiredDeviceSize(needed.get_bytes())
-        return Size(required - current)
+        result = Size(required - current)
+        log.debug("AAA FileSystemSpaceChecker - calculate deficit - done")
+        log.debug(result)
+        return result
 
     def check(self):
         """Check configured storage against software selections.  When this
@@ -90,6 +104,7 @@ class FileSystemSpaceChecker:
                             situation.  This message is suitable for putting
                             in the info bar at the bottom of a Hub.
         """
+        log.debug("AAA FileSystemSpaceChecker - calculate needed space - check()")
         free = self._calculate_free_space()
         needed = self._calculate_needed_space()
         log.info("fs space: %s  needed: %s", free, needed)
@@ -109,6 +124,8 @@ class FileSystemSpaceChecker:
 
         self.success = result
         self.error_message = message
+        log.debug("AAA FileSystemSpaceChecker - calculate needed space - check() - done")
+        log.debug(result)
         return result
 
 

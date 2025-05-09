@@ -143,21 +143,32 @@ class SourceSpoke(NormalSpoke, GUISpokeInputCheckHandler, SourceSwitchHandler):
         self._device_tree = STORAGE.get_proxy(DEVICE_TREE)
 
     def apply(self):
+        log.debug("AAA apply - running")
         source_changed = self._update_payload_source()
+        log.debug("AAA apply - source changed ? %s" % source_changed)
         repo_changed = self._additional_repositories.apply()
+        log.debug("AAA apply - repo changed ? %s" % repo_changed)
         source_proxy = self.payload.get_source_proxy()
+        log.debug("AAA apply - source proxy ? %s" % source_proxy)
         cdn_source = source_proxy.Type == SOURCE_TYPE_CDN
         # If CDN is the current installation source but no subscription is
         # attached there is no need to refresh the installation source,
         # as without the subscription tokens the refresh would fail anyway.
         if cdn_source and not self.subscribed:
+            log.debug("AAA apply - CDN stuff")
             log.debug("CDN source but no subscription attached - skipping payload restart.")
         elif source_changed or repo_changed or self._error:
+            log.debug("AAA apply - start payload manager !")
+            log.debug(source_changed)
+            log.debug(repo_changed)
+            log.debug(self._error)
             payloadMgr.start(self.payload)
         else:
+            log.debug("AAA apply - nothing has changed !")
             log.debug("Nothing has changed - skipping payload restart.")
 
         self.clear_info()
+        log.debug("AAA apply running - done")
 
     def _update_payload_source(self):
         """ Check to see if the install method has changed.
@@ -307,11 +318,22 @@ class SourceSpoke(NormalSpoke, GUISpokeInputCheckHandler, SourceSwitchHandler):
         WARNING: This can be called before _initialize is done, make sure that it
         doesn't access things that are not setup (eg. payload.*) until it is ready
         """
+        log.debug("AAA SOURCE SPOKE COMPLETE")
+        log.debug("AAA SOURCE SPOKE COMPLETE - skip")
+        return True
+        log.debug("AAA SOURCE SPOKE COMPLETE - get proxy")
         source_proxy = self.payload.get_source_proxy()
+        log.debug("AAA SOURCE SPOKE COMPLETE - get proxy - done")
+        log.debug("AAA SOURCE SPOKE COMPLETE - is CDN ?")
         if source_proxy.Type == SOURCE_TYPE_CDN:
+            log.debug("AAA SOURCE SPOKE COMPLETE - is CDN - YES")
             return True
+        log.debug("AAA SOURCE SPOKE COMPLETE - is CDN ? - done")
 
-        return self.ready and not self._error and self.payload.is_ready()
+        result = self.ready and not self._error and self.payload.is_ready()
+        log.debug("AAA SOURCE SPOKE COMPLETE - RESULT: %s" % result)
+        log.debug("AAA SOURCE SPOKE COMPLETE - DONE")
+        return result
 
     @property
     def mandatory(self):
@@ -358,6 +380,7 @@ class SourceSpoke(NormalSpoke, GUISpokeInputCheckHandler, SourceSwitchHandler):
 
     @property
     def status(self):
+        log.debug("AAA SOURCE SPOKE STATUS")
         # When CDN is selected as installation source and system
         # is not yet subscribed, the automatic repo refresh will
         # fail. This is expected as CDN can't be used until the
@@ -365,28 +388,41 @@ class SourceSpoke(NormalSpoke, GUISpokeInputCheckHandler, SourceSwitchHandler):
         # message and show CDN is used instead. If CDN still
         # fails after registration, the regular error message
         # will be displayed.
+        log.debug("AAA SOURCE SPOKE STATUS - SKIP !!")
+        return ("AAA SKIP")
+        log.debug("AAA SOURCE SPOKE STATUS - getting source proxy")
         source_proxy = self.payload.get_source_proxy()
+        log.debug("AAA SOURCE SPOKE STATUS - getting source proxy - done")
+        log.debug("AAA SOURCE SPOKE STATUS - is CDN source ?")
         cdn_source = source_proxy.Type == SOURCE_TYPE_CDN
+        log.debug("AAA SOURCE SPOKE STATUS - is CDN source ? - done")
+        log.debug("AAA SOURCE SPOKE STATUS - got proxy")
 
         if cdn_source and not self.subscribed:
             source_proxy = self.payload.get_source_proxy()
+            log.debug("AAA SOURCE SPOKE STATUS - CDN")
             return source_proxy.Description
 
         if cdn_source and self.subscribed and self.registered_to_satellite:
             # override the regular CDN source name to make it clear Satellite
             # provided repositories are being used
+            log.debug("AAA SOURCE SPOKE STATUS - SATELLITE")
             return _("Satellite")
 
         if thread_manager.get(constants.THREAD_CHECK_SOFTWARE):
+            log.debug("AAA SOURCE SPOKE STATUS - checking software")
             return _(PAYLOAD_STATUS_CHECKING_SOFTWARE)
 
         if not self.ready:
+            log.debug("AAA SOURCE SPOKE STATUS - not ready")
             return _(PAYLOAD_STATUS_SETTING_SOURCE)
 
         if not self.completed:
+            log.debug("AAA SOURCE SPOKE STATUS - not completed")
             return _(PAYLOAD_STATUS_INVALID_SOURCE)
 
         source_proxy = self.payload.get_source_proxy()
+        log.debug("AAA SOURCE SPOKE STATUS - return description")
         return source_proxy.Description
 
     def _grab_objects(self):

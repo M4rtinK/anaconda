@@ -433,10 +433,16 @@ class MainWindow(Gtk.Window):
            :param AnacondaWidgets.BaseStandalone standalone: the new standalone action
         """
         # Slide the old hub/standalone off of the new one
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA SET CURRENT ACTION SET CURRENT ACTION %s *****" % standalone)
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA SET CURRENT ACTION SET CURRENT ACTION %s *****" % standalone)
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA SET CURRENT ACTION SET CURRENT ACTION %s *****" % standalone)
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA SET CURRENT ACTION SET CURRENT ACTION %s *****" % standalone)
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA SET CURRENT ACTION SET CURRENT ACTION %s *****" % standalone)
         self._stack.set_transition_type(Gtk.StackTransitionType.UNDER_LEFT)
 
         self._current_action = standalone
         self._setVisibleChild(standalone)
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA SET CURRENT ACTION SET CURRENT ACTION %s DONE *****" % standalone)
 
     def enterSpoke(self, spoke):
         """Enter a spoke.
@@ -447,16 +453,30 @@ class MainWindow(Gtk.Window):
            :param AnacondaWidgets.SpokeWindow spoke: a spoke to enter
         """
         # Slide up, as if the spoke is under the hub
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA ENTER SPOKE ENTER SPOKE %s *****" % spoke)
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA ENTER SPOKE ENTER SPOKE %s *****" % spoke)
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA ENTER SPOKE ENTER SPOKE %s *****" % spoke)
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA ENTER SPOKE ENTER SPOKE %s *****" % spoke)
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA ENTER SPOKE ENTER SPOKE %s *****" % spoke)
+
         self._stack.set_transition_type(Gtk.StackTransitionType.UNDER_UP)
 
         self._setVisibleChild(spoke)
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA ENTER SPOKE ENTER SPOKE %s DONE *****" % spoke)
 
     def returnToHub(self):
         """Exit a spoke and return to a hub."""
         # Slide back down over the spoke
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA RETURN TO HUB RETURN TO HUB *****")
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA RETURN TO HUB RETURN TO HUB *****")
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA RETURN TO HUB RETURN TO HUB *****")
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA RETURN TO HUB RETURN TO HUB *****")
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA RETURN TO HUB RETURN TO HUB *****")
+
         self._stack.set_transition_type(Gtk.StackTransitionType.OVER_DOWN)
 
         self._setVisibleChild(self._current_action)
+        log.debug("AAAAAAAAAAAAAAAAAAAAAAAA RETURN TO HUB RETURN TO HUB DONE *****")
 
     def lightbox_on(self):
         self._overlay_depth += 1

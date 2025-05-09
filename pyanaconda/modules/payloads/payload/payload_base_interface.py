@@ -28,6 +28,9 @@ from pyanaconda.modules.common.constants.interfaces import PAYLOAD
 from pyanaconda.modules.common.containers import PayloadSourceContainer, TaskContainer
 
 
+from pyanaconda.anaconda_loggers import get_module_logger
+log = get_module_logger(__name__)
+
 @dbus_interface(PAYLOAD.interface_name)
 class PayloadBaseInterface(ModuleInterfaceTemplate, metaclass=ABCMeta):
     """Base class for all the payload module interfaces.
@@ -73,9 +76,15 @@ class PayloadBaseInterface(ModuleInterfaceTemplate, metaclass=ABCMeta):
     @property
     def Sources(self) -> List[ObjPath]:
         """Get list of sources attached to this payload."""
-        return PayloadSourceContainer.to_object_path_list(
+        log.debug("AAA Sources DBus BASE")
+        log.debug("AAA Sources DBus BASE - implementation:")
+        log.debug(self.implementation)
+        log.debug("AAA Sources DBus BASE - preparing stuff")
+        result = PayloadSourceContainer.to_object_path_list(
             self.implementation.sources
         )
+        log.debug("AAA Sources DBus BASE - preparing stuff - done")
+        return result
 
     @Sources.setter
     @emits_properties_changed

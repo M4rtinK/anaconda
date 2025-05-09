@@ -1038,28 +1038,38 @@ class DNFManager:
         Disabled system repositories can be restored later with
         restore_system_repositories.
         """
+        log.debug("AAA DNF MANAGER - READ SYSTEM REPOSITORIES")
         with self._lock:
             # Make sure that there are no repositories yet. Otherwise,
             # the code bellow will produce unexpected results.
             if self.repositories:
                 raise RuntimeError("The DNF repo cache is not cleared.")
 
+            log.debug("AAA DNF MANAGER - READ SYSTEM REPOSITORIES - read")
             log.debug("Read system repositories.")
             repo_sack = self._base.get_repo_sack()
             repo_sack.create_repos_from_system_configuration()
+            log.debug("AAA DNF MANAGER - READ SYSTEM REPOSITORIES - read - done")
 
+            log.debug("AAA DNF MANAGER - READ SYSTEM REPOSITORIES - disable")
             log.debug("Disable system repositories.")
             repositories = libdnf5.repo.RepoQuery(self._base)
             repositories.filter_enabled(True)
+            log.debug("AAA DNF MANAGER - READ SYSTEM REPOSITORIES - disable - done")
 
+
+            log.debug("AAA DNF MANAGER - READ SYSTEM REPOSITORIES - remember")
             # Remember enabled system repositories.
             self._enabled_system_repositories = sorted(
                 r.get_id() for r in repositories
             )
+            log.debug("AAA DNF MANAGER - READ SYSTEM REPOSITORIES - remember - done")
 
+            log.debug("AAA DNF MANAGER - READ SYSTEM REPOSITORIES - disable all system")
             # Disable all system repositories.
             for repo in repositories:
                 repo.disable()
+            log.debug("AAA DNF MANAGER - READ SYSTEM REPOSITORIES - disable all system - done")
 
     def restore_system_repositories(self):
         """Restore the system repositories.

@@ -54,7 +54,11 @@ class MigratedDBusPayload(Payload, metaclass=ABCMeta):
 
     def get_source_proxy(self):
         """Get a DBus proxy of the current source."""
-        return get_source(self.proxy)
+        log.debug("AAA migrated get_source_proxy")
+        #return get_source(self.proxy)
+        result = get_source(self.proxy)
+        log.debug("AAA migrated get_source_proxy - done")
+        return result
 
     @property
     def source_type(self):
@@ -70,12 +74,24 @@ class MigratedDBusPayload(Payload, metaclass=ABCMeta):
     @property
     def space_required(self):
         """Get the required space."""
-        return Size(self.service_proxy.CalculateRequiredSpace())
+        log.debug("AAA migrated space_required()")
+        log.debug("calling  Size(self.service_proxy.CalculateRequiredSpace())")
+        #result = Size(self.service_proxy.CalculateRequiredSpace())
+        result = 0
+        log.debug("calling  Size(self.service_proxy.CalculateRequiredSpace()) - done")
+        log.debug("AAA migrated space_required() - done")
+        log.debug(result)
+        return result
 
     @property
     def needs_network(self):
         """Do the sources require a network?"""
-        return self.service_proxy.IsNetworkRequired()
+        log.debug("AAA payload migrated needs_network()")
+        log.debug("AAA payload migrated needs_network() - SKIP")
+        result = True
+        #result = self.service_proxy.IsNetworkRequired()
+        log.debug("AAA payload migrated needs_network() - done")
+        return result
 
     def setup(self, *args, **kwargs):
         """Set up the sources."""

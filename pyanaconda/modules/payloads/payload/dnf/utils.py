@@ -359,10 +359,14 @@ def calculate_required_space(dnf_manager):
     :param DNFManager dnf_manager: the DNF manager
     :return Size: the required space
     """
+    log.debug("AAA dnf.utils calculate_required_space()")
+
+    log.debug("AAA dnf.utils calculate_required_space() - get items")
     installation_size = dnf_manager.get_installation_size()
     download_size = dnf_manager.get_download_size()
     mount_points = get_free_space_map(scheduled=True)
 
+    log.debug("AAA dnf.utils calculate_required_space() - find mountpoints")
     # Find sufficient mount points.
     sufficient = _pick_mount_points(
         mount_points,
@@ -370,6 +374,7 @@ def calculate_required_space(dnf_manager):
         installation_size
     )
 
+    log.debug("AAA dnf.utils calculate_required_space() - choose best mountpoint")
     # Choose the biggest sufficient mount point.
     mount_point = _get_biggest_mount_point(mount_points, sufficient)
 
@@ -382,6 +387,7 @@ def calculate_required_space(dnf_manager):
         required_space = installation_size
 
     log.debug("The package installation requires %s.", required_space)
+    log.debug("AAA dnf.utils calculate_required_space() - done")
     return required_space
 
 
