@@ -55,7 +55,7 @@ jobs:
           fi
 
       - name: Check out repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0
